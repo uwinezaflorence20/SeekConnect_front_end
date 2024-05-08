@@ -23,7 +23,7 @@ const Navbar = () => {
                   </NavLink>
 
                   <NavLink>
-                    <a class=" text-[#8a9de9]  transition hover:text-gray-500/75" href="#">About</a>
+                    <a class=" text-[#8a9de9]  transition hover:text-gray-500/75" href="/about">About</a>
                   </NavLink>
 
                   <NavLink>
