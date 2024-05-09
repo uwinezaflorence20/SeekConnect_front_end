@@ -1,7 +1,6 @@
 // AboutPage.jsx
 import React from "react";
 
-
 const AboutPage = () => {
   return (
     <div className="bg-white min-h-screen w-full">
@@ -27,6 +26,7 @@ const AboutPage = () => {
             our footsteps and asking around the area – yet often we never again
             find what we’ve lost.
           </p>
+
           <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
             Lost Items vs Found Items
           </h3>
@@ -38,22 +38,22 @@ const AboutPage = () => {
             belongings that users have discovered and are looking to return to
             their rightful owners.
           </p>
-        </div>
-      </div>
-      <div className="max-w-2xl mx-auto">
-        <h3 className="text-3xl font-bold text-gray-800 mb-4">
-          We have a vision: to reunite the world!
-        </h3>
-        <p className="text-gray-700 mb-8 text-center ">
-          And so, we created SeekConnect to help you find that elusive reunion.
-          While we cannot guarantee that you’ll find what you seek, we can say
-          with confidence that our ever-growing, compassionate global community
-          will do all we can to give your search a happy ending.
-        </p>
 
-        <p className="text-gray-700 mb-8 text-center">
-          On SeekConnect, you can report and find:
-        </p>
+          <h3 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+            We have a vision: to reunite the world!
+          </h3>
+          <p className="text-gray-700 mb-8 text-center">
+            And so, we created SeekConnect to help you find that elusive
+            reunion. While we cannot guarantee that you’ll find what you seek,
+            we can say with confidence that our ever-growing, compassionate
+            global community will do all we can to give your search a happy
+            ending.
+          </p>
+
+          <p className="text-gray-700 mb-8 text-center">
+            On SeekConnect, you can report and find:
+          </p>
+        </div>
       </div>
     </div>
   );

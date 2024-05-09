@@ -56,7 +56,7 @@ const ResetPasswordPage = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 mr-80 font-medium">
+            <label htmlFor="email" className="block  text-gray-700 mr-80 font-medium">
               Email
             </label>
             <input
@@ -65,12 +65,12 @@ const ResetPasswordPage = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`"mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" ${
+              className={`"mt-1 p-2 block  w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" ${
                 errors.email ? "border-red-500" : ""
               }`}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 mr-60 text-sm mt-1">{errors.email}</p>
             )}
           </div>
           <div className="mb-4">
@@ -91,7 +91,7 @@ const ResetPasswordPage = () => {
               }`}
             />
             {errors.newPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
+              <p className="text-red-500  mr-40 text-sm mt-1">{errors.newPassword}</p>
             )}
           </div>
           <div className="mb-4">
@@ -112,7 +112,7 @@ const ResetPasswordPage = () => {
               }`}
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-red-500 mr-40 text-sm mt-1">
                 {errors.confirmPassword}
               </p>
             )}
