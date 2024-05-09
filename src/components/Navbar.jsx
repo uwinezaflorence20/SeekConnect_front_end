@@ -2,6 +2,8 @@ import React from 'react';
 import { FaArrowRightLong } from "react-icons/fa6";
 import { NavLink } from 'react-router-dom';
 import { CiMenuBurger } from "react-icons/ci";
+import { SlArrowDown } from "react-icons/sl";
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -11,6 +13,7 @@ const Navbar = () => {
           <div class="flex h-16 items-center justify-between">
             <div class="flex-1 md:flex md:items-center md:gap-12">
               <a class="block text-[#0187D0]" href="#">
+              <SlArrowDown  className='ml-12  text-[#8a9de9] text-3xl '/>
                 <p className="text-xl text-[#8a9de9] font-bold">SeekConnect</p>
               </a>
             </div>
@@ -22,7 +25,7 @@ const Navbar = () => {
                     <a class=" text-[#8a9de9]  transition hover:text-gray-500/75" href="#">Home </a>
                   </NavLink>
 
-                  <NavLink>
+                  <NavLink to ="/about">
                     <a class=" text-[#8a9de9]  transition hover:text-gray-500/75" href="/about">About</a>
                   </NavLink>
 
@@ -38,15 +41,16 @@ const Navbar = () => {
 
               <div class="flex items-center gap-4">
                 <div class="sm:flex sm:gap-4">
-                  <button class=" rounded-full flex  gap-4 px-5 py-1 text-sm bg-[#8a9de9]  hover:bg-indigo-700   text-white shadow">
+                 <Link to="/signin"> <button class=" rounded-full flex  gap-4 px-5 py-2 text-sm bg-[#8a9de9]  hover:bg-indigo-700   text-white shadow">
                     <a href="#">
                       Sign in
                     </a><FaArrowRightLong className="mt-1" />
                   </button>
+                  </Link>
                 </div>
 
                 <div class="block md:hidden">
-                  <button class="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
+                  <button class="rounded animate-bounce  bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
                     <CiMenuBurger />
                   </button>
                 </div>
