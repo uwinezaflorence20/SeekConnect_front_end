@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const Home = () => {
   return (
     <div>
@@ -16,9 +16,10 @@ const Home = () => {
         <p class="mt-4 text-gray-600">
         Welcome to the new online depository for missing items and people. SeekConnect's global platform makes it easy to find what – or whoever –you’ve lost.
         </p>
-        <a href="#" class="mt-8 inline-block rounded  bg-[#8a9de9] px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400">
+       <Link to="/signup"><a href="#" class="mt-8 inline-block rounded animate-bounce  bg-[#8a9de9] px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400">
           Sign up now , its free
         </a>
+        </Link> 
       </div>
     </div>
   </div>

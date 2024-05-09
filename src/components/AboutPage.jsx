@@ -4,7 +4,7 @@ import React from "react";
 
 const AboutPage = () => {
   return (
-    <div className="bg-gray-100 min-h-screen w-full">
+    <div className="bg-white min-h-screen w-full">
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         {/* Image Section */}
         <div className="text-center mb-8">
