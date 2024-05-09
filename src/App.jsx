@@ -8,6 +8,7 @@ import Signin from './components/Signin'
 import Signup from './components/Signup'
 import ResetPasswordPage from "./components/ResetPasswordPage";
 
+
 function App() {
   return (
     <>
@@ -23,6 +24,7 @@ function App() {
       </Route>
      </Routes>
      </BrowserRouter>
+     
     </>
   )
 }

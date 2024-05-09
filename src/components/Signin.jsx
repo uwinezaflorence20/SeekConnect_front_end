@@ -65,7 +65,7 @@ const ResetPasswordPage = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium">
+            <label htmlFor="email" className="block mr-80 text-gray-700 font-medium">
               Email
             </label>
             <input
@@ -79,13 +79,13 @@ const ResetPasswordPage = () => {
               }`}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 mr-80 text-sm mt-1">{errors.email}</p>
             )}
           </div>
           <div className="mb-4">
             <label
               htmlFor="newPassword"
-              className="block text-gray-700 font-medium"
+              className="block text-gray-700 mr-80 font-medium"
             >
            Password
             </label>
@@ -100,7 +100,7 @@ const ResetPasswordPage = () => {
               }`}
             />
             {errors.newPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
+              <p className="text-red-500 mr-60 text-sm mt-1">{errors.newPassword}</p>
             )}
           </div>
           
@@ -112,7 +112,7 @@ const ResetPasswordPage = () => {
               Sign in to get started
             </button>
           </div>
-          <p className="text-center text-sm mt-4">
+          <p className="text-center   mr-60 text-sm mt-6 ">
             Don't have an account?{" "}
             <Link
               to="/signup"
@@ -121,10 +121,10 @@ const ResetPasswordPage = () => {
               Register
             </Link>
           </p>
-          <p className="text-center text-sm">
+          <p className="text-center ml-60  text-sm mb-8">
             <Link
               to="/resetpassword"
-              className="font-medium text-[#8a9de9] hover:text-indigo-500"
+              className="font-medium text-[#8a9de9]  hover:text-indigo-500"
             >
               Forgot your password?
             </Link>

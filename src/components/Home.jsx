@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import AboutPage from './AboutPage'
 const Home = () => {
   return (
     <div>
@@ -24,6 +25,7 @@ const Home = () => {
     </div>
   </div>
 </section>
+<AboutPage/>
     </div>
   )
 }
