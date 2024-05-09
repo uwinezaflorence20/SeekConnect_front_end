@@ -1,3 +1,4 @@
+// ResetPasswordPage.jsx
 import React, { useState } from "react";
 const ResetPasswordPage = () => {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ const ResetPasswordPage = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium">
+            <label htmlFor="email" className="block text-gray-700 mr-80 font-medium">
               Email
             </label>
             <input
@@ -75,7 +76,7 @@ const ResetPasswordPage = () => {
           <div className="mb-4">
             <label
               htmlFor="newPassword"
-              className="block text-gray-700 font-medium"
+              className="block mr-64 text-gray-700 font-medium"
             >
               New Password
             </label>
@@ -96,7 +97,7 @@ const ResetPasswordPage = () => {
           <div className="mb-4">
             <label
               htmlFor="confirmPassword"
-              className="block text-gray-700 font-medium"
+              className="block mr-56 text-gray-700 font-medium"
             >
               Confirm Password
             </label>
@@ -128,12 +129,6 @@ const ResetPasswordPage = () => {
   );
 };
 export default ResetPasswordPage;
-
-
-
-
-
-
 
 
 

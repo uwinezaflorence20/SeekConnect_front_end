@@ -1,122 +1,118 @@
-// SignIn.jsx
+// ResetPasswordPage.jsx
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SlArrowDown } from "react-icons/sl";
-const Signin = () => {
-  // State for email and password inputs
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [clickMessage, setClickMessage] = useState("");
-  const [emailPrompt, setEmailPrompt] = useState("");
-  const [passwordPrompt, setPasswordPrompt] = useState("");
-  // Function to handle form submission
+import { Link } from "react-router-dom";
+
+const ResetPasswordPage = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email.trim() === "") {
-      setEmailError("Please fill in the email.");
-    } else {
-      setEmailError("");
+    let errors = {};
+    if (!formData.email) {
+      errors.email = "Email is required";
     }
-    if (password.trim() === "") {
-      setPasswordError("Please fill in the password.");
-    } else {
-      setPasswordError("");
+    if (!formData.newPassword) {
+      errors.newPassword = "New password is required";
     }
-    if (email.trim() !== "" && password.trim() !== "") {
-      // You can add your sign-in logic here
-      console.log("Email:", email);
-      console.log("Password:", password);
-      setTimeout(() => navigate("/home"), 2000);
+    if (!formData.confirmPassword) {
+      errors.confirmPassword = "Confirm password is required";
+    }
+    if (formData.newPassword !== formData.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+    if (Object.keys(errors).length === 0) {
+      // Submit the form, reset password logic here
+      setSuccessMessage("Password reset successfully!");
+      // Clear form data after successful submission
+      setFormData({
+        email: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } else {
+      setErrors(errors);
     }
   };
-  // Function to handle button click
-  const handleButtonClick = () => {
-    setClickMessage("Email and password are filled.");
-    setEmailPrompt("Please enter the email.");
-    setPasswordPrompt("Please enter the password.");
-  };
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full p-6 rounded-md bg-white shadow-md">
-        <div>
-        <div className="text-center">
-  <SlArrowDown className="text-[#8a9de9] text-6xl md:text-8xl" />
-  <p className="text-4xl md:text-6xl text-[#8a9de9] font-bold">SeekConnect</p>
-</div>
 
-          <h2 className="mt-6 text-center text-xl font-extrabold text-gray-900">
-            Sign in to get stared
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm  font-medium text-gray-700"
-            >
-              Email address
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-lg w-full mb-40 p-6 rounded-md bg-white shadow-md">
+      <div>
+  
+       <p className="text-3xl md:text-6xl text-[#8a9de9] mb-6 md:mb-10 font-bold">SeekConnect</p>
+   </div>
+        <h2 className="text-2xl font-bold text-center mb-6">Sign In </h2>
+        {successMessage && (
+          <p className="text-green-600 mb-4">{successMessage}</p>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-medium">
+              Email
             </label>
             <input
-            placeholder="Enter your names"
+              type="email"
               id="email"
               name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              value={formData.email}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.email ? "border-red-500" : ""
+              }`}
             />
-            {emailError && (
-              <p className="text-red-400 text-center mt-1">{emailError}</p>
-            )}
-            {emailPrompt && (
-              <p className="text-indigo-600 text-center mt-1">{emailPrompt}</p>
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
           </div>
-          <div>
+          <div className="mb-4">
             <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              htmlFor="newPassword"
+              className="block text-gray-700 font-medium"
             >
-              Password
+           Password
             </label>
             <input
-            placeholder="Enter your password"
-              id="password"
-              name="password"
               type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              id="newPassword"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.newPassword ? "border-red-500" : ""
+              }`}
             />
-            {passwordError && (
-              <p className="text-red-400 text-center mt-1">{passwordError}</p>
-            )}
-            {passwordPrompt && (
-              <p className="text-indigo-600 text-center mt-1">
-                {passwordPrompt}
-              </p>
+            {errors.newPassword && (
+              <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
             )}
           </div>
+          
           <div>
             <button
               type="submit"
-              onClick={handleButtonClick}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Sign in
+              Sign in to get started
             </button>
           </div>
-          {clickMessage && (
-            <p className="text-green-500 text-center mt-1">{clickMessage}</p>
-          )}
-          <p className="text-center text-sm">
+          <p className="text-center text-sm mt-4">
             Don't have an account?{" "}
             <Link
               to="/signup"
@@ -126,12 +122,11 @@ const Signin = () => {
             </Link>
           </p>
           <p className="text-center text-sm">
-            
             <Link
               to="/resetpassword"
               className="font-medium text-[#8a9de9] hover:text-indigo-500"
             >
-          Forgot your password?{" "}
+              Forgot your password?
             </Link>
           </p>
         </form>
@@ -139,4 +134,5 @@ const Signin = () => {
     </div>
   );
 };
-export default Signin;
+
+export default ResetPasswordPage;
