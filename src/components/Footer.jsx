@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <div>
@@ -142,8 +142,8 @@ function Footer() {
                       href="#"
                       className="text-white transition hover:opacity-75"
                     >
-                      {" "}
-                      Meet the Team{" "}
+                      
+                     <Link to ="/team"> Meet the Team</Link>
                     </a>
                   </li>
                 </ul>

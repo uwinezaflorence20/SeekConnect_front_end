@@ -10,6 +10,7 @@ import ResetPasswordPage from "./components/ResetPasswordPage";
 import Videopart from "./components/Videopart";
 import Contact from "./components/Contact";
 import Features from './components/Features';
+import Team from "./components/Team";
 
 
 
@@ -28,9 +29,11 @@ function App() {
          <Route path="/Video" element={<Videopart/>}/>
          <Route path="/contact" element={<Contact/>}/>
          <Route path="/Features" element={<Features/>}/>
+         <Route path="/team" element={<Team/>}/>
       </Route>
      </Routes>
      </BrowserRouter>
+    
     </>
   )
 }

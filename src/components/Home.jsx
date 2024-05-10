@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import AboutPage from './AboutPage'
 import Contact from './Contact'
 import {motion} from 'framer-motion';
+import Team from './Team';
 const Home = () => {
   return (
     <div>
@@ -50,6 +51,7 @@ const Home = () => {
   </div>
 </section>
 <AboutPage/>
+
 <Contact/>
     </div>
   )
