@@ -28,7 +28,7 @@ function App() {
          <Route path="/resetpassword" element={<ResetPasswordPage />}/> 
          <Route path="/Video" element={<Videopart/>}/>
          <Route path="/contact" element={<Contact/>}/>
-         <Route path="/Features" element={<Features/>}/>
+         <Route path="/feature" element={<Features/>}/>
          <Route path="/team" element={<Team/>}/>
       </Route>
      </Routes>

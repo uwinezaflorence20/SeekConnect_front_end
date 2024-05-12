@@ -1,14 +1,12 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { RxDoubleArrowLeft } from "react-icons/rx";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
     newPassword: "",
     confirmPassword: "",
-    firstName: "", // Add firstName and lastName to formData state
+    firstName: "",
     lastName: ""
   });
   const [errors, setErrors] = useState({});
@@ -23,12 +21,13 @@ const Signup = () => {
     });
     setErrors({
       ...errors,
-      [name]: "",
+      [name]: "", // Reset error for the field being edited
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     let errors = {};
     if (!formData.firstName) {
       errors.firstName = "First name is required";
@@ -68,7 +67,12 @@ const Signup = () => {
             lastName: ""
           });
           navigate("/signin"); // Redirect to signin page after successful registration
-        } else {
+        }
+        else if (response.status === 409) { // User already exists
+            setErrors({ email: "User already exists" });
+          }
+
+         else {
           const data = await response.json();
           setErrors(data.errors);
         }
@@ -129,11 +133,8 @@ const Signup = () => {
               <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
             )}
           </div>
-          {errors.email && (
-            <p className="text-red-500 mr-80 text-sm mt-1">{errors.email}</p>
-          )}
           <div className="mb-4">
-            <label htmlFor="email" className="block mr-96 text-gray-700 font-medium">
+            <label htmlFor="email" className="block text-gray-700 font-medium">
               Email
             </label>
             <input
@@ -142,16 +143,16 @@ const Signup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`"mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" ${
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.email ? "border-red-500" : ""
               }`}
             />
             {errors.email && (
-              <p className="text-red-500 mr-80 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="newPassword" className="block text-gray-700  mr-80 font-medium">
+            <label htmlFor="newPassword" className="block text-gray-700 font-medium">
               New Password
             </label>
             <input
@@ -160,16 +161,16 @@ const Signup = () => {
               name="newPassword"
               value={formData.newPassword}
               onChange={handleChange}
-              className={`"mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" ${
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.newPassword ? "border-red-500" : ""
               }`}
             />
             {errors.newPassword && (
-              <p className="text-red-500 mr-72 text-sm mt-1">{errors.newPassword}</p>
+              <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="confirmPassword" className="block text-gray-700 mr-80 font-medium">
+            <label htmlFor="confirmPassword" className="block text-gray-700 font-medium">
               Confirm Password
             </label>
             <input
@@ -178,12 +179,12 @@ const Signup = () => {
               name="confirmPassword"   
               value={formData.confirmPassword}
               onChange={handleChange}
-              className={`"mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" ${
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.confirmPassword ? "border-red-500" : ""
               }`}
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 mr-60 text-sm mt-1">
+              <p className="text-red-500 text-sm mt-1">
                 {errors.confirmPassword}
               </p>
             )}
@@ -195,48 +196,13 @@ const Signup = () => {
             Register
           </button>
         </form>
-        <div className="flex">
-          <p> Have an account? </p>
-          <RxDoubleArrowLeft className='ml-48 text-md text-blue-400 pt-2' />
-          <Link to={"/signin"} className='text-blue-400 pb-4'>back to SignIn</Link>
+        <div className="flex items-center justify-center mt-4">
+          <p className="mr-2">Have an account?</p>
+          <Link to="/signin" className="text-blue-400">Back to Sign In</Link>
         </div>
       </div>
     </div>
   );
-  
 };
 
 export default Signup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

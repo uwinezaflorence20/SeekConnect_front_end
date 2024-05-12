@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import AboutPage from './AboutPage'
 import Contact from './Contact'
+import Features from './Features'
 import {motion} from 'framer-motion';
 import Team from './Team';
 const Home = () => {
@@ -51,7 +52,7 @@ const Home = () => {
   </div>
 </section>
 <AboutPage/>
-
+<Features/>
 <Contact/>
     </div>
   )

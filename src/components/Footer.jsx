@@ -7,9 +7,8 @@ function Footer() {
         <div className="mx-auto max-w-screen-xl space-y-8 px-4 py-4 sm:px-6 lg:space-y-16 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <div>
-                <p>SeekConnect</p> 
-              <div className="text-3xl text-[#8a9de9] font-bold mr-40">  
-              </div>
+              <p>SeekConnect</p>
+              <div className="text-3xl text-[#8a9de9] font-bold mr-40"></div>
 
               <ul className="mt-8 flex gap-6">
                 <li>
@@ -142,8 +141,7 @@ function Footer() {
                       href="#"
                       className="text-white transition hover:opacity-75"
                     >
-                      
-                     <Link to ="/team"> Meet the Team</Link>
+                      <Link to="/team"> Meet the Team</Link>
                     </a>
                   </li>
                 </ul>
@@ -183,7 +181,7 @@ function Footer() {
             </div>
           </div>
 
-          <p className="text-xl text-gray-500">
+          <p className="text-xl flex items-center justify-center text-gray-500">
             &copy; 2024. SeekConnect . All rights reserved.
           </p>
         </div>
@@ -194,4 +192,3 @@ function Footer() {
 }
 
 export default Footer;
-
