@@ -11,7 +11,7 @@ import Videopart from "./components/Videopart";
 import Contact from "./components/Contact";
 import Features from './components/Features';
 import Team from "./components/Team";
-
+import OTPVerification from "./components/OTPVerification";
 
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
          <Route path="/contact" element={<Contact/>}/>
          <Route path="/feature" element={<Features/>}/>
          <Route path="/team" element={<Team/>}/>
+         <Route path="/otp-verify" element={<OTPVerification />} />
       </Route>
      </Routes>
      </BrowserRouter>
