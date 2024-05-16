@@ -100,7 +100,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex mt-12 items-center justify-center bg-gray-100">
       <div className="max-w-lg w-full p-6 rounded-md bg-white shadow-md">
         <div>
           <p className="text-4xl md:text-4xl text-[#8a9de9] mb-6 md:mb-10 font-bold">

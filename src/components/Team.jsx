@@ -10,17 +10,17 @@ const Team = () => {
               <div class="flex items-center gap-4">
                 <img
                   alt=""
-                  src="/mine.jpeg"
-                  class="size-14 rounded-full w-40 h-40 ml-12 mb-8 object-cover"
+                  src="/gloria.jpg"
+                  class="size-14 rounded-full w-40 h-40 md:ml-8 mb-8 sm:ml-48 object-cover"
                 />
               </div>
               <div>
                 <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
-                  Uwineza Florence
+                  Uwineza Gloria
                 </p>
               </div>
               <p class="mt-4 tex-black">
-                "I'm Uwineza florence, a Front-end developer with a passion for
+                "I'm Uwineza Gloria, a Back-end developer with a passion for
                 web designing. constantly seeking opportunities for growth and
                 learning. , I approach challenges with Ambition and always
                 strive for excellence.
@@ -30,17 +30,17 @@ const Team = () => {
               <div class="flex items-center gap-4">
                 <img
                   alt=""
-                  src="/mine.jpeg"
-                  class="size-14 rounded-full w-40 h-40 ml-12 mb-8 object-cover"
+                  src="/gloria.jpg"
+                  class="size-14 rounded-full w-40 h-40 md:ml-8 mb-8 sm:ml-48 object-cover"
                 />
               </div>
               <div>
                 <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
-                  Uwineza Florence
+                  Uwineza Gloria
                 </p>
               </div>
               <p class="mt-4 tex-black">
-                "I'm Uwineza florence, a Front-end developer with a passion for
+                "I'm Uwineza Gloria, a Back-end developer with a passion for
                 web designing. constantly seeking opportunities for growth and
                 learning. , I approach challenges with Ambition and always
                 strive for excellence.
@@ -50,37 +50,37 @@ const Team = () => {
               <div class="flex items-center gap-4">
                 <img
                   alt=""
-                  src="/mine.jpeg"
-                  class="size-14 rounded-full w-40 h-40 ml-12 mb-8 object-cover"
+                  src="/gloria.jpg"
+                  class="size-14 rounded-full w-40 h-40 md:ml-8 mb-8 sm:ml-48 object-cover"
                 />
               </div>
               <div>
                 <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
-                  Uwineza Florence
+                  Uwineza Gloria
                 </p>
               </div>
               <p class="mt-4 tex-black">
-                "I'm Uwineza florence, a Front-end developer with a passion for
+                "I'm Uwineza Gloria, a Back-end developer with a passion for
                 web designing. constantly seeking opportunities for growth and
                 learning. , I approach challenges with Ambition and always
                 strive for excellence.
               </p>
             </div>
-            <div class="rounded-lg bg-gray-50 p-6  shadow-sm sm:p-8">
+            <div class="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
               <div class="flex items-center gap-4">
                 <img
                   alt=""
-                  src="/mine.jpeg"
-                  class="size-14 rounded-full w-40 h-40 ml-12 mb-8 object-cover"
+                  src="/fofo.jpg"
+                  class=" size-14 rounded-full w-40 h-40 md:ml-8 mb-8 sm:ml-60 object-cover"
                 />
               </div>
               <div>
                 <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
-                  Uwineza Florence
+                  Uwineza Gloria
                 </p>
               </div>
               <p class="mt-4 tex-black">
-                "I'm Uwineza florence, a Front-end developer with a passion for
+                "I'm Uwineza Gloria, a Front-end developer with a passion for
                 web designing. constantly seeking opportunities for growth and
                 learning. , I approach challenges with Ambition and always
                 strive for excellence.

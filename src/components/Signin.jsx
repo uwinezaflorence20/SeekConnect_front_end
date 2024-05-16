@@ -63,7 +63,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen mt-20 flex items-center justify-center bg-gray-100">
       <div className="max-w-lg w-full mb-40 p-6 rounded-md bg-white shadow-md">
         <div>
           <p className="text-3xl md:text-6xl text-[#8a9de9] mb-6 md:mb-10 font-bold">
@@ -115,7 +115,7 @@ const Signin = () => {
             )}
           </div>
           <div>
-            <button
+           <button
               onClick={handleLogin}
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

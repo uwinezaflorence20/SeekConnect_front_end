@@ -186,7 +186,6 @@ function Footer() {
           </p>
         </div>
       </footer>
-      ;
     </div>
   );
 }

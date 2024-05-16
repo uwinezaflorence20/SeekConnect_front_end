@@ -1,6 +1,8 @@
 import React from "react";
 import {motion} from "framer-motion"
 import { MdOutlineCheckCircle } from "react-icons/md";
+import { FaRegUserCircle } from "react-icons/fa";
+import { MdScreenSearchDesktop } from "react-icons/md";
 import { MdWindow } from "react-icons/md";
 const Features = () => {
   return (
@@ -101,14 +103,10 @@ const Features = () => {
           <div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
             <div class="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
               <div class="flex items-center gap-4">
-                <img
-                  alt=""
-                  src="/mine.jpeg"
-                  class="size-14 rounded-full w-40 h-40 ml-12 mb-8 object-cover"
-                />
+              <MdScreenSearchDesktop class=" rounded-full text-[#8a9de9] text-center w-28 h-28 m-12 md:ml-24  sm:ml-24 " />
               </div>
               <div>
-                <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
+                <p class="mt-0.5 text-lg font-medium text-center m-4 text-gray-900">
                 Fast search with powerful indexing
 
                 </p>
@@ -119,14 +117,10 @@ const Features = () => {
             </div>
             <div class="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
             <div class="flex items-center gap-4">
-                <img
-                  alt=""
-                  src="/mine.jpeg"
-                  class="size-14 rounded-full w-40 h-40 ml-12 mb-8 object-cover"
-                />
+            <FaRegUserCircle class=" rounded-full text-[#8a9de9] text-center w-28 m-12 h-28 md:ml-24 sm:ml-24 " />
               </div>
               <div>
-                <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
+                <p class="mt-0.5 text-lg font-medium text-center m-4 text-gray-900">
                 Beautiful user experience
 
                 </p>
@@ -137,12 +131,12 @@ const Features = () => {
             </div>
             <div class="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
             <div class="flex items-center gap-4">
-                <MdWindow class=" rounded-full w-28 h-28 ml-32  " />
+                <MdWindow class=" rounded-full text-[#8a9de9] text-center w-28 m-12 h-28 md:ml-24 sm:ml-24 " />
                  
               
               </div>
               <div>
-                <p class="mt-0.5 text-lg font-medium text-center text-gray-900">
+                <p class="mt-0.5 text-lg font-medium text-center m-4 text-gray-900">
                 Multi-tenant capability for enterprises
 
                 </p>
@@ -151,6 +145,7 @@ const Features = () => {
               We’re for organizations, too! Every entity can benefit from equipping their systems with Lostify via our Hub Enterprise offerings
               </p>
             </div>
+            
           </div>
         </div>
     </section>
