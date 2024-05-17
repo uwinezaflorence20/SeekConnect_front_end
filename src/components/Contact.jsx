@@ -77,7 +77,7 @@ const Contact = () => {
           <div class="mt-4">
             <button
               type="submit"
-              class="inline-block w-full  rounded-lg bg-[#8a9de9] hover:bg-indigo-700 ml-4 px-60 py-3 font-medium text-white sm:w-auto"
+              class="inline-block w-full  rounded-lg bg-[#8a9de9] hover:bg-indigo-700 ml-4 px-20 py-3 font-medium text-white sm:w-auto"
             >
               Send Message
             </button>

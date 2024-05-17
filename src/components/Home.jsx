@@ -14,7 +14,7 @@ const Home = () => {
       <div class="relative h-64 overflow-hidden rounded-lg sm:h-80 lg:order-last lg:h-full">
         < motion.img 
         alt="" 
-        src="/banner-01.png" 
+        src="/home.png" 
         initial={{opacity:0,x:100}}
         animate={{opacity:1,x:0}}
         transition={{duration:1}}

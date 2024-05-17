@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState('');
-
+  const navigate = useNavigate();
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -56,6 +56,7 @@ const Signin = () => {
     })
       .then((response) => {
         console.log(response.data);
+        navigate("/dash")
       })
       .catch((error) => {
         console.error(error);

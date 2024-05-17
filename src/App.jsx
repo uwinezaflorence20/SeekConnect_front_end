@@ -15,7 +15,9 @@ import OTPVerification from "./components/OTPVerification";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Product from "./components/Product";
-import Dash from '/src/Dash'
+import Otherpart from "./components/shared/Otherpart";
+
+
 function App() {
   return (
     <>
@@ -32,24 +34,24 @@ function App() {
          <Route path="/contact" element={<Contact/>}/>
          <Route path="/feature" element={<Features/>}/>
          <Route path="/team" element={<Team/>}/>
-         <Route path="/dash" element={<Dash/>}/>
          <Route path="/otp-verify" element={<OTPVerification />} />
       </Route>
+      
+      <Route path="/" element={<Layoutwo/>}>
+       <Route path='/dash' element={<Dashboard/>}/>
+       <Route path="/products"  element={<Product/>}/>
+       <Route path="/other" element={<Otherpart/>}/>
+        </Route> 
+      
+     
      </Routes>
      
      </BrowserRouter>
 
 
-     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layoutwo/>}>
-       <Route index  element={<Dashboard/>}/>
-       <Route path="/products"  element={<Product/>}/>
-        </Route>
-      </Routes>
-     </BrowserRouter>
-    
+  
     </>
+    
   )
 }
 

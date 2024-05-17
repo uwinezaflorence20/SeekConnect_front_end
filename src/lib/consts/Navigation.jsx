@@ -1,51 +1,32 @@
 import {
-	HiOutlineViewGrid,
-	HiOutlineCube,
-	HiOutlineShoppingCart,
-	HiOutlineUsers,
-	HiOutlineDocumentText,
-	HiOutlineAnnotation,
 	HiOutlineQuestionMarkCircle,
 	HiOutlineCog
 } from 'react-icons/hi'
-
+import { CiHome } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
+import { CiBookmark } from "react-icons/ci";
 export const DASHBOARD_SIDEBAR_LINKS = [
 	{
-		key: 'dashboard',
-		label: 'Dashboard',
-		path: '/',
-		icon: <HiOutlineViewGrid />
+		key: 'Home',
+		label: 'Home',
+		path: '/dash',
+		icon: <CiHome />
 	},
 	{
-		key: 'products',
-		label: 'Products',
+		key: 'My items',
+		label: 'My items',
 		path: '/products',
-		icon: <HiOutlineCube />
+		icon: <CiUser />
+
 	},
 	{
-		key: 'orders',
-		label: 'Orders',
+		key: 'Bookmarks',
+		label: 'bookmarks',
 		path: '/orders',
-		icon: <HiOutlineShoppingCart />
+		icon: <CiBookmark />
 	},
-	{
-		key: 'customers',
-		label: 'Customers',
-		path: '/customers',
-		icon: <HiOutlineUsers />
-	},
-	{
-		key: 'transactions',
-		label: 'Transactions',
-		path: '/transactions',
-		icon: <HiOutlineDocumentText />
-	},
-	{
-		key: 'messages',
-		label: 'Messages',
-		path: '/messages',
-		icon: <HiOutlineAnnotation />
-	}
+	
+	
 ]
 
 export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [

@@ -17,8 +17,8 @@ const Navbar = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-          <div className="flex-1 md:flex md:items-center md:gap-12">
-                <SlArrowDown className='ml-12  text-[#8a9de9] text-3xl '/>
+          <div className="flex-1 md:items-center md:gap-12">
+                <SlArrowDown className='ml-12  text-[#8a9de9] text-3xl  '/>
                 <p className="text-xl text-[#8a9de9] font-bold">SeekConnect</p>
             </div>
 

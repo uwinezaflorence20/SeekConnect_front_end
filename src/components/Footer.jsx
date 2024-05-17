@@ -172,8 +172,8 @@ function Footer() {
                       href="#"
                       className="text-white transition   hover:text-[#8a9de9]"
                     >
-                      {" "}
-                      Accessibility{" "}
+                      
+                    <Link to="/dash">  Accessibility</Link>
                     </a>
                   </li>
                 </ul>

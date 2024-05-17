@@ -13,7 +13,7 @@ const AboutPage = () => {
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <img
-            src="/banner-03.png"
+            src="/about.png"
             alt="About"
             className="max-w-full h-auto mx-auto rounded-lg shadow-lg"
           />
