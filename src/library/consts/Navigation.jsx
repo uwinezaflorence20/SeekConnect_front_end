@@ -67,5 +67,4 @@ export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
     path: "/support",
     icon: <HiOutlineQuestionMarkCircle />,
   },
-  
 ];
