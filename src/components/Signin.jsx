@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState('');
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
   const isValidEmail = (email) => {
@@ -56,6 +56,7 @@ const Signin = () => {
 
       console.log(response.data);
       navigate("/dash", { state: { email: email }  });
+
     } catch (error) {
       console.error(error);
     }
@@ -69,7 +70,7 @@ const Signin = () => {
             SeekConnect
           </p>
         </div>
-        <h2 className="text-2xl font-bold text-center mb-6">Sign In </h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
         <form>
           <div className="mb-4">
             <label
@@ -114,7 +115,7 @@ const Signin = () => {
             )}
           </div>
           <div>
-           <button
+            <button
               onClick={handleLogin}
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -122,7 +123,7 @@ const Signin = () => {
               Sign in to get started
             </button>
           </div>
-          <p className="text-center   mr-60 text-sm mt-6 ">
+          <p className="text-center mr-60 text-sm mt-6">
             Don't have an account?{" "}
             <Link
               to="/signup"
@@ -131,10 +132,10 @@ const Signin = () => {
               Register
             </Link>
           </p>
-          <p className="text-center ml-60  text-sm mb-8">
+          <p className="text-center ml-60 text-sm mb-8">
             <Link
               to="/resetpassword"
-              className="font-medium text-[#8a9de9]  hover:text-indigo-500"
+              className="font-medium text-[#8a9de9] hover:text-indigo-500"
             >
               Forgot your password?
             </Link>

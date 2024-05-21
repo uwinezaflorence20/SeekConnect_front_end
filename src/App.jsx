@@ -19,10 +19,21 @@ import Otherpart from "./components/shared/Otherpart";
 import Post from "./components/Post";
 
 
+import LayoutAdmin from "./Admin/sharedAdmin/LayoutAdmin";
+import DashboardAdmin from "./Admin/DashboardAdmin";
+import Products from "./Admin/Products";
+import Orders from "./Admin/Orders";
+import Customers from "./Admin/Customers";
+import Transactions from "./Admin/Transactions";
+
+import Post from "./components/Post";
+
+
+
 function App() {
   return (
     <>
-    
+
      <BrowserRouter>
      <Routes>
       <Route path="/" element={<Layout/>}>
@@ -45,17 +56,19 @@ function App() {
        <Route path="/post" element={<Post/>}/>
        
         </Route> 
-      
-     
-     </Routes>
-     
-     </BrowserRouter>
 
-
-  
+          <Route path="/" element={<LayoutAdmin />}>
+            <Route path="/dashboardadmin" element={<DashboardAdmin />} />
+            <Route path="product" element={<Products />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="transactions" element={<Transactions />} />
+          </Route>
+          <Route path="login" element={<div>this is login page</div>} />
+        </Routes>
+      </BrowserRouter>
     </>
-    
-  )
+  );
 }
 
 export default App;
