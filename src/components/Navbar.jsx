@@ -55,7 +55,7 @@ const Navbar = () => {
                 </div>
 
                 <div className="block bg md:hidden">
-                  <button onClick={toggleMenu} className="rounded animate-bounce bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
+                  <button onClick={toggleMenu} className="rounded  bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
                     <CiMenuBurger />
                   </button>
                 </div>

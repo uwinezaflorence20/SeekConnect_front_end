@@ -22,7 +22,7 @@ const Signup = () => {
   };
 
   const isValidPassword = (password) => {
-    // Add your password validation logic here
+   
     return password.length >= 8;
   };
 
@@ -79,7 +79,7 @@ const Signup = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!isValid()) {
-      return; // If the form is not valid, don't proceed with the signup
+      return; 
     }
     try {
       const response = await axios.post(

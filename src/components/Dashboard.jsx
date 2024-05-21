@@ -1,7 +1,19 @@
 import React from "react";
 import Otherpart from "./shared/Otherpart";
 import { IoIosAdd } from "react-icons/io";
+
+import  { useState } from 'react';
+import Post from './Post';
 export default function Dashboard() {
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+  const handleDropdownChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleButtonClick = () => {
+    setShowNotificationSettings(!showNotificationSettings);
+  };
   return (
     <div className="  w-[1000px] p-3 flex  gap-10 mx-20  ">
       <div>
@@ -9,10 +21,19 @@ export default function Dashboard() {
         <button className="bg-[#8a9de9] w-12 h-8  text-white rounded-sm ">lost</button>
         <button>found</button>
       </div>
-      <div className=" bg-[#8a9de9] flex h-20 items-center justify-center  text-white">
-        <IoIosAdd className=" " />
-        <p className="text-center my-4"> Report a lost item</p>
+      
+       <div className="App">
+      <div className="bg-[#8a9de9] flex h-20 items-center justify-center text-white">
+        <IoIosAdd />
+        <button 
+          onClick={handleButtonClick }
+          className="text-center my-4"
+        >
+          Report a lost item
+        </button>
       </div>
+      {showNotificationSettings && <Post />}
+    </div>
       
         <div className=" shadow-md p-4  space-x-4">
           <input
@@ -23,7 +44,14 @@ export default function Dashboard() {
       </div>
       <div className=" text-white   mb-6">
       <div className="flex items-center space-x-4">
-          <input type="text" placeholder="Filter by name, category or location" className=" p-2  bg-gray-100 w-full w-80"/>
+          {/* <input type="text" placeholder="Filter by name, category or location" className=" p-2  bg-gray-100 w-full "/> */}
+          <select name="" id="" className="text-gray-400 w-full p-2  bg-gray-100">  
+            <option value="">Filter by category</option>
+            <option value="">Phone</option>
+            <option value="">Identification card</option>
+            <option value="">person</option>
+            <option value="">Document</option>
+          </select>
         </div>
       </div>
       <div className="p-6">

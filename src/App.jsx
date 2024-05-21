@@ -16,6 +16,7 @@ import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Product from "./components/Product";
 import Otherpart from "./components/shared/Otherpart";
+import Post from "./components/Post";
 
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
        <Route path='/dash' element={<Dashboard/>}/>
        <Route path="/products"  element={<Product/>}/>
        <Route path="/other" element={<Otherpart/>}/>
+       <Route path="/post" element={<Post/>}/>
+       
         </Route> 
       
      

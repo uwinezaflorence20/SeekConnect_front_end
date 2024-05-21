@@ -12,7 +12,7 @@ const OTPVerification = () => {
         "https://seekconnect-backend-1.onrender.com/otp-verify",
         { otp }
       );
-      console.log("response.data", response.data);
+      console.log("response.data", response.data); 
       navigate("/signin");
     } catch (error) {
       console.log(error);

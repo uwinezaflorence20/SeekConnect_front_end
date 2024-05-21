@@ -43,7 +43,7 @@ const Home = () => {
         initial={{opacity:0,x:-100}}
         animate={{opacity:1,x:0}}
         transition={{duration:1 , delay:0.5}} 
-        href="#" class="mt-8 inline-block rounded animate-bounce  bg-[#8a9de9] px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400">
+        href="#" class="mt-8 inline-block rounded   bg-[#8a9de9] px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400">
           Sign up now , its free
         </motion.a>
         </Link> 
