@@ -42,10 +42,10 @@ export default function Dashboard() {
             className=" flex justify-center items-center p-2 w-full"
           />
       </div>
-      <div className=" text-white   mb-6">
+      <div className=" text-black mb-6">
       <div className="flex items-center space-x-4">
           {/* <input type="text" placeholder="Filter by name, category or location" className=" p-2  bg-gray-100 w-full "/> */}
-          <select name="" id="" className="text-gray-400 w-full p-2  bg-gray-100">  
+          <select name="" id="" className="text-black w-full p-2  bg-gray-100">  
             <option value="">Filter by category</option>
             <option value="">Phone</option>
             <option value="">Identification card</option>
@@ -58,7 +58,7 @@ export default function Dashboard() {
         <div className="bg-white  p-4 shadow-md ">
           <div className="flex items-center space-x-4">
             <div>
-            <p className="bg-gray-200  w-48 h-48"><img src="/gloria.jpg" alt="" className="w-48 h-48" /></p>
+            <p className="bg-black  w-48 h-48"><img src="/gloria.jpg" alt="" className="w-48 h-48" /></p>
             </div>
             <div className="mb-20">
               <p className="font-bold text-3xl mb text-[#8a9de9]">Gina Pineiro</p>

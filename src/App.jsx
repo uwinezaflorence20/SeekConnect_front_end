@@ -26,7 +26,7 @@ import Orders from "./Admin/Orders";
 import Customers from "./Admin/Customers";
 import Transactions from "./Admin/Transactions";
 
-import Post from "./components/Post";
+
 
 
 
