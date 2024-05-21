@@ -16,6 +16,7 @@ import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import Product from "./components/Product";
 import Otherpart from "./components/shared/Otherpart";
+import Post from "./components/Post";
 
 
 import LayoutAdmin from "./Admin/sharedAdmin/LayoutAdmin";
