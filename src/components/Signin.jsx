@@ -8,6 +8,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginError, setLoginError] = useState(""); // State for login error message
+  const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
 
   // Function to validate email format
@@ -19,6 +20,8 @@ const Signin = () => {
   // Function to validate form inputs
   const isValid = () => {
     let valid = true;
+    setEmailError("");
+    setPasswordError("");
 
     if (!email.trim()) {
       setEmailError("Email is required");
@@ -26,15 +29,11 @@ const Signin = () => {
     } else if (!isValidEmail(email)) {
       setEmailError("Email is invalid");
       valid = false;
-    } else {
-      setEmailError("");
     }
 
     if (!password.trim()) {
       setPasswordError("Password is required");
       valid = false;
-    } else {
-      setPasswordError("");
     }
 
     return valid;
@@ -69,10 +68,17 @@ const Signin = () => {
 
       // Navigate based on role and pass the email and name as state
       if (role === "user") {
+        navigate("/dash", { state: { name, email } });
+      } else if (role === "admin") {
         navigate("/dashboardadmin", { state: { name, email } });
       } else {
-        navigate("/dash", { state: { name, email } });
+        console.log("You're not registered. Please sign up first.");
       }
+
+      // Store response data
+      const { role: _, ...data } = response.data; // Exclude role from response data
+      setResponseData(data);
+
     } catch (error) {
       // Handle login errors
       if (error.response && error.response.status === 401) {
@@ -95,7 +101,7 @@ const Signin = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label htmlFor="email" className="block mr-80 text-gray-700 font-medium">
+            <label htmlFor="email" className="block text-gray-700 font-medium">
               Email
             </label>
             <input
@@ -109,11 +115,11 @@ const Signin = () => {
               }`}
             />
             {emailError && (
-              <p className="text-red-500 mr-80 text-sm mt-1">{emailError}</p>
+              <p className="text-red-500 text-sm mt-1">{emailError}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 mr-80 font-medium">
+            <label htmlFor="password" className="block text-gray-700 font-medium">
               Password
             </label>
             <input
@@ -127,7 +133,7 @@ const Signin = () => {
               }`}
             />
             {passwordError && (
-              <p className="text-red-500 mr-60 text-sm mt-1">{passwordError}</p>
+              <p className="text-red-500 text-sm mt-1">{passwordError}</p>
             )}
           </div>
           {loginError && (
@@ -141,18 +147,24 @@ const Signin = () => {
               Sign in to get started
             </button>
           </div>
-          <p className="text-center mr-60 text-sm mt-6">
+          <p className="text-center text-sm mt-6">
             Don't have an account?{" "}
             <Link to="/signup" className="font-medium text-[#8a9de9] hover:text-indigo-500">
               Register
             </Link>
           </p>
-          <p className="text-center ml-60 text-sm mb-8">
+          <p className="text-center text-sm mb-8">
             <Link to="/resetpassword" className="font-medium text-[#8a9de9] hover:text-indigo-500">
               Forgot your password?
             </Link>
           </p>
         </form>
+        {responseData && (
+          <div className="mt-6 p-4 bg-gray-100 rounded-md">
+            <h3 className="text-lg font-medium">Response Data:</h3>
+            <pre className="mt-2 text-sm">{JSON.stringify(responseData, null, 2)}</pre>
+          </div>
+        )}
       </div>
     </div>
   );

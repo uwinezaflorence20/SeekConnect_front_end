@@ -29,7 +29,7 @@ export default function Dashboard() {
           onClick={handleButtonClick }
           className="text-center my-4"
         >
-          Report a lost item
+          <a href="/reportform">Report a lost item</a>
         </button>
       </div>
       {showNotificationSettings && <Post />}
