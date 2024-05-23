@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { getOrderStatus } from "../lib/utils";
@@ -15,7 +14,7 @@ const recentOrderData = [
     shipment_address: "Cottage Grove, OR 97424",
   },
   {
-    id: "7",
+    id: "2",
     product_id: "7453",
     customer_id: "96453",
     customer_name: "Ryan Carroll",
@@ -25,7 +24,7 @@ const recentOrderData = [
     shipment_address: "Los Angeles, CA 90017",
   },
   {
-    id: "2",
+    id: "3",
     product_id: "5434",
     customer_id: "65345",
     customer_name: "Mason Nash",
@@ -35,7 +34,7 @@ const recentOrderData = [
     shipment_address: "Westminster, CA 92683",
   },
   {
-    id: "3",
+    id: "4",
     product_id: "9854",
     customer_id: "87832",
     customer_name: "Luke Parkin",
@@ -45,7 +44,7 @@ const recentOrderData = [
     shipment_address: "San Mateo, CA 94403",
   },
   {
-    id: "4",
+    id: "5",
     product_id: "8763",
     customer_id: "09832",
     customer_name: "Anthony Fry",
@@ -55,7 +54,7 @@ const recentOrderData = [
     shipment_address: "San Mateo, CA 94403",
   },
   {
-    id: "5",
+    id: "6",
     product_id: "5627",
     customer_id: "97632",
     customer_name: "Ryan Carroll",

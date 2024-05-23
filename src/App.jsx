@@ -17,6 +17,7 @@ import Layout from "./components/Layout";
 import Product from "./components/Product";
 import Otherpart from "./components/shared/Otherpart";
 import Post from "./components/Post";
+import ReportForm from "./components/ReportForm";
 
 
 import LayoutAdmin from "./Admin/sharedAdmin/LayoutAdmin";
@@ -25,44 +26,43 @@ import Products from "./Admin/Products";
 import Orders from "./Admin/Orders";
 import Customers from "./Admin/Customers";
 import Transactions from "./Admin/Transactions";
-
-
+import Messages from "./Admin/Messages";
 
 
 
 function App() {
   return (
     <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/resetpassword" element={<ResetPasswordPage />} />
+            <Route path="/Video" element={<Videopart />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/feature" element={<Features />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/otp-verify" element={<OTPVerification />} />
+          </Route>
 
-     <BrowserRouter>
-     <Routes>
-      <Route path="/" element={<Layout/>}>
-         <Route index element={<Home/>}/>
-         <Route path="/about" element={<AboutPage />}/> 
-         <Route path="/signin" element={<Signin />}/> 
-         <Route path="/signup" element={<Signup />}/> 
-         <Route path="/resetpassword" element={<ResetPasswordPage />}/> 
-         <Route path="/Video" element={<Videopart/>}/>
-         <Route path="/contact" element={<Contact/>}/>
-         <Route path="/feature" element={<Features/>}/>
-         <Route path="/team" element={<Team/>}/>
-         <Route path="/otp-verify" element={<OTPVerification />} />
-      </Route>
-      
-      <Route path="/" element={<Layoutwo/>}>
-       <Route path='/dash' element={<Dashboard/>}/>
-       <Route path="/products"  element={<Product/>}/>
-       <Route path="/other" element={<Otherpart/>}/>
-       <Route path="/post" element={<Post/>}/>
-       
-        </Route> 
+          <Route path="/" element={<Layoutwo />}>
+            <Route path="/dash" element={<Dashboard />} />
+            <Route path="/products" element={<Product />} />
+            <Route path="/other" element={<Otherpart />} />
+            <Route path="/post" element={<Post />} />
+            <Route path="/reportform" element={<ReportForm />} />
+          </Route>
 
           <Route path="/" element={<LayoutAdmin />}>
-            <Route path="/dashboardadmin" element={<DashboardAdmin />} />
+            <Route path="dashboardadmin" element={<DashboardAdmin />} />
             <Route path="product" element={<Products />} />
             <Route path="orders" element={<Orders />} />
             <Route path="customers" element={<Customers />} />
             <Route path="transactions" element={<Transactions />} />
+            <Route path="messages" element={<Messages />} />
           </Route>
           <Route path="login" element={<div>this is login page</div>} />
         </Routes>
