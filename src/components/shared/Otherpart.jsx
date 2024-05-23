@@ -2,6 +2,7 @@ import React from 'react'
 import { GoArrowRight } from "react-icons/go";
 import { useLocation } from 'react-router-dom';
 import { FaRegCircleUser } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
 
 const Otherpart = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const Otherpart = () => {
           <div>
             <p className="text-sm ml-4">Hi, {name}</p>
             <p className="text-sm ml-4 font-thin">{email}</p>
-            <button className="bg-[#8a9de9] ml-4 text-white px-1 py-1 rounded-lg">Logout</button>
+           <Link to="/"> <button className="bg-[#8a9de9] ml-4 text-white px-1 py-1 rounded-lg">Logout</button></Link>
           </div>
         </div>
         <div className="mt-10 w-60 p-8 bg-[#8a9de9]">
