@@ -15,9 +15,9 @@ export default function Dashboard() {
     setShowNotificationSettings(!showNotificationSettings);
   };
   return (
-    <div className="  w-[1000px] p-3 flex  gap-10 mx-20  ">
+    <div className="  w-[]  flex  gap-2 mx-20  ">
       <div>
-      <div className="flex  ml-80 m-4 gap-4">
+      <div className="flex  ml-80 m-4 gap-72  w-96">
         <button className="bg-[#8a9de9] w-12 h-8  text-white rounded-sm ">lost</button>
         <button>found</button>
       </div>
@@ -54,9 +54,9 @@ export default function Dashboard() {
           </select>
         </div>
       </div>
-      <div className="p-6">
-        <div className="bg-white  p-4 shadow-md ">
-          <div className="flex items-center space-x-4">
+      <div className="p-6 ">
+        <div className="bg-white   p-4 shadow-md ">
+          <div className="flex items-center w-full min-w-96 space-x-4">
             <div>
             <p className="bg-black  w-48 h-48"><img src="/gloria.jpg" alt="" className="w-48 h-48" /></p>
             </div>
@@ -70,42 +70,11 @@ export default function Dashboard() {
           </div>
         </div>
         </div>
-        <div className="p-6">
-        <div className="bg-white  p-4 shadow-md ">
-          <div className="flex items-center space-x-4">
-            <div>
-            <p className="bg-gray-200  w-48 h-48"><img src="/gloria.jpg" alt="" className="w-48 h-48" /></p>
-            </div>
-            <div className="mb-20">
-              <p className="font-bold text-3xl mb text-[#8a9de9]">Gina Pineiro</p>
-              <p className="text-gray-500 font-thin italic">Last seen 10-Jan-1982</p>
-              <p className="text-gray-500"> <span className="bg-gray-200 rounded rouded-lg"> Accent</span> : <span className="text-black font-extrabold">Oregon</span></p>
-              <p className="text-gray-500"> <span className="bg-gray-200 rounded rouded-lg"> Country origin</span> : <span className="text-black font-extrabold">Rwanda</span></p>
-              <p className="text-gray-500"> <span className="bg-gray-200 rounded rouded-lg"> Eye colored</span> : <span className="text-black font-extrabold">Brown</span></p>
-            </div>
-          </div>
-        </div>
-        </div>
-        <div className="p-6">
-        <div className="bg-white  p-4 shadow-md ">
-          <div className="flex items-center space-x-4">
-            <div>
-            <p className="bg-gray-200  w-48 h-48"><img src="/gloria.jpg" alt="" className="w-48 h-48" /></p>
-            </div>
-            <div className="mb-20">
-              <p className="font-bold text-3xl mb text-[#8a9de9]">Gina Pineiro</p>
-              <p className="text-gray-500 font-thin italic">Last seen 10-Jan-1982</p>
-              <p className="text-gray-500"> <span className="bg-gray-200 rounded rouded-lg"> Accent</span> : <span className="text-black font-extrabold">Oregon</span></p>
-              <p className="text-gray-500"> <span className="bg-gray-200 rounded rouded-lg"> Country origin</span> : <span className="text-black font-extrabold">Rwanda</span></p>
-              <p className="text-gray-500"> <span className="bg-gray-200 rounded rouded-lg"> Eye colored</span> : <span className="text-black font-extrabold">Brown</span></p>
-            </div>
-          </div>
-        </div>
-        </div>
+        
+        
+       
       </div>
-      <div className="">
-          <Otherpart/>
-        </div>
+     
     </div>
   );
 }

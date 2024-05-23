@@ -4,16 +4,16 @@ import Sidebar from './Sidebar'
 import Otherpart from './Otherpart'
 export default function Layoutwo() {
   return (
-    <div className="flex flex-row m-12 bg-white h-screen w-screen ">
+    <div className="flex flex-row  bg-white h-screen w-screen ">
       
       <Sidebar/>
        
-      <div className='p-4'>
+      <div className=''>
       <div></div>
       <div className=''>{<Outlet/>}</div>
      
       </div>
-    
+    <Otherpart/>
     </div>
   )
 }

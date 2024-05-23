@@ -25,7 +25,7 @@ const Post = () => {
           <div
             className={`bg-white w-4 h-4 rounded-full shadow-md transform transition duration-300 ${
               notificationsEnabled ? 'translate-x-6' : ''
-            }`}
+            }`}n
           ></div>
         </button>
         <span className="text-gray-600">Notifications</span>
@@ -40,7 +40,7 @@ const Post = () => {
         <option value="None"> identification card</option>
         <option value="None">Person</option>
         <option value="None">Document</option>
-        {/* Add more options as needed */}
+       
       </select>
     </div>
   );
