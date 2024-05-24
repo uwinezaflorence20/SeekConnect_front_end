@@ -7,17 +7,16 @@ const Signin = () => {
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [loginError, setLoginError] = useState(""); // State for login error message
+  const [loginError, setLoginError] = useState("");
+  const [loading, setLoading] = useState(false); // State for loading status
   const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
 
-  // Function to validate email format
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Function to validate form inputs
   const isValid = () => {
     let valid = true;
     setEmailError("");
@@ -39,17 +38,16 @@ const Signin = () => {
     return valid;
   };
 
-  // Function to handle login
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validate form inputs
     if (!isValid()) {
       return;
     }
 
+    setLoading(true); // Set loading to true when the login process starts
+
     try {
-      // Make login request
       const response = await axios.post(
         "https://seekconnect-backend-1.onrender.com/login",
         {
@@ -63,10 +61,8 @@ const Signin = () => {
         }
       );
 
-      // Extract role from response
       const { role, name } = response.data;
 
-      // Navigate based on role and pass the email and name as state
       if (role === "user") {
         navigate("/dash", { state: { name, email } });
       } else if (role === "admin") {
@@ -75,18 +71,18 @@ const Signin = () => {
         console.log("You're not registered. Please sign up first.");
       }
 
-      // Store response data
-      const { role: _, ...data } = response.data; // Exclude role from response data
+      const { role: _, ...data } = response.data;
       setResponseData(data);
 
     } catch (error) {
-      // Handle login errors
       if (error.response && error.response.status === 401) {
         setLoginError("Invalid email or password");
       } else {
         setLoginError("An error occurred. Please try again later.");
       }
       console.error(error);
+    } finally {
+      setLoading(false); // Set loading to false when the login process is complete
     }
   };
 
@@ -143,8 +139,9 @@ const Signin = () => {
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={loading} // Disable button while loading
             >
-              Sign in to get started
+              {loading ? "Loading..." : "Sign in to get started"} {/* Show loading text while loading */}
             </button>
           </div>
           <p className="text-center text-sm mt-6">

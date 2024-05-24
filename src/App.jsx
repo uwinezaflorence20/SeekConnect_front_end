@@ -27,6 +27,7 @@ import Orders from "./Admin/Orders";
 import Customers from "./Admin/Customers";
 import Transactions from "./Admin/Transactions";
 import Messages from "./Admin/Messages";
+import LostForm from "./components/LostForm";
 
 
 
@@ -54,7 +55,9 @@ function App() {
             <Route path="/other" element={<Otherpart />} />
             <Route path="/post" element={<Post />} />
             <Route path="/reportform" element={<ReportForm />} />
+            <Route path="/lostform" element={<LostForm/>}/>
           </Route>
+          
 
           <Route path="/" element={<LayoutAdmin />}>
             <Route path="dashboardadmin" element={<DashboardAdmin />} />
@@ -64,7 +67,7 @@ function App() {
             <Route path="transactions" element={<Transactions />} />
             <Route path="messages" element={<Messages />} />
           </Route>
-          <Route path="login" element={<div>this is login page</div>} />
+           <Route path="login" element={<div>this is login page</div>} /> 
         </Routes>
       </BrowserRouter>
     </>

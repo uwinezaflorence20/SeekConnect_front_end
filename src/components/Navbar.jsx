@@ -65,7 +65,7 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* Dropdown Menu */}
+    
       {showMenu && (
         <div className="md:hidden absolute top-16 left-0 right-0 bg-white border border-gray-200 rounded shadow">
           <ul className="py-2">
@@ -84,14 +84,14 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink>
+              <NavLink to="/features">
                 <a className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={toggleMenu} href="#">
                   Features
                 </a>
               </NavLink>
             </li>
             <li>
-              <NavLink>
+              <NavLink to="/contact">
                 <a className="block px-4 py-2 text-gray-800 hover:bg-gray-100" onClick={toggleMenu} href="#">
                   Contact
                 </a>

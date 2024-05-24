@@ -14,6 +14,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
   const navigate = useNavigate();
 
   const isValidEmail = (email) => {
@@ -22,7 +23,6 @@ const Signup = () => {
   };
 
   const isValidPassword = (password) => {
-   
     return password.length >= 8;
   };
 
@@ -79,8 +79,10 @@ const Signup = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!isValid()) {
-      return; 
+      return;
     }
+    setIsLoading(true); // Start loading
+
     try {
       const response = await axios.post(
         "https://seekconnect-backend-1.onrender.com/signUp",
@@ -96,6 +98,8 @@ const Signup = () => {
       navigate('/otp-verify');
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -186,8 +190,9 @@ const Signup = () => {
               type="submit"
               onClick={handleSignUp}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isLoading} // Disable button when loading
             >
-              Register
+              {isLoading ? "Loading..." : "Register"}
             </button>
           </div>
           <div className="flex">
