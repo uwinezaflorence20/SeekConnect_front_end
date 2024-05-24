@@ -1,25 +1,26 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-const ReportForm = () => {
+const FormComponent = () => {
   const [formData, setFormData] = useState({
     file: null,
-    userId: "",
-    firstName: "",
-    lastName: "",
-    race: "",
-    countryOfOrigin: "",
-    age: "",
-    lostDate: "",
-    lostPlace: {
-      country: "",
-      province: "",
-      district: "",
-      sector: "",
-      cell: "",
-      village: "",
+    UserId: "",
+    FirstName: "",
+    LastName: "",
+    Race: "",
+    CountryOfOrigin: "",
+    Age: "",
+    LostDate: "",
+    LostPlace: {
+      Country: "",
+      Province: "",
+      District: "",
+      Sector: "",
+      Cell: "",
+      Village: "",
     },
-    comment: "",
-    found: false,
+    Comment: "",
+    Found: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -72,72 +73,72 @@ const ReportForm = () => {
       valid = false;
     }
 
-    if (!formData.userId.trim()) {
+    if (!formData.UserId.trim()) {
       newErrors.userId = "User ID is required";
       valid = false;
     }
 
-    if (!formData.firstName.trim()) {
+    if (!formData.FirstName.trim()) {
       newErrors.firstName = "First name is required";
       valid = false;
     }
 
-    if (!formData.lastName.trim()) {
+    if (!formData.LastName.trim()) {
       newErrors.lastName = "Last name is required";
       valid = false;
     }
 
-    if (!formData.race.trim()) {
+    if (!formData.Race.trim()) {
       newErrors.race = "Race is required";
       valid = false;
     }
 
-    if (!formData.countryOfOrigin.trim()) {
+    if (!formData.CountryOfOrigin.trim()) {
       newErrors.countryOfOrigin = "Country of origin is required";
       valid = false;
     }
 
-    if (!formData.age) {
+    if (!formData.Age) {
       newErrors.age = "Age is required";
       valid = false;
     }
 
-    if (!formData.lostDate.trim()) {
+    if (!formData.LostDate.trim()) {
       newErrors.lostDate = "Lost date is required";
       valid = false;
     }
 
-    if (!formData.lostPlace.country.trim()) {
+    if (!formData.LostPlace.Country.trim()) {
       newErrors["lostPlace.country"] =
         "Country where the person was last seen is required";
       valid = false;
     }
 
-    if (!formData.lostPlace.province.trim()) {
+    if (!formData.LostPlace.Province.trim()) {
       newErrors["lostPlace.province"] =
         "Province where the person was last seen is required";
       valid = false;
     }
 
-    if (!formData.lostPlace.district.trim()) {
+    if (!formData.LostPlace.District.trim()) {
       newErrors["lostPlace.district"] =
         "District where the person was last seen is required";
       valid = false;
     }
 
-    if (!formData.lostPlace.sector.trim()) {
+    if (!formData.LostPlace.Sector.trim()) {
       newErrors["lostPlace.sector"] =
         "Sector where the person was last seen is required";
       valid = false;
     }
 
-    if (!formData.lostPlace.cell.trim()) {
+    if (!formData.LostPlace.Cell.trim()) {
       newErrors["lostPlace.cell"] =
         "Cell where the person was last seen is required";
       valid = false;
     }
 
-    if (!formData.lostPlace.village.trim()) {
+    if (!formData.LostPlace.Village.trim()) {
       newErrors["lostPlace.village"] =
         "Village where the person was last seen is required";
       valid = false;
@@ -156,58 +157,74 @@ const ReportForm = () => {
 
     const data = new FormData();
     data.append("file", formData.file);
-    data.append("userId", formData.userId);
-    data.append("firstName", formData.firstName);
-    data.append("lastName", formData.lastName);
-    data.append("race", formData.race);
-    data.append("countryOfOrigin", formData.countryOfOrigin);
-    data.append("age", formData.age);
-    data.append("lostDate", formData.lostDate);
-    data.append("lostPlace.country", formData.lostPlace.country);
-    data.append("lostPlace.province", formData.lostPlace.province);
-    data.append("lostPlace.district", formData.lostPlace.district);
-    data.append("lostPlace.sector", formData.lostPlace.sector);
-    data.append("lostPlace.cell", formData.lostPlace.cell);
-    data.append("lostPlace.village", formData.lostPlace.village);
-    data.append("comment", formData.comment);
-    data.append("found", formData.found);
+    data.append("UserId", formData.UserId);
+    data.append("FirstName", formData.FirstName);
+    data.append("LastName", formData.LastName);
+    data.append("Race", formData.Race);
+    data.append("CountryOfOrigin", formData.CountryOfOrigin);
+    data.append("Age", formData.Age);
+    data.append("LostDate", formData.LostDate);
+    data.append("LostPlace.Country", formData.LostPlace.Country);
+    data.append("LostPlace.Province", formData.LostPlace.Province);
+    data.append("LostPlace.District", formData.LostPlace.District);
+    data.append("LostPlace.Sector", formData.LostPlace.Sector);
+    data.append("LostPlace.Cell", formData.LostPlace.Cell);
+    data.append("LostPlace.Village", formData.LostPlace.Village);
+    data.append("Comment", formData.Comment);
+    data.append("Found", formData.Found);
+
+    console.log(data)
+
+    // const dataper =  {
+    //     Country: formData.Country,
+    //     Province: formData.Province,
+    //     District: formData.District,
+    //     Sector: formData.Sector,
+    //     Cell: formData.Cell,
+    //     Village: formData.Village,
+    //   },
+    // };
 
     try {
-      const response = await fetch(
+      const response = await  axios.post(
         "https://seekconnect-backend-1.onrender.com/missingPerson",
-        {
-          method: "POST",
-          body: data,
-        }
+        data
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
-
-      const result = await response.json();
-      console.log("Form submitted successfully:", result);
-      // Handle success, e.g., reset form, show success message, etc.
+      console.log("Form data submitted:", response.data);
+      // Reset the form on successful submission
+      setFormData({
+        file: null,
+        UserId: "",
+        FirstName: "",
+        LastName: "",
+        Race: "",
+        CountryOfOrigin: "",
+        Age: "",
+        LostDate: "",
+        LostPlace: {
+          Country: "",
+          Province: "",
+          District: "",
+          Sector: "",
+          Cell: "",
+          Village: "",
+        },
+        Comment: "",
+        Found: false,
+      });
+      setErrors({});
     } catch (error) {
-      console.error("Error submitting form:", error);
-      // Handle error, e.g., show error message, etc.
+      console.error("There was an error submitting the form:", error);
     }
   };
 
   return (
     <div className="min-h-screen mt-20 flex items-center justify-center bg-gray-100">
-      <button
-        onClick={onClose}
-        className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-      >
-        &times;
-      </button>
       <div className="max-w-lg w-full mb-40 p-6 rounded-md bg-white shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">
           Add Missing Person Report
         </h2>
-        <form onSubmit={handleSubmit}>
-          {/* Form fields */}
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="mb-4">
             <label htmlFor="file" className="block text-gray-700 font-medium">
               Photo
@@ -216,6 +233,7 @@ const ReportForm = () => {
               type="file"
               id="file"
               name="file"
+              multiple
               onChange={handleFileChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.file ? "border-red-500" : ""
@@ -232,8 +250,8 @@ const ReportForm = () => {
             <input
               type="text"
               id="userId"
-              name="userId"
-              value={formData.userId}
+              name="UserId"
+              value={formData.UserId}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.userId ? "border-red-500" : ""
@@ -253,8 +271,8 @@ const ReportForm = () => {
             <input
               type="text"
               id="firstName"
-              name="firstName"
-              value={formData.firstName}
+              name="FirstName"
+              value={formData.FirstName}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.firstName ? "border-red-500" : ""
@@ -274,8 +292,8 @@ const ReportForm = () => {
             <input
               type="text"
               id="lastName"
-              name="lastName"
-              value={formData.lastName}
+              name="LastName"
+              value={formData.LastName}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.lastName ? "border-red-500" : ""
@@ -292,8 +310,8 @@ const ReportForm = () => {
             <input
               type="text"
               id="race"
-              name="race"
-              value={formData.race}
+              name="Race"
+              value={formData.Race}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.race ? "border-red-500" : ""
@@ -313,8 +331,8 @@ const ReportForm = () => {
             <input
               type="text"
               id="countryOfOrigin"
-              name="countryOfOrigin"
-              value={formData.countryOfOrigin}
+              name="CountryOfOrigin"
+              value={formData.CountryOfOrigin}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.countryOfOrigin ? "border-red-500" : ""
@@ -333,8 +351,8 @@ const ReportForm = () => {
             <input
               type="number"
               id="age"
-              name="age"
-              value={formData.age}
+              name="Age"
+              value={formData.Age}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.age ? "border-red-500" : ""
@@ -349,13 +367,13 @@ const ReportForm = () => {
               htmlFor="lostDate"
               className="block text-gray-700 font-medium"
             >
-              Lost Date
+              Date when the Person was Lost
             </label>
             <input
               type="date"
               id="lostDate"
-              name="lostDate"
-              value={formData.lostDate}
+              name="LostDate"
+              value={formData.LostDate}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.lostDate ? "border-red-500" : ""
@@ -370,13 +388,13 @@ const ReportForm = () => {
               htmlFor="lostPlace.country"
               className="block text-gray-700 font-medium"
             >
-              Country where the person was last seen
+              Country where the Person was Last Seen
             </label>
             <input
               type="text"
               id="lostPlace.country"
-              name="lostPlace.country"
-              value={formData.lostPlace.country}
+              name="LostPlace.Country"
+              value={formData.LostPlace.Country}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors["lostPlace.country"] ? "border-red-500" : ""
@@ -393,13 +411,13 @@ const ReportForm = () => {
               htmlFor="lostPlace.province"
               className="block text-gray-700 font-medium"
             >
-              Province where the person was last seen
+              Province where the Person was Last Seen
             </label>
             <input
               type="text"
               id="lostPlace.province"
-              name="lostPlace.province"
-              value={formData.lostPlace.province}
+              name="LostPlace.Province"
+              value={formData.LostPlace.Province}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors["lostPlace.province"] ? "border-red-500" : ""
@@ -416,13 +434,13 @@ const ReportForm = () => {
               htmlFor="lostPlace.district"
               className="block text-gray-700 font-medium"
             >
-              District where the person was last seen
+              District where the Person was Last Seen
             </label>
             <input
               type="text"
               id="lostPlace.district"
-              name="lostPlace.district"
-              value={formData.lostPlace.district}
+              name="LostPlace.District"
+              value={formData.LostPlace.District}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors["lostPlace.district"] ? "border-red-500" : ""
@@ -439,13 +457,13 @@ const ReportForm = () => {
               htmlFor="lostPlace.sector"
               className="block text-gray-700 font-medium"
             >
-              Sector where the person was last seen
+              Sector where the Person was Last Seen
             </label>
             <input
               type="text"
               id="lostPlace.sector"
-              name="lostPlace.sector"
-              value={formData.lostPlace.sector}
+              name="LostPlace.Sector"
+              value={formData.LostPlace.Sector}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors["lostPlace.sector"] ? "border-red-500" : ""
@@ -462,13 +480,13 @@ const ReportForm = () => {
               htmlFor="lostPlace.cell"
               className="block text-gray-700 font-medium"
             >
-              Cell where the person was last seen
+              Cell where the Person was Last Seen
             </label>
             <input
               type="text"
               id="lostPlace.cell"
-              name="lostPlace.cell"
-              value={formData.lostPlace.cell}
+              name="LostPlace.Cell"
+              value={formData.LostPlace.Cell}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors["lostPlace.cell"] ? "border-red-500" : ""
@@ -485,13 +503,13 @@ const ReportForm = () => {
               htmlFor="lostPlace.village"
               className="block text-gray-700 font-medium"
             >
-              Village where the person was last seen
+              Village where the Person was Last Seen
             </label>
             <input
               type="text"
               id="lostPlace.village"
-              name="lostPlace.village"
-              value={formData.lostPlace.village}
+              name="LostPlace.Village"
+              value={formData.LostPlace.Village}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors["lostPlace.village"] ? "border-red-500" : ""
@@ -512,43 +530,37 @@ const ReportForm = () => {
             </label>
             <textarea
               id="comment"
-              name="comment"
-              value={formData.comment}
+              name="Comment"
+              value={formData.Comment}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.comment ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
-            {errors.comment && (
-              <p className="text-red-500 text-sm mt-1">{errors.comment}</p>
-            )}
           </div>
-          <div className="mb-4 flex items-center">
+          <div className="mb-4">
+            <label htmlFor="found" className="block text-gray-700 font-medium">
+              Found
+            </label>
             <input
               type="checkbox"
               id="found"
-              name="found"
-              checked={formData.found}
+              name="Found"
+              checked={formData.Found}
               onChange={handleChange}
-              className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              className="mt-1 p-2"
             />
-            <label htmlFor="found" className="ml-2 text-gray-700 font-medium">
-              Found
-            </label>
           </div>
-         
-
-          <button
-            type="submit"
-            className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Submit
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
-};
+ };
 
-export default ReportForm;
-
+ export default FormComponent;
