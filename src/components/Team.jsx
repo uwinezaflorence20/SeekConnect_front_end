@@ -30,7 +30,7 @@ const Team = () => {
               <div class="flex items-center gap-4">
                 <img
                   alt=""
-                  src="/gloria.jpg"
+                  src="/depha1.jpg"
                   class="size-14 rounded-full w-40 h-40 md:ml-8 mb-8 sm:ml-48 object-cover"
                 />
               </div>
@@ -50,7 +50,7 @@ const Team = () => {
               <div class="flex items-center gap-4">
                 <img
                   alt=""
-                  src="/gloria.jpg"
+                  src="/rose.jpg"
                   class="size-14 rounded-full w-40 h-40 md:ml-8 mb-8 sm:ml-48 object-cover"
                 />
               </div>
