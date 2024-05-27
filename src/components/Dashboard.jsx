@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Otherpart from "./shared/Otherpart";
 import { IoIosAdd } from "react-icons/io";
 import Post from './Post';
+import Lostitem from "../Admin/Lostitem";
 
 export default function Dashboard() {
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [activeButton, setActiveButton] = useState(null); // State to track active button
+  const [lostDocuments, setLostDocuments] = useState([]); // State to store lost documents
 
   const handleDropdownChange = (e) => {
     setSelectedOption(e.target.value);
@@ -17,8 +19,13 @@ export default function Dashboard() {
     setActiveButton(buttonName); // Update active button state
   };
 
+  const handleLostDocumentSubmit = (document) => {
+    setLostDocuments([...lostDocuments, document]);
+    setShowNotificationSettings(false); // Close the form after submission
+  };
+
   return (
-    <div className="w-full flex gap-2 mx-20">
+    <div className="w-96 flex gap-2 mx-20">
       <div>
         <div className="flex ml-80 m-4 gap-72 w-96">
           <button 
@@ -31,6 +38,7 @@ export default function Dashboard() {
             className={`bg-[#8a9de9] w-12 h-8 text-white rounded-sm ${activeButton === 'found' && 'bg-gray-300'}`} // Toggle background color
             onClick={() => handleButtonClick('found')} // Handle click event
           >
+            
             found
           </button>
         </div>
@@ -73,36 +81,11 @@ export default function Dashboard() {
             </select>
           </div>
         </div>
-
+      
         <div className="p-6">
           <div className="bg-white p-4 shadow-md">
             <div className="flex items-center w-full min-w-96 space-x-4">
-              <div>
-                <img src="/gloria.jpg" alt="" className="w-48 h-48" />
-              </div>
-              <div className="mb-20">
-                <p className="font-bold text-3xl mb text-[#8a9de9]">Gina Pineiro</p>
-                <p className="text-gray-500 font-thin italic">Last seen 10-Jan-1982</p>
-                <p className="text-gray-500"><span className="bg-gray-200 rounded-lg">Accent</span>: <span className="text-black font-extrabold">Oregon</span></p>
-                <p className="text-gray-500"><span className="bg-gray-200 rounded-lg">Country origin</span>: <span className="text-black font-extrabold">Rwanda</span></p>
-                <p className="text-gray-500"><span className="bg-gray-200 rounded-lg">Eye color</span>: <span className="text-black font-extrabold">Brown</span></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="p-6">
-          <div className="bg-white p-4 shadow-md">
-            <div className="flex items-center w-full min-w-96 space-x-4">
-              <div>
-                <img src="/gloria.jpg" alt="" className="w-48 h-48" />
-              </div>
-              <div className="mb-20">
-                <p className="font-bold text-3xl mb text-[#8a9de9]">Gina Pineiro</p>
-                <p className="text-gray-500 font-thin italic">Last seen 10-Jan-1982</p>
-                <p className="text-gray-500"><span className="bg-gray-200 rounded-lg">Accent</span>: <span className="text-black font-extrabold">Oregon</span></p>
-                <p className="text-gray-500"><span className="bg-gray-200 rounded-lg">Country origin</span>: <span className="text-black font-extrabold">Rwanda</span></p>
-                <p className="text-gray-500"><span className="bg-gray-200 rounded-lg">Eye color</span>: <span className="text-black font-extrabold">Brown</span></p>
-              </div>
+              <Lostitem/>
             </div>
           </div>
         </div>

@@ -1,65 +1,3 @@
-// // /src/components/Messages.jsx
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-
-// const Messages = () => {
-//   const [messages, setMessages] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     fetchMessages();
-//   }, []);
-
-//   const fetchMessages = async () => {
-//     try {
-//       const response = await axios.get(
-//         "https://seekconnect-backend-1.onrender.com/contactUs"
-//       ); // Adjust the URL to your API endpoint
-//       if (Array.isArray(response.data)) {
-//         setMessages(response.data);
-//       } else {
-//         throw new Error("API response is not an array");
-//       }
-//       setLoading(false);
-//     } catch (error) {
-//       setError("Error loading messages: " + error.message); // Set error message string
-//       setLoading(false);
-//     }
-//   };
-
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>{error}</p>; // Display error message as a string
-
-//   return (
-//     <div>
-//       <h2>Messages from SeekConnect</h2>
-//       <table>
-//         <thead>
-//           <tr>
-//             <th>Name</th>
-//             <th>Email</th>
-//             <th>Tel</th>
-//             <th>Message</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {messages.map((message) => (
-//             <tr key={message.id}>
-//               <td>{message.Name}</td>
-//               <td>{message.Email}</td>
-//               <td>{message.Tel}</td>
-//               <td>{message.Message}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default Messages;
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -92,25 +30,53 @@ const Messages = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  const tableStyle = {
+    width: "100%",
+    borderCollapse: "collapse",
+    fontFamily: "'Arial', sans-serif",
+  };
+
+  const thStyle = {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    padding: "10px",
+    border: "1px solid #ddd",
+    textAlign: "left",
+  };
+
+  const tdStyle = {
+    padding: "10px",
+    border: "1px solid #ddd",
+    textAlign: "left",
+  };
+
+  const trStyle = {
+    backgroundColor: "#f2f2f2",
+  };
+
+  const trHoverStyle = {
+    backgroundColor: "#ddd",
+  };
+
   return (
     <div>
       <h2>Messages from SeekConnect</h2>
-      <table>
+      <table style={tableStyle}>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Tel</th>
-            <th>Message</th>
+            <th style={thStyle}>Name</th>
+            <th style={thStyle}>Email</th>
+            <th style={thStyle}>Tel</th>
+            <th style={thStyle}>Message</th>
           </tr>
         </thead>
         <tbody>
           {messages.map((message) => (
-            <tr key={message._id}>
-              <td>{message.Name}</td>
-              <td>{message.Email}</td>
-              <td>{message.Tel}</td>
-              <td>{message.Message}</td>
+            <tr key={message._id} style={trStyle} onMouseOver={e => e.currentTarget.style.backgroundColor = trHoverStyle.backgroundColor} onMouseOut={e => e.currentTarget.style.backgroundColor = trStyle.backgroundColor}>
+              <td style={tdStyle}>{message.Name}</td>
+              <td style={tdStyle}>{message.Email}</td>
+              <td style={tdStyle}>{message.Tel}</td>
+              <td style={tdStyle}>{message.Message}</td>
             </tr>
           ))}
         </tbody>

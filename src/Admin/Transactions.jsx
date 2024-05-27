@@ -1,168 +1,90 @@
-import React, { useState } from "react";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const Table = () => {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      category: "Machine",
-      sex: "Male",
-      date: "2024-05-01",
-      place: "New York",
-    },
-  ]);
+const MissingPeopleList = () => {
+  const [missingPeople, setMissingPeople] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [newRow, setNewRow] = useState({
-    name: "",
-    category: "Machine",
-    sex: "Male",
-    date: "",
-    place: "",
-  });
+  useEffect(() => {
+    const fetchMissingPeople = async () => {
+      try {
+        const response = await axios.get(
+          "https://seekconnect-backend-1.onrender.com/missingPeople"
+        );
+        console.log("API response:", response.data);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editRowId, setEditRowId] = useState(null);
+        if (response.data && Array.isArray(response.data.people)) {
+          setMissingPeople(response.data.people);
+        } else {
+          setError("Unexpected response format");
+        }
+        setLoading(false);
+      } catch (error) {
+        setError("Error fetching data");
+        setLoading(false);
+      }
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewRow({
-      ...newRow,
-      [name]: value,
-    });
-  };
+    fetchMissingPeople();
+  }, []);
 
-  const handleAddRow = () => {
-    if (isEditing) {
-      setRows(
-        rows.map((row) =>
-          row.id === editRowId ? { ...newRow, id: editRowId } : row
-        )
-      );
-      setIsEditing(false);
-      setEditRowId(null);
-    } else {
-      setRows([...rows, { ...newRow, id: rows.length + 1 }]);
-    }
-    setNewRow({
-      name: "",
-      category: "Machine",
-      sex: "Male",
-      date: "",
-      place: "",
-    });
-  };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  const handleDeleteRow = (id) => {
-    setRows(rows.filter((row) => row.id !== id));
-  };
-
-  const handleEditRow = (row) => {
-    setNewRow(row);
-    setIsEditing(true);
-    setEditRowId(row.id);
-  };
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Items List</h2>
-      <table className="min-w-full bg-white border">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border">ID</th>
-            <th className="py-2 px-4 border">Name</th>
-            <th className="py-2 px-4 border">Category</th>
-            <th className="py-2 px-4 border">Sex</th>
-            <th className="py-2 px-4 border">Date</th>
-            <th className="py-2 px-4 border">Place</th>
-            <th className="py-2 px-4 border">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.id}>
-              <td className="py-2 px-4 border">{row.id}</td>
-              <td className="py-2 px-4 border">{row.name}</td>
-              <td className="py-2 px-4 border">{row.category}</td>
-              <td className="py-2 px-4 border">{row.sex}</td>
-              <td className="py-2 px-4 border">{row.date}</td>
-              <td className="py-2 px-4 border">{row.place}</td>
-              <td className="py-2 px-4 border">
-                <button
-                  onClick={() => handleEditRow(row)}
-                  className="text-blue-500 mr-2"
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  onClick={() => handleDeleteRow(row.id)}
-                  className="text-red-500"
-                >
-                  <FaTrash />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="mt-4">
-        <h3 className="text-xl font-bold mb-2">
-          {isEditing ? "Edit Item" : "Add New Item"}
-        </h3>
-        <div className="grid grid-cols-6 gap-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={newRow.name}
-            onChange={handleChange}
-            className="col-span-1 p-2 border rounded"
-          />
-          <select
-            name="category"
-            value={newRow.category}
-            onChange={handleChange}
-            className="col-span-1 p-2 border rounded"
-          >
-            <option value="Machine">Machine</option>
-            <option value="Telephone">Telephone</option>
-            <option value="Passport">Passport</option>
-            <option value="Person Missing">Person Missing</option>
-          </select>
-          <select
-            name="sex"
-            value={newRow.sex}
-            onChange={handleChange}
-            className="col-span-1 p-2 border rounded"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <input
-            type="date"
-            name="date"
-            value={newRow.date}
-            onChange={handleChange}
-            className="col-span-1 p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="place"
-            placeholder="Place"
-            value={newRow.place}
-            onChange={handleChange}
-            className="col-span-1 p-2 border rounded"
-          />
-          <button
-            onClick={handleAddRow}
-            className="col-span-1 p-2 bg-blue-500 text-white rounded"
-          >
-            {isEditing ? "Update" : "Add"}
-          </button>
-        </div>
+    <div className="min-h-screen mt-20 flex flex-col items-center justify-center bg-gray-100">
+      <div className="max-w-full w-full mb-40 p-4 rounded-md bg-white shadow-md overflow-x-auto">
+        <h2 className="text-2xl font-bold text-center mb-4">
+          List of Missing People
+        </h2>
+        {missingPeople.length === 0 ? (
+          <p className="text-center">No missing people found.</p>
+        ) : (
+          <table className="min-w-full bg-white text-sm">
+            <thead className="bg-green-600 ">
+              <tr>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Name</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">User ID</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Race</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Country of Origin</th>
+                <th className="py-1 px-2 text-left font-medium text-white placeholder:uppercase tracking-wider">Age</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Lost Date</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Lost Place</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Comment</th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">Found</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {missingPeople.map((person) => {
+                const lostPlace = person.LostPlace || {};
+                return (
+                  <tr key={person.id}>
+                    <td className="border px-2 py-1">{person.FirstName} {person.LastName}</td>
+                    <td className="border px-2 py-1">{person.UserId}</td>
+                    <td className="border px-2 py-1">{person.Race}</td>
+                    <td className="border px-2 py-1">{person.CountryOfOrigin}</td>
+                    <td className="border px-2 py-1">{person.Age}</td>
+                    <td className="border px-2 py-1">{person.LostDate}</td>
+                    <td className="border px-2 py-1">
+                      {`${lostPlace.Country || "N/A"}, ${lostPlace.Province || "N/A"}, ${lostPlace.District || "N/A"}, ${lostPlace.Sector || "N/A"}, ${lostPlace.Cell || "N/A"}, ${lostPlace.Village || "N/A"}`}
+                    </td>
+                    <td className="border px-2 py-1">{person.Comment}</td>
+                    <td className="border px-2 py-1">{person.Found ? "Yes" : "No"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
 };
 
-export default Table;
+export default MissingPeopleList;

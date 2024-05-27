@@ -1,116 +1,162 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { getOrderStatus } from "../lib/utils";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const recentOrderData = [
-  {
-    id: "1",
-    product_id: "4324",
-    customer_id: "23143",
-    customer_name: "Shirley A. Lape",
-    order_date: "2022-05-17T03:24:00",
-    order_total: "$435.50",
-    current_order_status: "PLACED",
-    shipment_address: "Cottage Grove, OR 97424",
-  },
-  {
-    id: "2",
-    product_id: "7453",
-    customer_id: "96453",
-    customer_name: "Ryan Carroll",
-    order_date: "2022-05-14T05:24:00",
-    order_total: "$96.35",
-    current_order_status: "CONFIRMED",
-    shipment_address: "Los Angeles, CA 90017",
-  },
-  {
-    id: "3",
-    product_id: "5434",
-    customer_id: "65345",
-    customer_name: "Mason Nash",
-    order_date: "2022-05-17T07:14:00",
-    order_total: "$836.44",
-    current_order_status: "SHIPPED",
-    shipment_address: "Westminster, CA 92683",
-  },
-  {
-    id: "4",
-    product_id: "9854",
-    customer_id: "87832",
-    customer_name: "Luke Parkin",
-    order_date: "2022-05-16T12:40:00",
-    order_total: "$334.50",
-    current_order_status: "SHIPPED",
-    shipment_address: "San Mateo, CA 94403",
-  },
-  {
-    id: "5",
-    product_id: "8763",
-    customer_id: "09832",
-    customer_name: "Anthony Fry",
-    order_date: "2022-05-14T03:24:00",
-    order_total: "$876.00",
-    current_order_status: "OUT_FOR_DELIVERY",
-    shipment_address: "San Mateo, CA 94403",
-  },
-  {
-    id: "6",
-    product_id: "5627",
-    customer_id: "97632",
-    customer_name: "Ryan Carroll",
-    order_date: "2022-05-14T05:24:00",
-    order_total: "$96.35",
-    current_order_status: "DELIVERED",
-    shipment_address: "Los Angeles, CA 90017",
-  },
-];
+const LostForm = ({ onClose }) => {
+  const [lostDocuments, setLostDocuments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-function RecentOrders() {
+  const [userId, setUserId] = useState("");
+  const [documentType, setDocumentType] = useState("Drivers License");
+  const [nameOnDocument, setNameOnDocument] = useState("");
+  const [placeOfIssueOnDocument, setPlaceOfIssueOnDocument] = useState("");
+  const [lostDate, setLostDate] = useState("");
+  const [lostPlace, setLostPlace] = useState({
+    Country: "",
+    Province: "",
+    District: "",
+    Sector: "",
+    Cell: "",
+    Village: "",
+  });
+  const [comment, setComment] = useState("");
+  const [found, setFound] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [responseData, setResponseData] = useState(null);
+
+  useEffect(() => {
+    const fetchLostDocuments = async () => {
+      try {
+        const response = await axios.get(
+          "https://seekconnect-backend-1.onrender.com/lost"
+        );
+        console.log("API response:", response.data); // Log the response to check its format
+
+        // Assuming the response contains an object with 'documents' property
+        if (Array.isArray(response.data.documents)) {
+          setLostDocuments(response.data.documents);
+        } else {
+          setError("Unexpected response format");
+        }
+        setLoading(false);
+      } catch (error) {
+        setError("Error fetching data");
+        setLoading(false);
+      }
+    };
+
+    fetchLostDocuments();
+  }, []);
+
+  const isValid = () => {
+    if (
+      !userId ||
+      !nameOnDocument ||
+      !placeOfIssueOnDocument ||
+      !lostDate ||
+      !lostPlace.Country ||
+      !lostPlace.Province ||
+      !lostPlace.District ||
+      !lostPlace.Sector ||
+      !lostPlace.Cell ||
+      !lostPlace.Village ||
+      !comment
+    ) {
+      setFormError("All fields are required");
+      return false;
+    }
+    setFormError("");
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValid()) return;
+
+    try {
+      const response = await axios.post(
+        "https://seekconnect-backend-1.onrender.com/lost",
+        {
+          UserId: userId,
+          DocumentType: documentType,
+          NameOnDocument: nameOnDocument,
+          PlaceOfIssueOnDocument: placeOfIssueOnDocument,
+          LostDate: lostDate,
+          LostPlace: lostPlace,
+          Comment: comment,
+          Found: found,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+
+      setResponseData(response.data);
+      alert("Lost document report submitted successfully!");
+    } catch (error) {
+      setFormError("An error occurred. Please try again later.");
+      console.error(error);
+    }
+  };
+
+  const handleLostPlaceChange = (e) => {
+    const { name, value } = e.target;
+    setLostPlace({ ...lostPlace, [name]: value });
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
-    <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200  flex-1">
-      <strong className="text-gray-700 font-medium ">Recent Orders</strong>
-      <div className="mt-3">
-        <table className="w-full text-gray-700">
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Product ID</td>
-              <td>Customer Name</td>
-              <td>Order Data</td>
-              <td>Order Total </td>
-              <td>Shipping Address</td>
-              <td>Order Status</td>
-            </tr>
-          </thead>
-          <tbody>
-            {recentOrderData.map((order) => (
-              <tr key={order.id}>
-                <td>
-                  <Link to={`/order/${order.id}`}>#{order.id}</Link>
-                </td>
-                <td>
-                  <Link to={`/product/${order.product_id}`}>
-                    {order.product_id}
-                  </Link>
-                </td>
 
-                <td>
-                  <Link to={`/customer/${order.customer_id}`}>
-                    {order.customer_name}
-                  </Link>
-                </td>
-
-                <td>{new Date(order.order_date).toLocaleDateString()}</td>
-                <td>{order.order_total}</td>
-                <td>{order.shipment_address}</td>
-                <td>{getOrderStatus(order.current_order_status)}</td>
+      <div className="mt-6">
+        <h3 className="text-lg font-medium">Lost Documents:</h3>
+        {lostDocuments.length === 0 ? (
+          <p className="text-center">No lost documents found.</p>
+        ) : (
+          <table className="min-w-full bg-white mt-4">
+            <thead className="bg-green-500">
+              <tr>
+                <th className="py-2">User ID</th>
+                <th className="py-2">Document Type</th>
+                <th className="py-2">Name on Document</th>
+                <th className="py-2">Place of Issue</th>
+                <th className="py-2">Date Lost</th>
+                <th className="py-2">Lost Place</th>
+                <th className="py-2">Comment</th>
+                <th className="py-2">Found</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {lostDocuments.map((doc) => (
+                <tr key={doc.id}>
+                  <td className="border px-4 py-2">{doc.UserId}</td>
+                  <td className="border px-4 py-2">{doc.DocumentType}</td>
+                  <td className="border px-4 py-2">{doc.NameOnDocument}</td>
+                  <td className="border px-4 py-2">{doc.PlaceOfIssueOnDocument}</td>
+                  <td className="border px-4 py-2">
+                    {new Date(doc.LostDate).toLocaleDateString()}
+                  </td>
+                  <td className="border px-4 py-2">
+                    {`${doc.LostPlace.Country}, ${doc.LostPlace.Province}, ${doc.LostPlace.District}, ${doc.LostPlace.Sector}, ${doc.LostPlace.Cell}, ${doc.LostPlace.Village}`}
+                  </td>
+                  <td className="border px-4 py-2">{doc.Comment}</td>
+                  <td className="border px-4 py-2">{doc.Found ? "Yes" : "No"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
-    </div>
-  );
-}
 
-export default RecentOrders;
+  );
+};
+
+export default LostForm;

@@ -100,6 +100,6 @@ export default function TransactionChart() {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </div>
-  );
+    </div>
+  );
 }

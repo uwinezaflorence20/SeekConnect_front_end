@@ -7,9 +7,11 @@ import {
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../components/UserContext";
 
 function Header() {
   const navigate = useNavigate();
+  const { user } = useUser();
 
   return (
     <div className="bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200">
@@ -106,10 +108,17 @@ function Header() {
                     'url("https://source.unsplash.com/80x80?face")',
                 }}
               >
-                <span className="sr-only">Hugh Jackson</span>
+                <span className="sr-only">{user ? user.name : "User"}</span>
               </div>
             </Menu.Button>
           </div>
+
+          {user && user.role === "admin" && (
+            <div className="ml-2 text-gray-700">
+              <p>{user.name}</p>
+              <p>{user.email}</p>
+            </div>
+          )}
 
           <Transition
             as={Fragment}
@@ -154,7 +163,7 @@ function Header() {
                       active && "bg-gray-100",
                       "text-gray-700 focus:bg-gray-200 cursor-pointer rounded-sm px-4 py-2"
                     )}
-                    onClick={() => navigate("/logout")}
+                    onClick={() => navigate("/")}
                   >
                     LOG OUT
                   </div>

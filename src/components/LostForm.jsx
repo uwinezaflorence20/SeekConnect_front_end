@@ -208,12 +208,7 @@ const LostForm = ({ onClose }) => {
           Submit
         </button>
       </form>
-      {responseData && (
-        <div className="mt-6 p-4 bg-gray-100 rounded-md">
-          <h3 className="text-lg font-medium">Response Data:</h3>
-          <pre className="mt-2 text-sm">{JSON.stringify(responseData, null, 2)}</pre>
-        </div>
-      )}
+      
     </div>
   );
 };

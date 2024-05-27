@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const UserData = () => {
   const [users, setUsers] = useState([]);
@@ -16,17 +18,13 @@ const UserData = () => {
         "https://seekconnect-backend-1.onrender.com/users"
       );
 
-      // Log the response data to understand its structure
       console.log("API response:", response.data);
 
-      // Check if the response data is an array
       if (Array.isArray(response.data)) {
         setUsers(response.data);
       } else if (response.data && Array.isArray(response.data.users)) {
-        // If the data is wrapped inside another object, adjust accordingly
         setUsers(response.data.users);
       } else {
-        // Handle the case where the response is not an array
         throw new Error("API response is not an array");
       }
     } catch (error) {
@@ -36,32 +34,74 @@ const UserData = () => {
     }
   };
 
+  const handleDelete = (userId) => {
+    // Implement the delete logic here
+    console.log(`Delete user with ID: ${userId}`);
+  };
+
+  const handleUpdate = (userId) => {
+    // Implement the update logic here
+    console.log(`Update user with ID: ${userId}`);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  const tableStyle = {
+    width: "100%",
+    borderCollapse: "collapse",
+    fontFamily: "'Arial', sans-serif",
+  };
+
+  const thStyle = {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    padding: "10px",
+    border: "1px solid #ddd",
+    textAlign: "left",
+  };
+
+  const tdStyle = {
+    padding: "10px",
+    border: "1px solid #ddd",
+    textAlign: "left",
+  };
+
+  const trStyle = {
+    backgroundColor: "#f2f2f2",
+  };
+
   return (
     <div>
-      <h2>User Data</h2>
-      <table>
+      <h2>Customers Message</h2>
+      <table style={tableStyle}>
         <thead>
           <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Email</th>
-            
-            {/* You can add more table headers for other fields if needed */}
+            <th style={thStyle}>FirstName</th>
+            <th style={thStyle}>LastName</th>
+            <th style={thStyle}>Email</th>
+            <th style={thStyle}>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {/* Check if users is an array before mapping */}
           {Array.isArray(users) &&
             users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.FirstName}</td>
-                <td>{user.LastName}</td>
-                <td>{user.Email}</td>
-                
-                {/* You can add more table cells for other fields if needed */}
+              <tr key={index} style={index % 2 === 0 ? trStyle : null}>
+                <td style={tdStyle}>{user.FirstName}</td>
+                <td style={tdStyle}>{user.LastName}</td>
+                <td style={tdStyle}>{user.Email}</td>
+                <td style={tdStyle}>
+                  <FontAwesomeIcon className="text-blue-500"
+                    icon={faEdit}
+                    style={{ marginRight: "10px", cursor: "pointer" }}
+                    onClick={() => handleUpdate(user.id)}
+                  />
+                  <FontAwesomeIcon className="text-red-600"
+                    icon={faTrash}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleDelete(user.id)}
+                  />
+                </td>
               </tr>
             ))}
         </tbody>
@@ -71,3 +111,4 @@ const UserData = () => {
 };
 
 export default UserData;
+

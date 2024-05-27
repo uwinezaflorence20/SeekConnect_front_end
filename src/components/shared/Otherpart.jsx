@@ -1,17 +1,17 @@
 import React from 'react';
 import { GoArrowRight } from "react-icons/go";
-import { useLocation } from 'react-router-dom';
 import { FaRegCircleUser } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { useUser } from '../UserContext';
 
 const Otherpart = () => {
-  const location = useLocation();
-  const { name, email } = location.state || { name: "User", email: "Unknown User" };
+  const { user } = useUser();
+  const { name, email } = user;
 
   return (
-    <div >
+    <div>
       <div className="w-80 p-3 mt-12 flex flex-col">
-        <div className="flex  items-center space-x-4">
+        <div className="flex items-center space-x-4">
           <div className="bg-gray-400 rounded-full text-4xl font-thin pl-1 w-12 h-12">
             <FaRegCircleUser className="mt-1.5" />
           </div>

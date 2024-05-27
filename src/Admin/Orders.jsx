@@ -1,14 +1,4 @@
-// import React from 'react'
 
-// function Orders() {
-//   return (
-//     <div>
-//       this is orders popular
-//     </div>
-//   )
-// }
-
-// export default Orders
 
 import classNames from "classnames";
 import React from "react";

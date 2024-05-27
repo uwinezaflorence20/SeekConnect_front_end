@@ -1,15 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from './UserContext';
 
 const Signin = () => {
+  const { setUser } = useUser();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [loading, setLoading] = useState(false); // State for loading status
-  const [responseData, setResponseData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const isValidEmail = (email) => {
@@ -45,7 +46,7 @@ const Signin = () => {
       return;
     }
 
-    setLoading(true); // Set loading to true when the login process starts
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -64,15 +65,14 @@ const Signin = () => {
       const { role, name } = response.data;
 
       if (role === "user") {
-        navigate("/dash", { state: { name, email } });
+        setUser({ name, email, role });
+        navigate("/dash", { state: { name, email, role } });
       } else if (role === "admin") {
-        navigate("/dashboardadmin", { state: { name, email } });
+        setUser({ name, email, role });
+        navigate("/dashboardadmin", { state: { name, email, role } });
       } else {
         console.log("You're not registered. Please sign up first.");
       }
-
-      const { role: _, ...data } = response.data;
-      setResponseData(data);
 
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -82,7 +82,7 @@ const Signin = () => {
       }
       console.error(error);
     } finally {
-      setLoading(false); // Set loading to false when the login process is complete
+      setLoading(false);
     }
   };
 
@@ -139,9 +139,9 @@ const Signin = () => {
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              disabled={loading} // Disable button while loading
+              disabled={loading}
             >
-              {loading ? "Loading..." : "Sign in to get started"} {/* Show loading text while loading */}
+              {loading ? "Loading..." : "Sign in to get started"}
             </button>
           </div>
           <p className="text-center text-sm mt-6">
@@ -156,12 +156,6 @@ const Signin = () => {
             </Link>
           </p>
         </form>
-        {responseData && (
-          <div className="mt-6 p-4 bg-gray-100 rounded-md">
-            <h3 className="text-lg font-medium">Response Data:</h3>
-            <pre className="mt-2 text-sm">{JSON.stringify(responseData, null, 2)}</pre>
-          </div>
-        )}
       </div>
     </div>
   );
