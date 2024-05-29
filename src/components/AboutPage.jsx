@@ -2,6 +2,7 @@
 import React from "react";
 import Videopart from "./Videopart";
 import {motion} from "framer-motion"
+import Missingperson from './Missingperson'
 
 const AboutPage = () => {
   return (
@@ -32,6 +33,7 @@ const AboutPage = () => {
           </p>
         </div>
       </div>
+      <Missingperson/>
       <Videopart/>
       </motion.div>
     </div>

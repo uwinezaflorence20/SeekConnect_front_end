@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const LostForm = ({ onClose }) => {
+const ProductAdmin = ({ onClose }) => {
   const [lostDocuments, setLostDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -106,6 +106,20 @@ const LostForm = ({ onClose }) => {
     setLostPlace({ ...lostPlace, [name]: value });
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://seekconnect-backend-1.onrender.com/lost/${id}`);
+      setLostDocuments(lostDocuments.filter(doc => doc.id !== id));
+    } catch (error) {
+      console.error("Error deleting document:", error);
+      setError("Error deleting document");
+    }
+  };
+
+  const handleUpdateClick = (doc) => {
+    // Handle update click logic here
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -115,48 +129,55 @@ const LostForm = ({ onClose }) => {
   }
 
   return (
-
-      <div className="mt-6">
-        <h3 className="text-lg font-medium">Lost Documents:</h3>
-        {lostDocuments.length === 0 ? (
-          <p className="text-center">No lost documents found.</p>
-        ) : (
-          <table className="min-w-full bg-white mt-4">
-            <thead className="bg-green-500">
-              <tr>
-                <th className="py-2">User ID</th>
-                <th className="py-2">Document Type</th>
-                <th className="py-2">Name on Document</th>
-                <th className="py-2">Place of Issue</th>
-                <th className="py-2">Date Lost</th>
-                <th className="py-2">Lost Place</th>
-                <th className="py-2">Comment</th>
-                <th className="py-2">Found</th>
+    <div className="mt-6">
+      <h3 className="text-lg font-medium">Lost Documents:</h3>
+      {lostDocuments.length === 0 ? (
+        <p className="text-center">No lost documents found.</p>
+      ) : (
+        <table className="min-w-full bg-white mt-4">
+          <thead className="bg-green-500">
+            <tr>
+              <th className="py-2">Document Type</th>
+              <th className="py-2">Name on Document</th>
+              <th className="py-2">Place of Issue</th>
+              <th className="py-2">Date Lost</th>
+              <th className="py-2">Lost Place</th>
+              <th className="py-2">Comment</th>
+              <th className="py-2">Found</th>
+              <th className="py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lostDocuments.map((doc) => (
+              <tr key={doc.id}>
+                <td className="border px-4 py-2">{doc.DocumentType}</td>
+                <td className="border px-4 py-2">{doc.NameOnDocument}</td>
+                <td className="border px-4 py-2">{doc.PlaceOfIssueOnDocument}</td>
+                <td className="border px-4 py-2">
+                  {new Date(doc.LostDate).toLocaleDateString()}
+                </td>
+                <td className="border px-4 py-2">
+                  {`${doc.LostPlace.Country}, ${doc.LostPlace.Province}, ${doc.LostPlace.District}, ${doc.LostPlace.Sector}, ${doc.LostPlace.Cell}, ${doc.LostPlace.Village}`}
+                </td>
+                <td className="border px-4 py-2">{doc.Comment}</td>
+                <td className="border px-4 py-2">{doc.Found ? "Yes" : "No"}</td>
+                <td className="border px-4 py-2 flex items-center justify-center">
+                  <i
+                    className="fas fa-edit text-blue-500 cursor-pointer mx-2"
+                    onClick={() => handleUpdateClick(doc)}
+                  ></i>
+                  <i
+                    className="fas fa-trash-alt text-red-500 cursor-pointer mx-2"
+                    onClick={() => handleDelete(doc.id)}
+                  ></i>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {lostDocuments.map((doc) => (
-                <tr key={doc.id}>
-                  <td className="border px-4 py-2">{doc.UserId}</td>
-                  <td className="border px-4 py-2">{doc.DocumentType}</td>
-                  <td className="border px-4 py-2">{doc.NameOnDocument}</td>
-                  <td className="border px-4 py-2">{doc.PlaceOfIssueOnDocument}</td>
-                  <td className="border px-4 py-2">
-                    {new Date(doc.LostDate).toLocaleDateString()}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {`${doc.LostPlace.Country}, ${doc.LostPlace.Province}, ${doc.LostPlace.District}, ${doc.LostPlace.Sector}, ${doc.LostPlace.Cell}, ${doc.LostPlace.Village}`}
-                  </td>
-                  <td className="border px-4 py-2">{doc.Comment}</td>
-                  <td className="border px-4 py-2">{doc.Found ? "Yes" : "No"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 };
 
-export default LostForm;
+export default ProductAdmin;

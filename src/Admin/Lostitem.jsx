@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Transactions from "./Transactions";
 
 const Lostitem = ({ onClose }) => {
   const [lostDocuments, setLostDocuments] = useState([]);
@@ -91,6 +92,7 @@ const Lostitem = ({ onClose }) => {
           ))}
         </div>
       )}
+      <Transactions/>
     </div>
   );
 };

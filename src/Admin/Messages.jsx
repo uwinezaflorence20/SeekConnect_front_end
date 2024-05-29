@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -14,7 +16,7 @@ const Messages = () => {
     try {
       const response = await axios.get(
         "https://seekconnect-backend-1.onrender.com/contactUs"
-      ); // Adjust the URL to your API endpoint
+      );
       if (response.data && Array.isArray(response.data.message)) {
         setMessages(response.data.message);
       } else {
@@ -24,6 +26,15 @@ const Messages = () => {
     } catch (error) {
       setError("Error loading messages: " + error.message);
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://seekconnect-backend-1.onrender.com/contactUs/${id}`);
+      setMessages(messages.filter(message => message._id !== id));
+    } catch (error) {
+      setError("Error deleting message: " + error.message);
     }
   };
 
@@ -68,6 +79,7 @@ const Messages = () => {
             <th style={thStyle}>Email</th>
             <th style={thStyle}>Tel</th>
             <th style={thStyle}>Message</th>
+            <th style={thStyle}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -77,6 +89,11 @@ const Messages = () => {
               <td style={tdStyle}>{message.Email}</td>
               <td style={tdStyle}>{message.Tel}</td>
               <td style={tdStyle}>{message.Message}</td>
+              <td style={tdStyle}>
+                <button onClick={() => handleDelete(message._id)} style={{ border: "none", background: "none", cursor: "pointer" }}>
+                  <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

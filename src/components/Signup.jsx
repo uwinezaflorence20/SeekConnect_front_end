@@ -15,6 +15,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const [serverError, setServerError] = useState(""); // State for server error message
   const navigate = useNavigate();
 
   const isValidEmail = (email) => {
@@ -82,6 +83,7 @@ const Signup = () => {
       return;
     }
     setIsLoading(true); // Start loading
+    setServerError(""); // Reset server error
 
     try {
       const response = await axios.post(
@@ -98,6 +100,11 @@ const Signup = () => {
       navigate('/otp-verify');
     } catch (error) {
       console.log(error);
+      if (error.response) {
+        setServerError(error.response.data.message || "Registration failed");
+      } else {
+        setServerError("An error occurred. Please try again.");
+      }
     } finally {
       setIsLoading(false); // End loading
     }
@@ -185,20 +192,21 @@ const Signup = () => {
             />
             {confirmPasswordError && <p className="text-red-500">{confirmPasswordError}</p>}
           </div>
+          {serverError && <p className="text-red-500">{serverError}</p>}
           <div>
             <button
               type="submit"
               onClick={handleSignUp}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#8a9de9] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              disabled={isLoading} // Disable button when loading
+              disabled={isLoading} 
             >
               {isLoading ? "Loading..." : "Register"}
             </button>
           </div>
-          <div className="flex">
-            <p> Have an account? </p>
-            <RxDoubleArrowLeft className="ml-48 text-md text-blue-400 pt-2" />
-            <Link to={"/signin"} className="text-blue-400 pb-4">
+          <div className="flex mt-4">
+            <p>Have an account?</p>
+            <RxDoubleArrowLeft className="ml-2 text-md text-blue-400 pt-1" />
+            <Link to={"/signin"} className="text-blue-400 ml-2">
               back to SignIn
             </Link>
           </div>

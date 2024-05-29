@@ -13,18 +13,19 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		icon: <CiHome />
 	},
 	{
-		key: 'My items',
-		label: 'My items',
-		path: '/products',
+		key: 'Lost items',
+		label: 'Lost Items',
+		path: 'product',
+		icon: <CiUser />
+
+	},{
+		key: 'Found items',
+		label: 'Found Items',
+		path: '/founditems',
 		icon: <CiUser />
 
 	},
-	{
-		key: 'Bookmarks',
-		label: 'bookmarks',
-		path: '/orders',
-		icon: <CiBookmark />
-	},
+	
 	
 	
 ]

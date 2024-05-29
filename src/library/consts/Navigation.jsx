@@ -18,15 +18,27 @@ export const DASHBOARD_SIDEBAR_LINKS = [
   },
   {
     key: "product",
-    label: "Lost Items",
-    path: "/product",
+    label: "Lost Documents",
+    path: "productadmin",
     icon: <HiOutlineCube />,
   },
   {
-    key: "orders",
-    label: "Found Items",
+    key: "transactions",
+    label: "Lost Persons",
+    path: "/transactions",
+    icon: <HiOutlineDocumentText />,
+  },
+  {
+    key: "Found person",
+    label: "Found Person",
     path: "/orders",
     icon: <HiOutlineShoppingCart />,
+  },
+  {
+    key: "transactions",
+    label: "Found document",
+    path: "/foundd",
+    icon: <HiOutlineDocumentText />,
   },
   {
     key: "customers",
@@ -34,12 +46,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     path: "/customers",
     icon: <HiOutlineUsers />,
   },
-  {
-    key: "transactions",
-    label: "Transactions",
-    path: "/transactions",
-    icon: <HiOutlineDocumentText />,
-  },
+  
   // {
   //   key: "messages",
   //   label: "Messages",

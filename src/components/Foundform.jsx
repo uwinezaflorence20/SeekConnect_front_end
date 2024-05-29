@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import ReportForm from "./ReportForm";
 import LostForm from "./LostForm";
-
-const Post = () => {
+import Foundperson from "./Foundperson";
+import Founddoc from "./Founddoc"
+const Foundform = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [selectedOption, setSelectedOption] = useState("None");
   const [showDocumentForm, setShowDocumentForm] = useState(false);
@@ -52,7 +53,7 @@ const Post = () => {
           >
             &times;
           </button>
-          <ReportForm onClose={handleCloseForm} />
+          <Foundperson onClose={handleCloseForm} />
         </div>
       )}
       {showDocumentForm && (
@@ -63,11 +64,11 @@ const Post = () => {
           >
             &times;
           </button>
-          <LostForm onClose={handleCloseForm} />
+          <Founddoc onClose={handleCloseForm} />
         </div>
       )}
     </div>
   );
 };
 
-export default Post;
+export default Foundform;

@@ -1,97 +1,120 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
+const FoundPeople = () => {
+  const [foundPeople, setFoundPeople] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-import classNames from "classnames";
-import React from "react";
-import { Link } from "react-router-dom";
+  useEffect(() => {
+    const fetchFoundPeople = async () => {
+      try {
+        const response = await axios.get(
+          "https://seekconnect-backend-1.onrender.com/foundMissingPeople"
+        );
+        console.log("Response data:", response.data); // Debugging line
+        setFoundPeople(
+          Array.isArray(response.data.missedPeople)
+            ? response.data.missedPeople
+            : []
+        );
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error); // Debugging line
+        setError("Failed to fetch found missing persons.");
+        setLoading(false);
+      }
+    };
 
-const popularProducts = [
-  {
-    id: "3432",
-    product_name: 'Macbook M1 Pro 14"',
-    product_thumbnail: "https://source.unsplash.com/100x100?macbook",
-    product_price: "$1499.00",
-    product_stock: 341,
-  },
-  {
-    id: "7633",
-    product_name: "Samsung Galaxy Buds 2",
-    product_thumbnail: "https://source.unsplash.com/100x100?earbuds",
-    product_price: "$399.00",
-    product_stock: 24,
-  },
-  {
-    id: "6534",
-    product_name: "Asus Zenbook Pro",
-    product_thumbnail: "https://source.unsplash.com/100x100?laptop",
-    product_price: "$899.00",
-    product_stock: 56,
-  },
-  {
-    id: "9234",
-    product_name: "LG Flex Canvas",
-    product_thumbnail: "https://source.unsplash.com/100x100?smartphone",
-    product_price: "$499.00",
-    product_stock: 98,
-  },
-  {
-    id: "4314",
-    product_name: "Apple Magic Touchpad",
-    product_thumbnail: "https://source.unsplash.com/100x100?touchpad",
-    product_price: "$699.00",
-    product_stock: 0,
-  },
-  {
-    id: "4342",
-    product_name: "Nothing Earbuds One",
-    product_thumbnail: "https://source.unsplash.com/100x100?earphone",
-    product_price: "$399.00",
-    product_stock: 453,
-  },
-];
+    fetchFoundPeople();
+  }, []);
 
-function PopularProducts() {
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
-    <div className="w-[20rem] bg-white p-4 rounded-sm border border-gray-200">
-      <strong className="text-gray-700 font-medium">Popular Products</strong>
-      <div className="mt-4 flex flex-col gap-3">
-        {popularProducts.map((product) => (
-          <Link
-            key={product.id}
-            to={`/product/${product.id}`}
-            className="flex items-start hover:no-underline"
-          >
-            <div className="w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-sm">
-              <img
-                className="w-full h-full object-cover rounded-sm"
-                src={product.product_thumbnail}
-                alt={product.product_name}
-              />
-            </div>
-            <div className="ml-4 flex-1">
-              <p className="text-sm text-gray-800">{product.product_name}</p>
-              <span
-                className={classNames(
-                  product.product_stock === 0
-                    ? "text-red-500"
-                    : product.product_stock > 50
-                    ? "text-green-500"
-                    : "text-orange-500",
-                  "text-xs font-medium"
-                )}
-              >
-                {product.product_stock === 0
-                  ? "Out of Stock"
-                  : product.product_stock + " in Stock"}
-              </span>
-            </div>
-            <div className="text-xs text-gray-400 pl-1.5">
-              {product.product_price}
-            </div>
-          </Link>
-        ))}
+    <div className="min-h-screen mt-20 flex flex-col items-center justify-center bg-gray-100">
+      <div className="max-w-full w-full mb-40 p-4 rounded-md bg-white shadow-md overflow-x-auto">
+        <h2 className="text-2xl font-bold text-center mb-4">
+          List of Found People
+        </h2>
+        {foundPeople.length === 0 ? (
+          <p className="text-center">No found people found.</p>
+        ) : (
+          <table className="min-w-full bg-white text-sm">
+            <thead className="bg-green-600">
+              <tr>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  User ID
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Race
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Country of Origin
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Age
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Lost Date
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Lost Place
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Comment
+                </th>
+                <th className="py-1 px-2 text-left font-medium text-white uppercase tracking-wider">
+                  Returned to Owner
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {foundPeople.map((person) => {
+                const lostPlace = person.LostPlace || {};
+                return (
+                  <tr key={person._id}>
+                    <td className="border px-2 py-1">
+                      {person.FirstName} {person.LastName}
+                    </td>
+                    <td className="border px-2 py-1">{person.UserId}</td>
+                    <td className="border px-2 py-1">{person.Race}</td>
+                    <td className="border px-2 py-1">
+                      {person.CountryOfOrigin}
+                    </td>
+                    <td className="border px-2 py-1">{person.Age}</td>
+                    <td className="border px-2 py-1">{person.LostDate}</td>
+                    <td className="border px-2 py-1">
+                      {`${lostPlace.Country || "N/A"}, ${
+                        lostPlace.Province || "N/A"
+                      }, ${lostPlace.District || "N/A"}, ${
+                        lostPlace.Sector || "N/A"
+                      }, ${lostPlace.Cell || "N/A"}, ${
+                        lostPlace.Village || "N/A"
+                      }`}
+                    </td>
+                    <td className="border px-2 py-1">{person.Comment}</td>
+                    <td className="border px-2 py-1">
+                      {person.returnedToOwner ? "Yes" : "No"}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
-}
+};
 
-export default PopularProducts;
+export default FoundPeople;

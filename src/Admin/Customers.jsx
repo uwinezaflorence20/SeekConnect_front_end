@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const UserData = () => {
+const Customers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,14 +36,28 @@ const UserData = () => {
     }
   };
 
-  const handleDelete = (userId) => {
-    // Implement the delete logic here
-    console.log(`Delete user with ID: ${userId}`);
+  const handleDelete = async (userId) => {
+    try {
+      await axios.delete(
+        `https://seekconnect-backend-1.onrender.com/user?id=${userId}`
+      );
+      console.log("User deleted:", userId);
+      // Assuming success, remove the user from the local state
+      setUsers(users.filter(user => user._id !== userId));
+      // Show success message
+      toast.success("User has been deleted successfully");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setError(error);
+    }
   };
 
   const handleUpdate = (userId) => {
-    // Implement the update logic here
-    console.log(`Update user with ID: ${userId}`);
+    if (userId) {
+      console.log(`Update user with ID: ${userId}`);
+    } else {
+      console.error("User ID is undefined");
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -73,12 +89,12 @@ const UserData = () => {
 
   return (
     <div>
-      <h2>Customers Message</h2>
+      <h2>Customers</h2>
       <table style={tableStyle}>
         <thead>
           <tr>
-            <th style={thStyle}>FirstName</th>
-            <th style={thStyle}>LastName</th>
+            <th style={thStyle}>First Name</th>
+            <th style={thStyle}>Last Name</th>
             <th style={thStyle}>Email</th>
             <th style={thStyle}>Actions</th>
           </tr>
@@ -86,29 +102,25 @@ const UserData = () => {
         <tbody>
           {Array.isArray(users) &&
             users.map((user, index) => (
-              <tr key={index} style={index % 2 === 0 ? trStyle : null}>
+              <tr key={user._id} style={index % 2 === 0 ? trStyle : null}>
                 <td style={tdStyle}>{user.FirstName}</td>
                 <td style={tdStyle}>{user.LastName}</td>
                 <td style={tdStyle}>{user.Email}</td>
                 <td style={tdStyle}>
-                  <FontAwesomeIcon className="text-blue-500"
-                    icon={faEdit}
-                    style={{ marginRight: "10px", cursor: "pointer" }}
-                    onClick={() => handleUpdate(user.id)}
-                  />
-                  <FontAwesomeIcon className="text-red-600"
+                  <FontAwesomeIcon
+                    className="text-red-600"
                     icon={faTrash}
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user._id)}
                   />
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+      <ToastContainer position="bottom-left" />
     </div>
   );
 };
 
-export default UserData;
-
+export default Customers;
