@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Otherpart from './Otherpart';
+
 
 export default function Layoutwo() {
   return (
@@ -10,9 +10,9 @@ export default function Layoutwo() {
       <div className="flex-grow overflow-y-auto relative">
        
         <div >
-          <Outlet className="absolute top-0 bottom-0 left-0 right-0 overflow-y-auto" />
+          <Outlet className="  absolute top-0 bottom-0 left-0 right-0 overflow-y-auto" />
         </div>
-      </div> <Otherpart />
+      </div> 
     </div>
   );
 }

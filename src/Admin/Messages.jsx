@@ -31,12 +31,15 @@ const Messages = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://seekconnect-backend-1.onrender.com/contactUs/${id}`);
+      const response = await axios.delete(`https://seekconnect-backend-1.onrender.com/contactUs/${id}`);
+      console.log("Delete response:", response.data); // Log the response data
       setMessages(messages.filter(message => message._id !== id));
     } catch (error) {
+      console.error("Error deleting message:", error); // Log any errors
       setError("Error deleting message: " + error.message);
     }
   };
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

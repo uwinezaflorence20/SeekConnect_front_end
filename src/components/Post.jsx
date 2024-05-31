@@ -33,7 +33,7 @@ const Post = () => {
   };
 
   return (
-    <div className="w-[100vh] max-w-full p-4 border rounded shadow-lg">
+    <div className="w-full max-w-full p-4 border rounded shadow-lg">
      
       <select
         value={selectedOption}

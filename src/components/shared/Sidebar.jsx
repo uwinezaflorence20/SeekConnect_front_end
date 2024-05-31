@@ -7,7 +7,7 @@ const linkClasses = "flex item-center gap-2 text-xl px-3 py-2 hover:bg-neutral-1
 
 export default function Sidebar() {
   return (
-    <div className=" w-80 p-3 flex flex-col text-white bg-[#8a9de9]">
+    <div className=" w-80 relative p-3 flex flex-col text-white bg-[#8a9de9]">
      
       <div className="flex-1  flex-col gap-0.5">
         {DASHBOARD_SIDEBAR_LINKS.map((item) => (

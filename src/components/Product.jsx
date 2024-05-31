@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Otherpart from "./shared/Otherpart";
+
 import { IoIosAdd } from "react-icons/io";
 import Post from './Post';
 import Lostitem from "../Admin/Lostitem";
@@ -25,14 +25,14 @@ export default function Dashboard() {
   };
 
   return (
-    <div className=" w-[100vh] max-w-full p-4 border rounded shadow-lgflex gap-2 mx-20">
+    <div className="  gap-2 mx-20">
       
        
 
         <div className="App">
          
             <div>
-              <div className="bg-[#8a9de9] flex h-20 items-center justify-center text-white">
+              <div className="bg-[#8a9de9] w-full flex h-20 items-center justify-center text-white">
                 <IoIosAdd />
                 <button 
                   onClick={handleButtonClick}

@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
+import axios from "axios";
 
 const LostForm = ({ onClose }) => {
-  const [userId, setUserId] = useState("");
+  const [Email, setEmail] = useState("example@example.com"); // Pre-filled user ID
   const [documentType, setDocumentType] = useState("Drivers License");
   const [nameOnDocument, setNameOnDocument] = useState("");
   const [placeOfIssueOnDocument, setPlaceOfIssueOnDocument] = useState("");
@@ -39,7 +39,7 @@ const LostForm = ({ onClose }) => {
       const response = await axios.post(
         "https://seekconnect-backend-1.onrender.com/lost",
         {
-          UserId: userId,
+          Email: Email,
           DocumentType: documentType,
           NameOnDocument: nameOnDocument,
           PlaceOfIssueOnDocument: placeOfIssueOnDocument,
@@ -79,25 +79,28 @@ const LostForm = ({ onClose }) => {
       <h2 className="text-2xl font-bold text-center mb-6">Report Lost Document</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="userId" className="block text-gray-700 font-medium">User ID</label>
+          <label htmlFor="userId" className="block text-gray-700 font-medium">User Email</label>
           <input
             type="text"
             id="userId"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            value={Email}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
           />
         </div>
         <div className="mb-4">
           <label htmlFor="documentType" className="block text-gray-700 font-medium">Document Type</label>
-          <input
-            type="text"
+          <select
             id="documentType"
             value={documentType}
             onChange={(e) => setDocumentType(e.target.value)}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            disabled
-          />
+          >
+            <option value="Drivers License">Driver's License</option>
+            <option value="National Id Card">National ID Card</option>
+            <option value="Insurance Card">Insurance Card</option>
+            <option value="Other">Other</option> {/* Add an "Other" option */}
+          </select>
         </div>
         <div className="mb-4">
           <label htmlFor="nameOnDocument" className="block text-gray-700 font-medium">Name on Document</label>
@@ -189,17 +192,7 @@ const LostForm = ({ onClose }) => {
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
           ></textarea>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium">
-            <input
-              type="checkbox"
-              checked={found}
-              onChange={() => setFound(!found)}
-              className="mr-2"
-            />
-            Found
-          </label>
-        </div>
+       
         {formError && <p className="text-red-500 text-center text-sm mb-4">{formError}</p>}
         <button
           type="submit"
@@ -208,9 +201,9 @@ const LostForm = ({ onClose }) => {
           Submit
         </button>
       </form>
-      
     </div>
   );
 };
 
 export default LostForm;
+

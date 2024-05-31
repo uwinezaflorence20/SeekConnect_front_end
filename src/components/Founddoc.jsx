@@ -1,509 +1,315 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-const Founddoc = () => {
-  const initialState = {
-    file: null,
-    UserId: "",
+const FoundDocumentForm = () => {
+  const [formData, setFormData] = useState({
+    Email: "gloria7wineza@gmail.com",
     DocumentType: "Drivers License",
-    NameOnDocument: "",
-    PlaceOfIssueOnDocument: "",
-    FoundDate: "",
-    FoundPlace: {
-      Country: "",
-      Province: "",
-      District: "",
-      Sector: "",
-      Cell: "",
-      Village: "",
-    },
-    Comment: "",
+    NameOnDocument: "uwineza gloria",
+    PlaceOfIssueOnDocument: "kigali",
+    FoundDate: "2024-01-02",
+    "FoundPlace.Country": "Rwanda",
+    "FoundPlace.Province": "fgvb",
+    "FoundPlace.District": "vb",
+    "FoundPlace.Sector": "vbn",
+    "FoundPlace.Cell": "fcvgbh",
+    "FoundPlace.Village": "dcfvgb",
+    Comment: "fcvgbh",
     returnedToOwner: false,
-  };
+    file: null,
+  });
 
-  const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (name.startsWith("FoundPlace.")) {
-      const key = name.split(".")[1];
-      setFormData((prevState) => ({
-        ...prevState,
-        FoundPlace: {
-          ...prevState.FoundPlace,
-          [key]: value,
-        },
-      }));
-    } else if (type === "checkbox") {
-      setFormData({
-        ...formData,
-        [name]: checked,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
-  };
-
-  const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      file: e.target.files[0],
-    });
-    setErrors({
-      ...errors,
-      file: "",
-    });
-  };
-
-  const validate = () => {
-    let valid = true;
-    let newErrors = {};
-
-    if (!formData.file) {
-      newErrors.file = "File is required";
-      valid = false;
-    }
-
-    if (!formData.UserId.trim()) {
-      newErrors.UserId = "User ID is required";
-      valid = false;
-    }
-
-    if (!formData.DocumentType.trim()) {
-      newErrors.DocumentType = "Document type is required";
-      valid = false;
-    }
-
-    if (!formData.NameOnDocument.trim()) {
-      newErrors.NameOnDocument = "Name on document is required";
-      valid = false;
-    }
-
-    if (!formData.PlaceOfIssueOnDocument.trim()) {
-      newErrors.PlaceOfIssueOnDocument =
-        "Place of issue on document is required";
-      valid = false;
-    }
-
-    if (!formData.FoundDate.trim()) {
-      newErrors.FoundDate = "Found date is required";
-      valid = false;
-    }
-
-    if (!formData.FoundPlace.Country.trim()) {
-      newErrors["FoundPlace.Country"] =
-        "Country where the document was found is required";
-      valid = false;
-    }
-
-    if (!formData.FoundPlace.Province.trim()) {
-      newErrors["FoundPlace.Province"] =
-        "Province where the document was found is required";
-      valid = false;
-    }
-
-    if (!formData.FoundPlace.District.trim()) {
-      newErrors["FoundPlace.District"] =
-        "District where the document was found is required";
-      valid = false;
-    }
-
-    if (!formData.FoundPlace.Sector.trim()) {
-      newErrors["FoundPlace.Sector"] =
-        "Sector where the document was found is required";
-      valid = false;
-    }
-
-    if (!formData.FoundPlace.Cell.trim()) {
-      newErrors["FoundPlace.Cell"] =
-        "Cell where the document was found is required";
-      valid = false;
-    }
-
-    if (!formData.FoundPlace.Village.trim()) {
-      newErrors["FoundPlace.Village"] =
-        "Village where the document was found is required";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
+    const { name, value, type, checked, files } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : type === "file" ? files[0] : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validate()) {
-      return;
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
     }
 
-    const data = new FormData();
-    data.append("file", formData.file);
-    data.append("UserId", formData.UserId);
-    data.append("DocumentType", formData.DocumentType);
-    data.append("NameOnDocument", formData.NameOnDocument);
-    data.append("PlaceOfIssueOnDocument", formData.PlaceOfIssueOnDocument);
-    data.append("FoundDate", formData.FoundDate);
-    data.append("FoundPlace.Country", formData.FoundPlace.Country);
-    data.append("FoundPlace.Province", formData.FoundPlace.Province);
-    data.append("FoundPlace.District", formData.FoundPlace.District);
-    data.append("FoundPlace.Sector", formData.FoundPlace.Sector);
-    data.append("FoundPlace.Cell", formData.FoundPlace.Cell);
-    data.append("FoundPlace.Village", formData.FoundPlace.Village)
-    data.append("Comment", formData.Comment);
-    data.append("returnedToOwner", formData.returnedToOwner);
-
-    console.log("Form data submitted:", formData); // Here you can handle the form data, e.g., send it to a server
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "https://seekconnect-backend-1.onrender.com/foundDocument",
+        data,
         {
-          method: "POST",
-          body: data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form data");
-      }
-
-      console.log("Form data submitted successfully");
-      // Optionally, you can handle success response here
+      setMessage("Document posted successfully");
+      setShowModal(true); // Show the modal on success
+      console.log("Server response:", response.data);
     } catch (error) {
-      console.error("Error submitting form data:", error.message);
-      // Optionally, you can handle error here
+      console.error("Error posting document:", error);
+      setMessage("Failed to post document");
+      setShowModal(true); // Show the modal on failure
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setMessage("");
+  };
+
   return (
-    <div className="min-h-screen mt-20 flex items-center justify-center bg-gray-100">
-      <div className="max-w-lg w-full mb-40 p-6 rounded-md bg-white shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Report Found Document
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-lg w-full p-6 rounded-md bg-white shadow-md">
+        <h2 className="text-2xl font-bold text-center mb-4">Post Found Document</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+           <div className="mb-4">
             <label htmlFor="file" className="block text-gray-700 font-medium">
-              Photo
+              Upload File
             </label>
             <input
               type="file"
               id="file"
               name="file"
-              onChange={handleFileChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.file ? "border-red-500" : ""
-              }`}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors.file && (
-              <p className="text-red-500 text-sm mt-1">{errors.file}</p>
-            )}
           </div>
           <div className="mb-4">
-            <label htmlFor="userId" className="block text-gray-700 font-medium">
-              User ID
+            <label htmlFor="Email" className="block text-gray-700 font-medium">
+              Email
+            </label>
+            <input
+              type="email"
+              id="Email"
+              name="Email"
+              value={formData.Email}
+              onChange={handleChange}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="DocumentType" className="block text-gray-700 font-medium">
+              Document Type
             </label>
             <input
               type="text"
-              id="userId"
-              name="UserId"
-              value={formData.UserId}
-              onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.UserId ? "border-red-500" : ""
-              }`}
-            />
-            {errors.UserId && (
-              <p className="text-red-500 text-sm mt-1">{errors.userId}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="DocumentType"
-              className="block text-gray-700 font-medium"
-            >
-              Document Type
-            </label>
-            <select
-              id="documentType"
+              id="DocumentType"
               name="DocumentType"
               value={formData.DocumentType}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.DocumentType ? "border-red-500" : ""
-              }`}
-            >
-              <option value="Drivers License">Drivers License</option>
-              <option value="National Id Card">National Id Card</option>
-              <option value="Health Insurance Card">
-                Health Insurance Card
-              </option>
-              <option value="Refugee Identity Document">
-                Refugee Identity Document
-              </option>
-              <option value="Other Form Of Identity">
-                Other Form Of Identity
-              </option>
-            </select>
-            {errors.DocumentType && (
-              <p className="text-red-500 text-sm mt-1">{errors.documentType}</p>
-            )}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
+            />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="NameOnDocument"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="NameOnDocument" className="block text-gray-700 font-medium">
               Name on Document
             </label>
             <input
               type="text"
-              id="nameOnDocument"
+              id="NameOnDocument"
               name="NameOnDocument"
               value={formData.NameOnDocument}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.NameOnDocument ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors.NameOnDocument && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.NameOnDocument}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="PlaceOfIssueOnDocument"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="PlaceOfIssueOnDocument" className="block text-gray-700 font-medium">
               Place of Issue on Document
             </label>
             <input
               type="text"
-              id="placeOfIssueOnDocument"
+              id="PlaceOfIssueOnDocument"
               name="PlaceOfIssueOnDocument"
               value={formData.PlaceOfIssueOnDocument}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.PlaceOfIssueOnDocument ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors.PlaceOfIssueOnDocument && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.PlaceOfIssueOnDocument}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundDate"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="FoundDate" className="block text-gray-700 font-medium">
               Found Date
             </label>
             <input
               type="date"
-              id="foundDate"
+              id="FoundDate"
               name="FoundDate"
               value={formData.FoundDate}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.FoundDate ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors.FoundDate && (
-              <p className="text-red-500 text-sm mt-1">{errors.foundDate}</p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundPlace.country"
-              className="block text-gray-700 font-medium"
-            >
-              Country where Document was Found
+            <label htmlFor="FoundPlace.Country" className="block text-gray-700 font-medium">
+              Country
             </label>
             <input
               type="text"
-              id="foundPlace.country"
+              id="FoundPlace.Country"
               name="FoundPlace.Country"
-              value={formData.FoundPlace.Country}
+              value={formData["FoundPlace.Country"]}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["FoundPlace.Country"] ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors["FoundPlace.Country"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["FoundPlace.Country"]}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundPlace.Province"
-              className="block text-gray-700 font-medium"
-            >
-              Province where Document was Found
+            <label htmlFor="FoundPlace.Province" className="block text-gray-700 font-medium">
+              Province
             </label>
             <input
               type="text"
-              id="foundPlace.province"
+              id="FoundPlace.Province"
               name="FoundPlace.Province"
-              value={formData.FoundPlace.Province}
+              value={formData["FoundPlace.Province"]}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["FoundPlace.Province"] ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors["FoundPlace.Province"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["FoundPlace.Province"]}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundPlace.District"
-              className="block text-gray-700 font-medium"
-            >
-              District where Document was Found
+            <label htmlFor="FoundPlace.District" className="block text-gray-700 font-medium">
+              District
             </label>
             <input
               type="text"
-              id="foundPlace.district"
+              id="FoundPlace.District"
               name="FoundPlace.District"
-              value={formData.FoundPlace.District}
+              value={formData["FoundPlace.District"]}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["FoundPlace.District"] ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors["FoundPlace.District"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["FoundPlace.District"]}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundPlace.Sector"
-              className="block text-gray-700 font-medium"
-            >
-              Sector where Document was Found
+            <label htmlFor="FoundPlace.Sector" className="block text-gray-700 font-medium">
+              Sector
             </label>
             <input
               type="text"
-              id="foundPlace.sector"
+              id="FoundPlace.Sector"
               name="FoundPlace.Sector"
-              value={formData.FoundPlace.Sector}
+              value={formData["FoundPlace.Sector"]}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["FoundPlace.Sector"] ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors["FoundPlace.Sector"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["FoundPlace.Sector"]}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundPlace.Cell"
-              className="block text-gray-700 font-medium"
-            >
-              Cell where Document was Found
+            <label htmlFor="FoundPlace.Cell" className="block text-gray-700 font-medium">
+              Cell
             </label>
             <input
               type="text"
-              id="foundPlace.cell"
+              id="FoundPlace.Cell"
               name="FoundPlace.Cell"
-              value={formData.FoundPlace.Cell}
+              value={formData["FoundPlace.Cell"]}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["FoundPlace.Cell"] ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors["FoundPlace.Cell"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["FoundPlace.Cell"]}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="FoundPlace.Village"
-              className="block text-gray-700 font-medium"
-            >
-              Village where Document was Found
+            <label htmlFor="FoundPlace.Village" className="block text-gray-700 font-medium">
+              Village
             </label>
             <input
               type="text"
-              id="foundPlace.village"
+              id="FoundPlace.Village"
               name="FoundPlace.Village"
-              value={formData.FoundPlace.Village}
+              value={formData["FoundPlace.Village"]}
               onChange={handleChange}
-              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["FoundPlace.Village"] ? "border-red-500" : ""
-              }`}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              required
             />
-            {errors["FoundPlace.Village"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["FoundPlace.Village"]}
-              </p>
-            )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="Comment"
-              className="block text-gray-700 font-medium"
-            >
-              Additional Comments or Details
+            <label htmlFor="Comment" className="block text-gray-700 font-medium">
+              Comment
             </label>
             <textarea
-              id="comment"
+              id="Comment"
               name="Comment"
               value={formData.Comment}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              rows="4"
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="returnedToOwner"
-              className="block text-gray-700 font-medium"
-            >
-              Returned to Owner
+            <label htmlFor="returnedToOwner" className="flex items-center text-gray-700 font-medium">
+              <input
+                type="checkbox"
+                id="returnedToOwner"
+                name="returnedToOwner"
+                checked={formData.returnedToOwner}
+                onChange={handleChange}
+                className="mr-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+              />
+              Document Returned to Owner
             </label>
-            <input
-              type="checkbox"
-              id="returnedToOwner"
-              name="returnedToOwner"
-              checked={formData.returnedToOwner}
-              onChange={handleChange}
-              className="mt-1 p-2 block border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            />
           </div>
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              Submit
-            </button>
-          </div>
+         
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            Submit
+          </button>
         </form>
+
+        {showModal && (
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              </div>
+
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <svg className="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">Success</h3>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">{message}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="button"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Founddoc;
+export default FoundDocumentForm;

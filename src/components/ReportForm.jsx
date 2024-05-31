@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const FormComponent = () => {
+const ReportForm = () => {
   const [formData, setFormData] = useState({
     file: null,
-    UserId: "",
+    Email: "",
     FirstName: "",
     LastName: "",
     Race: "",
@@ -73,76 +73,7 @@ const FormComponent = () => {
       valid = false;
     }
 
-    if (!formData.UserId.trim()) {
-      newErrors.userId = "User ID is required";
-      valid = false;
-    }
-
-    if (!formData.FirstName.trim()) {
-      newErrors.firstName = "First name is required";
-      valid = false;
-    }
-
-    if (!formData.LastName.trim()) {
-      newErrors.lastName = "Last name is required";
-      valid = false;
-    }
-
-    if (!formData.Race.trim()) {
-      newErrors.race = "Race is required";
-      valid = false;
-    }
-
-    if (!formData.CountryOfOrigin.trim()) {
-      newErrors.countryOfOrigin = "Country of origin is required";
-      valid = false;
-    }
-
-    if (!formData.Age) {
-      newErrors.age = "Age is required";
-      valid = false;
-    }
-
-    if (!formData.LostDate.trim()) {
-      newErrors.lostDate = "Lost date is required";
-      valid = false;
-    }
-
-    if (!formData.LostPlace.Country.trim()) {
-      newErrors["lostPlace.country"] =
-        "Country where the person was last seen is required";
-      valid = false;
-    }
-
-    if (!formData.LostPlace.Province.trim()) {
-      newErrors["lostPlace.province"] =
-        "Province where the person was last seen is required";
-      valid = false;
-    }
-
-    if (!formData.LostPlace.District.trim()) {
-      newErrors["lostPlace.district"] =
-        "District where the person was last seen is required";
-      valid = false;
-    }
-
-    if (!formData.LostPlace.Sector.trim()) {
-      newErrors["lostPlace.sector"] =
-        "Sector where the person was last seen is required";
-      valid = false;
-    }
-
-    if (!formData.LostPlace.Cell.trim()) {
-      newErrors["lostPlace.cell"] =
-        "Cell where the person was last seen is required";
-      valid = false;
-    }
-
-    if (!formData.LostPlace.Village.trim()) {
-      newErrors["lostPlace.village"] =
-        "Village where the person was last seen is required";
-      valid = false;
-    }
+    // Validate other form fields here
 
     setErrors(newErrors);
     return valid;
@@ -157,7 +88,7 @@ const FormComponent = () => {
 
     const data = new FormData();
     data.append("file", formData.file);
-    data.append("UserId", formData.UserId);
+    data.append("Email", formData.Email);
     data.append("FirstName", formData.FirstName);
     data.append("LastName", formData.LastName);
     data.append("Race", formData.Race);
@@ -173,28 +104,15 @@ const FormComponent = () => {
     data.append("Comment", formData.Comment);
     data.append("Found", formData.Found);
 
-    console.log(data)
-
-    // const dataper =  {
-    //     Country: formData.Country,
-    //     Province: formData.Province,
-    //     District: formData.District,
-    //     Sector: formData.Sector,
-    //     Cell: formData.Cell,
-    //     Village: formData.Village,
-    //   },
-    // };
-
     try {
-      const response = await  axios.post(
+      const response = await axios.post(
         "https://seekconnect-backend-1.onrender.com/missingPerson",
         data
       );
       console.log("Form data submitted:", response.data);
-      // Reset the form on successful submission
       setFormData({
         file: null,
-        UserId: "",
+        Email: "",
         FirstName: "",
         LastName: "",
         Race: "",
@@ -213,8 +131,20 @@ const FormComponent = () => {
         Found: false,
       });
       setErrors({});
+      alert("Form submitted successfully");
     } catch (error) {
       console.error("There was an error submitting the form:", error);
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        console.error("Server responded with status:", error.response.status);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.error("No response received:", error.request);
+      } else {
+        // Something happened in setting up the request
+        console.error("Error setting up the request:", error.message);
+      }
+      alert("There was an error submitting the form. Please try again later.");
     }
   };
 
@@ -233,7 +163,6 @@ const FormComponent = () => {
               type="file"
               id="file"
               name="file"
-              multiple
               onChange={handleFileChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.file ? "border-red-500" : ""
@@ -244,28 +173,25 @@ const FormComponent = () => {
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="userId" className="block text-gray-700 font-medium">
-              User ID
+            <label htmlFor="email" className="block text-gray-700 font-medium">
+              User Email
             </label>
             <input
-              type="text"
-              id="userId"
-              name="UserId"
-              value={formData.UserId}
+              type="email"
+              id="email"
+              name="Email"
+              value={formData.Email}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.userId ? "border-red-500" : ""
+                errors.Email ? "border-red-500" : ""
               }`}
             />
-            {errors.userId && (
-              <p className="text-red-500 text-sm mt-1">{errors.userId}</p>
+            {errors.Email && (
+              <p className="text-red-500 text-sm mt-1">{errors.Email}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="firstName"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="firstName" className="block text-gray-700 font-medium">
               First Name
             </label>
             <input
@@ -275,18 +201,15 @@ const FormComponent = () => {
               value={formData.FirstName}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.firstName ? "border-red-500" : ""
+                errors.FirstName ? "border-red-500" : ""
               }`}
             />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+            {errors.FirstName && (
+              <p className="text-red-500 text-sm mt-1">{errors.FirstName}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lastName"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="lastName" className="block text-gray-700 font-medium">
               Last Name
             </label>
             <input
@@ -296,11 +219,11 @@ const FormComponent = () => {
               value={formData.LastName}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.lastName ? "border-red-500" : ""
+                errors.LastName ? "border-red-500" : ""
               }`}
             />
-            {errors.lastName && (
-              <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+            {errors.LastName && (
+              <p className="text-red-500 text-sm mt-1">{errors.LastName}</p>
             )}
           </div>
           <div className="mb-4">
@@ -314,18 +237,15 @@ const FormComponent = () => {
               value={formData.Race}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.race ? "border-red-500" : ""
+                errors.Race ? "border-red-500" : ""
               }`}
             />
-            {errors.race && (
-              <p className="text-red-500 text-sm mt-1">{errors.race}</p>
+            {errors.Race && (
+              <p className="text-red-500 text-sm mt-1">{errors.Race}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="countryOfOrigin"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="countryOfOrigin" className="block text-gray-700 font-medium">
               Country of Origin
             </label>
             <input
@@ -335,13 +255,11 @@ const FormComponent = () => {
               value={formData.CountryOfOrigin}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.countryOfOrigin ? "border-red-500" : ""
+                errors.CountryOfOrigin ? "border-red-500" : ""
               }`}
             />
-            {errors.countryOfOrigin && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.countryOfOrigin}
-              </p>
+            {errors.CountryOfOrigin && (
+              <p className="text-red-500 text-sm mt-1">{errors.CountryOfOrigin}</p>
             )}
           </div>
           <div className="mb-4">
@@ -355,19 +273,16 @@ const FormComponent = () => {
               value={formData.Age}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.age ? "border-red-500" : ""
+                errors.Age ? "border-red-500" : ""
               }`}
             />
-            {errors.age && (
-              <p className="text-red-500 text-sm mt-1">{errors.age}</p>
+            {errors.Age && (
+              <p className="text-red-500 text-sm mt-1">{errors.Age}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostDate"
-              className="block text-gray-700 font-medium"
-            >
-              Date when the Person was Lost
+            <label htmlFor="lostDate" className="block text-gray-700 font-medium">
+              Lost Date
             </label>
             <input
               type="date"
@@ -376,156 +291,123 @@ const FormComponent = () => {
               value={formData.LostDate}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.lostDate ? "border-red-500" : ""
+                errors.LostDate ? "border-red-500" : ""
               }`}
             />
-            {errors.lostDate && (
-              <p className="text-red-500 text-sm mt-1">{errors.lostDate}</p>
+            {errors.LostDate && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostDate}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostPlace.country"
-              className="block text-gray-700 font-medium"
-            >
-              Country where the Person was Last Seen
+            <label htmlFor="country" className="block text-gray-700 font-medium">
+              Lost Country
             </label>
             <input
               type="text"
-              id="lostPlace.country"
+              id="country"
               name="LostPlace.Country"
               value={formData.LostPlace.Country}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["lostPlace.country"] ? "border-red-500" : ""
+                errors.LostPlace && errors.LostPlace.Country ? "border-red-500" : ""
               }`}
             />
-            {errors["lostPlace.country"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["lostPlace.country"]}
-              </p>
+            {errors.LostPlace && errors.LostPlace.Country && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Country}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostPlace.province"
-              className="block text-gray-700 font-medium"
-            >
-              Province where the Person was Last Seen
+            <label htmlFor="province" className="block text-gray-700 font-medium">
+              Lost Province
             </label>
             <input
               type="text"
-              id="lostPlace.province"
+              id="province"
               name="LostPlace.Province"
               value={formData.LostPlace.Province}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["lostPlace.province"] ? "border-red-500" : ""
+                errors.LostPlace && errors.LostPlace.Province ? "border-red-500" : ""
               }`}
             />
-            {errors["lostPlace.province"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["lostPlace.province"]}
-              </p>
+            {errors.LostPlace && errors.LostPlace.Province && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Province}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostPlace.district"
-              className="block text-gray-700 font-medium"
-            >
-              District where the Person was Last Seen
+            <label htmlFor="district" className="block text-gray-700 font-medium">
+              Lost District
             </label>
             <input
               type="text"
-              id="lostPlace.district"
+              id="district"
               name="LostPlace.District"
               value={formData.LostPlace.District}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["lostPlace.district"] ? "border-red-500" : ""
+                errors.LostPlace && errors.LostPlace.District ? "border-red-500" : ""
               }`}
             />
-            {errors["lostPlace.district"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["lostPlace.district"]}
-              </p>
+            {errors.LostPlace && errors.LostPlace.District && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.District}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostPlace.sector"
-              className="block text-gray-700 font-medium"
-            >
-              Sector where the Person was Last Seen
+            <label htmlFor="sector" className="block text-gray-700 font-medium">
+              Lost Sector
             </label>
             <input
               type="text"
-              id="lostPlace.sector"
+              id="sector"
               name="LostPlace.Sector"
               value={formData.LostPlace.Sector}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["lostPlace.sector"] ? "border-red-500" : ""
+                errors.LostPlace && errors.LostPlace.Sector ? "border-red-500" : ""
               }`}
             />
-            {errors["lostPlace.sector"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["lostPlace.sector"]}
-              </p>
+            {errors.LostPlace && errors.LostPlace.Sector && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Sector}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostPlace.cell"
-              className="block text-gray-700 font-medium"
-            >
-              Cell where the Person was Last Seen
+            <label htmlFor="cell" className="block text-gray-700 font-medium">
+              Lost Cell
             </label>
             <input
               type="text"
-              id="lostPlace.cell"
+              id="cell"
               name="LostPlace.Cell"
               value={formData.LostPlace.Cell}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["lostPlace.cell"] ? "border-red-500" : ""
+                errors.LostPlace && errors.LostPlace.Cell ? "border-red-500" : ""
               }`}
             />
-            {errors["lostPlace.cell"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["lostPlace.cell"]}
-              </p>
+            {errors.LostPlace && errors.LostPlace.Cell && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Cell}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="lostPlace.village"
-              className="block text-gray-700 font-medium"
-            >
-              Village where the Person was Last Seen
+            <label htmlFor="village" className="block text-gray-700 font-medium">
+              Lost Village
             </label>
             <input
               type="text"
-              id="lostPlace.village"
+              id="village"
               name="LostPlace.Village"
               value={formData.LostPlace.Village}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors["lostPlace.village"] ? "border-red-500" : ""
+                errors.LostPlace && errors.LostPlace.Village ? "border-red-500" : ""
               }`}
             />
-            {errors["lostPlace.village"] && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors["lostPlace.village"]}
-              </p>
+            {errors.LostPlace && errors.LostPlace.Village && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Village}</p>
             )}
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="comment"
-              className="block text-gray-700 font-medium"
-            >
+            <label htmlFor="comment" className="block text-gray-700 font-medium">
               Comment
             </label>
             <textarea
@@ -533,8 +415,13 @@ const FormComponent = () => {
               name="Comment"
               value={formData.Comment}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.Comment ? "border-red-500" : ""
+              }`}
             />
+            {errors.Comment && (
+              <p className="text-red-500 text-sm mt-1">{errors.Comment}</p>
+            )}
           </div>
           <div className="mb-4">
             <label htmlFor="found" className="block text-gray-700 font-medium">
@@ -546,13 +433,18 @@ const FormComponent = () => {
               name="Found"
               checked={formData.Found}
               onChange={handleChange}
-              className="mt-1 p-2"
+              className={`mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.Found ? "border-red-500" : ""
+              }`}
             />
+            {errors.Found && (
+              <p className="text-red-500 text-sm mt-1">{errors.Found}</p>
+            )}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
             >
               Submit
             </button>
@@ -561,6 +453,6 @@ const FormComponent = () => {
       </div>
     </div>
   );
- };
+};
 
- export default FormComponent;
+export default ReportForm;

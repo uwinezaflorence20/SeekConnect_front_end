@@ -27,7 +27,7 @@ export default function FoundItems() {
   };
 
   return (
-    <div className=" w-[100vh] max-w-full p-4 border rounded shadow-lgflex gap-2 mx-20">
+    <div className=" w-full max-w-full p-4 border rounded shadow-lg  ">
       <div>
         <div>
           <div className="bg-[#8a9de9] flex h-20 w-full items-center justify-center text-white">
@@ -36,11 +36,11 @@ export default function FoundItems() {
               Report a Found item
             </button>
           </div>
-          {showNotificationSettings && <Foundform />}
+          {showNotificationSettings && <Foundform  />}
         </div>
       </div>
 
-      <div className="shadow-md p-4 space-x-4">
+      <div className="shadow-md w-full p-4 space-x-4">
         <input
           type="text"
           placeholder="Search by name, category or location"
@@ -48,7 +48,7 @@ export default function FoundItems() {
         />
       </div>
 
-      <div className="text-black mb-6">
+      <div className="text-black w-full mb-6">
         <div className="flex items-center  space-x-4">
           <select
             name=""

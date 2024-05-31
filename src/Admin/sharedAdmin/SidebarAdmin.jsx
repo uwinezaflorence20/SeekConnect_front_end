@@ -12,10 +12,10 @@ const linkClasses =
 
  export default function SidebarAdmin() {
   return (
-    <div className="bg-neutral-900  w-60 p-3 flex flex-col text-white ">
+    <div className=" bg-[#8a9de9]  w-60 p-3 flex flex-col text-white ">
       <div className="flex items-center gap-2 px-1 py-3">
-        <FcBullish fontSize={24} />
-        <span className="text-neutral-100 text-lg">Seekconnect</span>
+        
+        <span className="text-white text-2xl font-bold">Seekconnect</span>
       </div>
       <div className="flex-1 py-8 flex flex-col gap-0.5">
         {DASHBOARD_SIDEBAR_LINKS.map((item) => (
@@ -41,7 +41,7 @@ function SidebarLink({ item }){
 
 
   return (
-    <Link to={item.path} className={ classNames (pathname == item.path ? ' bg-neutral-700 text-white': 'text-neutral-400', linkClasses)}>
+    <Link to={item.path} className={ classNames (pathname == item.path ? '  text-white': '', linkClasses)}>
     <span className='text-xl'>{item.icon}</span>
     {item.label}
     </Link>
