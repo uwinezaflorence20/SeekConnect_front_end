@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FaRegEdit } from "react-icons/fa";
 
+import { MdDelete } from "react-icons/md";
 const FoundMissingPeopleTable = () => {
   const [foundPeople, setFoundPeople] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -85,7 +87,7 @@ const FoundMissingPeopleTable = () => {
             <th className="border border-gray-200 px-4 py-2">Race</th>
             <th className="border border-gray-200 px-4 py-2">Country Of Origin</th>
             <th className="border border-gray-200 px-4 py-2">Age</th>
-            <th className="border border-gray-200 px-4 py-2">Found Date</th>
+            {/* <th className="border border-gray-200 px-4 py-2">Found Date</th> */}
             <th className="border border-gray-200 px-4 py-2">Comment</th>
             <th className="border border-gray-200 px-4 py-2">Actions</th>
           </tr>
@@ -100,29 +102,21 @@ const FoundMissingPeopleTable = () => {
               <td className="border border-gray-200 px-4 py-2">{person.Race}</td>
               <td className="border border-gray-200 px-4 py-2">{person.CountryOfOrigin}</td>
               <td className="border border-gray-200 px-4 py-2">{person.Age}</td>
-              <td className="border border-gray-200 px-4 py-2">{person.FoundDate}</td>
+              {/* <td className="border border-gray-200 px-4 py-2">{person.FoundDate}</td> */}
               <td className="border border-gray-200 px-4 py-2">{person.Comment || '-'}</td>
-              <td className="border border-gray-200 px-4 py-2 flex space-x-2">
+              <td className=" border-gray-200 px-4 py-2 flex ">
                 <button
                   className="text-red-500 hover:text-red-700"
                   onClick={() => handleDelete(person._id)}
                 >
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H3a1 1 0 000 2h1v11a2 2 0 002 2h8a2 2 0 002-2V6h1a1 1 0 100-2h-2V3a1 1 0 00-1-1H6zm3 6a1 1 0 112 0v6a1 1 0 11-2 0V8zM9 3v1h2V3H9z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                 <MdDelete className="text-2xl text-center" />
                 </button>
                 <button
                   className="text-blue-500 hover:text-blue-700"
                   onClick={() => handleUpdateClick(person)}
                 >
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2.293 12.293a1 1 0 011.414 0L10 18.586V13a1 1 0 112 0v5.586l6.293-6.293a1 1 0 111.414 1.414l-8 8a1 1 0 01-1.414 0l-8-8a1 1 0 010-1.414z" />
-                    <path d="M12 9a1 1 0 110 2H8a1 1 0 110-2h4z" />
-                  </svg>
+                 
+              <FaRegEdit className="text-xl flex items-center justify-center" />
                 </button>
               </td>
             </tr>

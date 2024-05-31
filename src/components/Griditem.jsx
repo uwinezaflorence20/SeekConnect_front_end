@@ -2,35 +2,35 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2"; // Import SweetAlert2 for pop-up messages
 
-const Lostitem = () => {
-  const [lostDocuments, setLostDocuments] = useState([]);
+const Griditem = () => {
+  const [foundDocuments, setFoundDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const fetchLostDocuments = async () => {
+    const fetchFoundDocuments = async () => {
       try {
         const response = await axios.get(
-          "https://seekconnect-backend-1.onrender.com/lost"
+          "https://seekconnect-backend-1.onrender.com/foundDocuments"
         );
-        console.log("API response:", response.data);
+        console.log("API response:", response.data); // Log the response to check its format
 
-        if (Array.isArray(response.data.documents)) {
-          setLostDocuments(response.data.documents);
+        // Assuming the response contains an object with 'foundDocuments' property
+        if (Array.isArray(response.data.foundDocuments)) {
+          setFoundDocuments(response.data.foundDocuments);
         } else {
           setError("Unexpected response format");
         }
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError("Error fetching data");
         setLoading(false);
       }
     };
 
-    fetchLostDocuments();
+    fetchFoundDocuments();
   }, []);
 
   const handleSeeMoreClick = (document) => {
@@ -53,18 +53,24 @@ const Lostitem = () => {
 
   return (
     <div className="mt-6">
-      <h3 className="text-2xl font-bold">Lost Documents:</h3>
-      {lostDocuments.length === 0 ? (
-        <p className="text-center">No lost documents found.</p>
+      <h3 className="text-lg font-medium">Found Documents:</h3>
+      {foundDocuments.length === 0 ? (
+        <p className="text-center">No found documents found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
-          {lostDocuments.map((document) => (
-            <div key={document._id} className="border border-gray-200 text-center p-4 rounded-lg shadow-md">
-             <div className="flex items-center justify-center">
-                  <img src="/OIP.jpg" alt="" className="w-40 h-40" />
-                </div>
-              <h3 className="text-lg font-bold mb-2">{document.DocumentType}</h3>
-              <p className="text-md font-extralight italic text-gray-600 mb-2">Name: {document.NameOnDocument}</p>
+          {foundDocuments.map((document) => (
+            <div key={document._id} className="border border-gray-200 p-4 rounded-lg shadow-md">
+             
+              
+              
+             
+              {document.Photo && document.Photo.url ? (
+                <img src={document.Photo.url} alt="Document" className="h-32 w-auto mb-2" />
+              ) : (
+                <span className="text-sm text-gray-600">No photo available</span>
+              )}
+               <h3 className="text-lg font-bold mb-2">{document.DocumentType}</h3>
+              <p className="text-sm text-gray-600 mb-2">Name: {document.NameOnDocument}</p>
               <button
                 onClick={() => handleSeeMoreClick(document)}
                 className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -101,11 +107,12 @@ const Lostitem = () => {
                       {selectedDocument.DocumentType}
                     </h3>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-600 mb-2">Name on Document: {selectedDocument.NameOnDocument}</p>
-                      <p className="text-sm text-gray-600 mb-2">Lost Date: {new Date(selectedDocument.LostDate).toLocaleDateString()}</p>
-                      <p className="text-sm text-gray-600 mb-2">Place of Issue: {selectedDocument.PlaceOfIssueOnDocument}</p>
-                      <p className="text-sm text-gray-600 mb-2">Lost Place: {`${selectedDocument.LostPlace.Country}, ${selectedDocument.LostPlace.Province}, ${selectedDocument.LostPlace.District}, ${selectedDocument.LostPlace.Sector}, ${selectedDocument.LostPlace.Cell}, ${selectedDocument.LostPlace.Village}`}</p>
-                      <p className="text-sm text-gray-600 mb-2">Comment: {selectedDocument.Comment}</p>
+                      <p className="text-sm text-gray-600 mb-2">Place of Issue: {document.PlaceOfIssueOnDocument}</p>
+                      <p className="text-sm text-gray-600 mb-2">Found Date: {document.FoundDate}</p>
+                      <p className="text-sm text-gray-500">Name on Document: {selectedDocument.NameOnDocument}</p>
+                      <p className="text-sm text-gray-500">Place of Issue: {selectedDocument.PlaceOfIssueOnDocument}</p>
+                      <p className="text-sm text-gray-500">Found Date: {selectedDocument.FoundDate}</p>
+                      <p className="text-sm text-gray-500">Returned to Owner: {selectedDocument.returnedToOwner ? "Yes" : "No"}</p>
                       {selectedDocument.Photo && selectedDocument.Photo.url && (
                         <img src={selectedDocument.Photo.url} alt="Document" className="mt-2 h-32 w-auto" />
                       )}
@@ -130,4 +137,4 @@ const Lostitem = () => {
   );
 };
 
-export default Lostitem;
+export default Griditem;

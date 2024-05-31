@@ -4,6 +4,8 @@ import { IoIosAdd } from "react-icons/io";
 import Post from "./Post";
 import Lostitem from "../Admin/Lostitem";
 import Foundform from "./Foundform";
+import Gridperson from "./Gridperson";
+import Griditem from "./Griditem";
 
 export default function FoundItems() {
   const [showNotificationSettings, setShowNotificationSettings] =
@@ -63,6 +65,8 @@ export default function FoundItems() {
           </select>
         </div>
       </div>
+      <Gridperson/>
+      <Griditem/>
     </div>
   );
 }

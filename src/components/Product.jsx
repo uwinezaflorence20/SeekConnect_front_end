@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import Post from './Post';
 import Lostitem from "../Admin/Lostitem";
+import LostPeople from "../Admin/LostPeople";
 
 export default function Dashboard() {
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
@@ -25,7 +26,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="  gap-2 mx-20">
+    <div className="p-4">
       
        
 
@@ -73,13 +74,11 @@ export default function Dashboard() {
           </div>
         </div>
       
-        <div className="p-6">
-          <div className="bg-white p-4 shadow-md">
-            <div className="flex items-center w-full min-w-96 space-x-4">
+        
+            
               <Lostitem/>
-            </div>
-          </div>
-        </div>
+              <LostPeople/>
+           
 
       </div>
    

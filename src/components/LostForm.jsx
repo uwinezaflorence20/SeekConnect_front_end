@@ -1,209 +1,498 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const LostForm = ({ onClose }) => {
-  const [Email, setEmail] = useState("example@example.com"); // Pre-filled user ID
-  const [documentType, setDocumentType] = useState("Drivers License");
-  const [nameOnDocument, setNameOnDocument] = useState("");
-  const [placeOfIssueOnDocument, setPlaceOfIssueOnDocument] = useState("");
-  const [lostDate, setLostDate] = useState("");
-  const [lostPlace, setLostPlace] = useState({
-    Country: "",
-    Province: "",
-    District: "",
-    Sector: "",
-    Cell: "",
-    Village: ""
+const ReportForm = () => {
+  const [formData, setFormData] = useState({
+    file: null,
+    Email: "",
+    FirstName: "",
+    LastName: "",
+    Race: "",
+    CountryOfOrigin: "",
+    Age: "",
+    LostDate: "",
+    LostPlace: {
+      Country: "",
+      Province: "",
+      District: "",
+      Sector: "",
+      Cell: "",
+      Village: "",
+    },
+    Comment: "",
+    Found: false,
   });
-  const [comment, setComment] = useState("");
-  const [found, setFound] = useState(false);
-  const [formError, setFormError] = useState("");
-  const [responseData, setResponseData] = useState(null);
 
-  const isValid = () => {
-    if (!userId || !nameOnDocument || !placeOfIssueOnDocument || !lostDate ||
-      !lostPlace.Country || !lostPlace.Province || !lostPlace.District ||
-      !lostPlace.Sector || !lostPlace.Cell || !lostPlace.Village || !comment) {
-      setFormError("All fields are required");
-      return false;
+  const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData((prevState) => ({
+        ...prevState,
+        [parent]: {
+          ...prevState[parent],
+          [child]: value,
+        },
+      }));
+    } else if (type === "checkbox") {
+      setFormData({
+        ...formData,
+        [name]: checked,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
-    setFormError("");
-    return true;
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
+  };
+
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      file: e.target.files[0],
+    });
+    setErrors({
+      ...errors,
+      file: "",
+    });
+  };
+
+  const validate = () => {
+    let valid = true;
+    let newErrors = {};
+
+    if (!formData.file) {
+      newErrors.file = "File is required";
+      valid = false;
+    }
+
+    // Validate other form fields here
+
+    setErrors(newErrors);
+    return valid;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isValid()) return;
+
+    if (!validate()) {
+      return;
+    }
+
+    const data = new FormData();
+    data.append("file", formData.file);
+    data.append("Email", formData.Email);
+    data.append("FirstName", formData.FirstName);
+    data.append("LastName", formData.LastName);
+    data.append("Race", formData.Race);
+    data.append("CountryOfOrigin", formData.CountryOfOrigin);
+    data.append("Age", formData.Age);
+    data.append("LostDate", formData.LostDate);
+    data.append("LostPlace.Country", formData.LostPlace.Country);
+    data.append("LostPlace.Province", formData.LostPlace.Province);
+    data.append("LostPlace.District", formData.LostPlace.District);
+    data.append("LostPlace.Sector", formData.LostPlace.Sector);
+    data.append("LostPlace.Cell", formData.LostPlace.Cell);
+    data.append("LostPlace.Village", formData.LostPlace.Village);
+    data.append("Comment", formData.Comment);
+    data.append("Found", formData.Found);
 
     try {
       const response = await axios.post(
-        "https://seekconnect-backend-1.onrender.com/lost",
-        {
-          Email: Email,
-          DocumentType: documentType,
-          NameOnDocument: nameOnDocument,
-          PlaceOfIssueOnDocument: placeOfIssueOnDocument,
-          LostDate: lostDate,
-          LostPlace: lostPlace,
-          Comment: comment,
-          Found: found
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          }
-        }
+        "https://seekconnect-backend-1.onrender.com/missingPerson",
+        data
       );
-
-      setResponseData(response.data);
-      alert("Lost document report submitted successfully!");
+      console.log("Form data submitted:", response.data);
+      setFormData({
+        file: null,
+        Email: "",
+        FirstName: "",
+        LastName: "",
+        Race: "",
+        CountryOfOrigin: "",
+        Age: "",
+        LostDate: "",
+        LostPlace: {
+          Country: "",
+          Province: "",
+          District: "",
+          Sector: "",
+          Cell: "",
+          Village: "",
+        },
+        Comment: "",
+        Found: false,
+      });
+      setErrors({});
+      setMessage("Form submitted successfully!");
+      setShowModal(true);
     } catch (error) {
-      setFormError("An error occurred. Please try again later.");
-      console.error(error);
+      console.error("There was an error submitting the form:", error);
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        console.error("Server responded with status:", error.response.status);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.error("No response received:", error.request);
+      } else {
+        // Something happened in setting up the request
+        console.error("Error setting up the request:", error.message);
+      }
+      setMessage("There was an error submitting the form. Please try again later.");
+      setShowModal(true);
     }
   };
 
-  const handleLostPlaceChange = (e) => {
-    const { name, value } = e.target;
-    setLostPlace({ ...lostPlace, [name]: value });
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
-    <div className="relative bg-white p-6 rounded-md shadow-md">
-      <button
-        onClick={onClose}
-        className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-      >
-        &times;
-      </button>
-      <h2 className="text-2xl font-bold text-center mb-6">Report Lost Document</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="userId" className="block text-gray-700 font-medium">User Email</label>
-          <input
-            type="text"
-            id="userId"
-            value={Email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="documentType" className="block text-gray-700 font-medium">Document Type</label>
-          <select
-            id="documentType"
-            value={documentType}
-            onChange={(e) => setDocumentType(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+    <div className="min-h-screen mt-20 flex items-center justify-center bg-gray-100">
+      <div className="max-w-lg w-full mb-40 p-6 rounded-md bg-white shadow-md">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Add Missing Person Report
+        </h2>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          {/* Form fields here */}
+          <div className="mb-4">
+            <label htmlFor="file" className="block text-gray-700 font-medium">
+              Photo
+            </label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              onChange={handleFileChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.file ? "border-red-500" : ""
+              }`}
+            />
+            {errors.file && (
+              <p className="text-red-500 text-sm mt-1">{errors.file}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-medium">
+              User Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="Email"
+              value={formData.Email}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.Email ? "border-red-500" : ""
+              }`}
+            />
+            {errors.Email && (
+              <p className="text-red-500 text-sm mt-1">{errors.Email}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="firstName" className="block text-gray-700 font-medium">
+              First Name
+            </label>
+            <input
+              type="text"
+              id="firstName"
+              name="FirstName"
+              value={formData.FirstName}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.FirstName ? "border-red-500" : ""
+              }`}
+            />
+            {errors.FirstName && (
+              <p className="text-red-500 text-sm mt-1">{errors.FirstName}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lastName" className="block text-gray-700 font-medium">
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              name="LastName"
+              value={formData.LastName}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.LastName ? "border-red-500" : ""
+              }`}
+            />
+            {errors.LastName && (
+              <p className="text-red-500 text-sm mt-1">{errors.LastName}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="race" className="block text-gray-700 font-medium">
+              Race
+            </label>
+            <input
+              type="text"
+              id="race"
+              name="Race"
+              value={formData.Race}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.Race ? "border-red-500" : ""
+              }`}
+            />
+            {errors.Race && (
+              <p className="text-red-500 text-sm mt-1">{errors.Race}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="countryOfOrigin" className="block text-gray-700 font-medium">
+              Country of Origin
+            </label>
+            <input
+              type="text"
+              id="countryOfOrigin"
+              name="CountryOfOrigin"
+              value={formData.CountryOfOrigin}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.CountryOfOrigin ? "border-red-500" : ""
+              }`}
+            />
+            {errors.CountryOfOrigin && (
+              <p className="text-red-500 text-sm mt-1">{errors.CountryOfOrigin}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="age" className="block text-gray-700 font-medium">
+              Age
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="Age"
+              value={formData.Age}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.Age ? "border-red-500" : ""
+              }`}
+            />
+            {errors.Age && (
+              <p className="text-red-500 text-sm mt-1">{errors.Age}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostDate" className="block text-gray-700 font-medium">
+              Lost Date
+            </label>
+            <input
+              type="date"
+              id="lostDate"
+              name="LostDate"
+              value={formData.LostDate}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.LostDate ? "border-red-500" : ""
+              }`}
+            />
+            {errors.LostDate && (
+              <p className="text-red-500 text-sm mt-1">{errors.LostDate}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostPlaceCountry" className="block text-gray-700 font-medium">
+              Lost Place Country
+            </label>
+            <input
+              type="text"
+              id="lostPlaceCountry"
+              name="LostPlace.Country"
+              value={formData.LostPlace.Country}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors["LostPlace.Country"] ? "border-red-500" : ""
+              }`}
+            />
+            {errors["LostPlace.Country"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Country"]}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostPlaceProvince" className="block text-gray-700 font-medium">
+              Lost Place Province
+            </label>
+            <input
+              type="text"
+              id="lostPlaceProvince"
+              name="LostPlace.Province"
+              value={formData.LostPlace.Province}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors["LostPlace.Province"] ? "border-red-500" : ""
+              }`}
+            />
+            {errors["LostPlace.Province"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Province"]}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostPlaceDistrict" className="block text-gray-700 font-medium">
+              Lost Place District
+            </label>
+            <input
+              type="text"
+              id="lostPlaceDistrict"
+              name="LostPlace.District"
+              value={formData.LostPlace.District}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors["LostPlace.District"] ? "border-red-500" : ""
+              }`}
+            />
+            {errors["LostPlace.District"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.District"]}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostPlaceSector" className="block text-gray-700 font-medium">
+              Lost Place Sector
+            </label>
+            <input
+              type="text"
+              id="lostPlaceSector"
+              name="LostPlace.Sector"
+              value={formData.LostPlace.Sector}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors["LostPlace.Sector"] ? "border-red-500" : ""
+              }`}
+            />
+            {errors["LostPlace.Sector"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Sector"]}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostPlaceCell" className="block text-gray-700 font-medium">
+              Lost Place Cell
+            </label>
+            <input
+              type="text"
+              id="lostPlaceCell"
+              name="LostPlace.Cell"
+              value={formData.LostPlace.Cell}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors["LostPlace.Cell"] ? "border-red-500" : ""
+              }`}
+            />
+            {errors["LostPlace.Cell"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Cell"]}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="lostPlaceVillage" className="block text-gray-700 font-medium">
+              Lost Place Village
+            </label>
+            <input
+              type="text"
+              id="lostPlaceVillage"
+              name="LostPlace.Village"
+              value={formData.LostPlace.Village}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors["LostPlace.Village"] ? "border-red-500" : ""
+              }`}
+            />
+            {errors["LostPlace.Village"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Village"]}</p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="comment" className="block text-gray-700 font-medium">
+              Comment
+            </label>
+            <textarea
+              id="comment"
+              name="Comment"
+              value={formData.Comment}
+              onChange={handleChange}
+              className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                errors.Comment ? "border-red-500" : ""
+              }`}
+            />
+            {errors.Comment && (
+              <p className="text-red-500 text-sm mt-1">{errors.Comment}</p>
+            )}
+          </div>
+          <div className="mb-4 flex items-center">
+            <input
+              type="checkbox"
+              id="found"
+              name="Found"
+              checked={formData.Found}
+              onChange={handleChange}
+              className="mr-2"
+            />
+            <label htmlFor="found" className="text-gray-700 font-medium">
+              Found
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            <option value="Drivers License">Driver's License</option>
-            <option value="National Id Card">National ID Card</option>
-            <option value="Insurance Card">Insurance Card</option>
-            <option value="Other">Other</option> {/* Add an "Other" option */}
-          </select>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="nameOnDocument" className="block text-gray-700 font-medium">Name on Document</label>
-          <input
-            type="text"
-            id="nameOnDocument"
-            value={nameOnDocument}
-            onChange={(e) => setNameOnDocument(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="placeOfIssueOnDocument" className="block text-gray-700 font-medium">Place of Issue</label>
-          <input
-            type="text"
-            id="placeOfIssueOnDocument"
-            value={placeOfIssueOnDocument}
-            onChange={(e) => setPlaceOfIssueOnDocument(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="lostDate" className="block text-gray-700 font-medium">Date Lost</label>
-          <input
-            type="date"
-            id="lostDate"
-            value={lostDate}
-            onChange={(e) => setLostDate(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium">Lost Place</label>
-          <input
-            type="text"
-            name="Country"
-            placeholder="Country"
-            value={lostPlace.Country}
-            onChange={handleLostPlaceChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="Province"
-            placeholder="Province"
-            value={lostPlace.Province}
-            onChange={handleLostPlaceChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="District"
-            placeholder="District"
-            value={lostPlace.District}
-            onChange={handleLostPlaceChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="Sector"
-            placeholder="Sector"
-            value={lostPlace.Sector}
-            onChange={handleLostPlaceChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="Cell"
-            placeholder="Cell"
-            value={lostPlace.Cell}
-            onChange={handleLostPlaceChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="Village"
-            placeholder="Village"
-            value={lostPlace.Village}
-            onChange={handleLostPlaceChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="comment" className="block text-gray-700 font-medium">Comment</label>
-          <textarea
-            id="comment"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          ></textarea>
-        </div>
-       
-        {formError && <p className="text-red-500 text-center text-sm mb-4">{formError}</p>}
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-500 text-white font-medium rounded-md"
-        >
-          Submit
-        </button>
-      </form>
+            Submit
+          </button>
+        </form>
+        {showModal && (
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              </div>
+
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <svg className="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">Success</h3>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">{message}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="button"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default LostForm;
-
+export default ReportForm;

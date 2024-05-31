@@ -24,6 +24,8 @@ const ReportForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -131,7 +133,8 @@ const ReportForm = () => {
         Found: false,
       });
       setErrors({});
-      alert("Form submitted successfully");
+      setMessage("Form submitted successfully!");
+      setShowModal(true);
     } catch (error) {
       console.error("There was an error submitting the form:", error);
       if (error.response) {
@@ -144,8 +147,13 @@ const ReportForm = () => {
         // Something happened in setting up the request
         console.error("Error setting up the request:", error.message);
       }
-      alert("There was an error submitting the form. Please try again later.");
+      setMessage("There was an error submitting the form. Please try again later.");
+      setShowModal(true);
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -155,6 +163,7 @@ const ReportForm = () => {
           Add Missing Person Report
         </h2>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
+          {/* Form fields here */}
           <div className="mb-4">
             <label htmlFor="file" className="block text-gray-700 font-medium">
               Photo
@@ -299,111 +308,111 @@ const ReportForm = () => {
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="country" className="block text-gray-700 font-medium">
-              Lost Country
+            <label htmlFor="lostPlaceCountry" className="block text-gray-700 font-medium">
+              Lost Place Country
             </label>
             <input
               type="text"
-              id="country"
+              id="lostPlaceCountry"
               name="LostPlace.Country"
               value={formData.LostPlace.Country}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.LostPlace && errors.LostPlace.Country ? "border-red-500" : ""
+                errors["LostPlace.Country"] ? "border-red-500" : ""
               }`}
             />
-            {errors.LostPlace && errors.LostPlace.Country && (
-              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Country}</p>
+            {errors["LostPlace.Country"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Country"]}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="province" className="block text-gray-700 font-medium">
-              Lost Province
+            <label htmlFor="lostPlaceProvince" className="block text-gray-700 font-medium">
+              Lost Place Province
             </label>
             <input
               type="text"
-              id="province"
+              id="lostPlaceProvince"
               name="LostPlace.Province"
               value={formData.LostPlace.Province}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.LostPlace && errors.LostPlace.Province ? "border-red-500" : ""
+                errors["LostPlace.Province"] ? "border-red-500" : ""
               }`}
             />
-            {errors.LostPlace && errors.LostPlace.Province && (
-              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Province}</p>
+            {errors["LostPlace.Province"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Province"]}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="district" className="block text-gray-700 font-medium">
-              Lost District
+            <label htmlFor="lostPlaceDistrict" className="block text-gray-700 font-medium">
+              Lost Place District
             </label>
             <input
               type="text"
-              id="district"
+              id="lostPlaceDistrict"
               name="LostPlace.District"
               value={formData.LostPlace.District}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.LostPlace && errors.LostPlace.District ? "border-red-500" : ""
+                errors["LostPlace.District"] ? "border-red-500" : ""
               }`}
             />
-            {errors.LostPlace && errors.LostPlace.District && (
-              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.District}</p>
+            {errors["LostPlace.District"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.District"]}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="sector" className="block text-gray-700 font-medium">
-              Lost Sector
+            <label htmlFor="lostPlaceSector" className="block text-gray-700 font-medium">
+              Lost Place Sector
             </label>
             <input
               type="text"
-              id="sector"
+              id="lostPlaceSector"
               name="LostPlace.Sector"
               value={formData.LostPlace.Sector}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.LostPlace && errors.LostPlace.Sector ? "border-red-500" : ""
+                errors["LostPlace.Sector"] ? "border-red-500" : ""
               }`}
             />
-            {errors.LostPlace && errors.LostPlace.Sector && (
-              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Sector}</p>
+            {errors["LostPlace.Sector"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Sector"]}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="cell" className="block text-gray-700 font-medium">
-              Lost Cell
+            <label htmlFor="lostPlaceCell" className="block text-gray-700 font-medium">
+              Lost Place Cell
             </label>
             <input
               type="text"
-              id="cell"
+              id="lostPlaceCell"
               name="LostPlace.Cell"
               value={formData.LostPlace.Cell}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.LostPlace && errors.LostPlace.Cell ? "border-red-500" : ""
+                errors["LostPlace.Cell"] ? "border-red-500" : ""
               }`}
             />
-            {errors.LostPlace && errors.LostPlace.Cell && (
-              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Cell}</p>
+            {errors["LostPlace.Cell"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Cell"]}</p>
             )}
           </div>
           <div className="mb-4">
-            <label htmlFor="village" className="block text-gray-700 font-medium">
-              Lost Village
+            <label htmlFor="lostPlaceVillage" className="block text-gray-700 font-medium">
+              Lost Place Village
             </label>
             <input
               type="text"
-              id="village"
+              id="lostPlaceVillage"
               name="LostPlace.Village"
               value={formData.LostPlace.Village}
               onChange={handleChange}
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.LostPlace && errors.LostPlace.Village ? "border-red-500" : ""
+                errors["LostPlace.Village"] ? "border-red-500" : ""
               }`}
             />
-            {errors.LostPlace && errors.LostPlace.Village && (
-              <p className="text-red-500 text-sm mt-1">{errors.LostPlace.Village}</p>
+            {errors["LostPlace.Village"] && (
+              <p className="text-red-500 text-sm mt-1">{errors["LostPlace.Village"]}</p>
             )}
           </div>
           <div className="mb-4">
@@ -423,33 +432,64 @@ const ReportForm = () => {
               <p className="text-red-500 text-sm mt-1">{errors.Comment}</p>
             )}
           </div>
-          <div className="mb-4">
-            <label htmlFor="found" className="block text-gray-700 font-medium">
-              Found
-            </label>
+          <div className="mb-4 flex items-center">
             <input
               type="checkbox"
               id="found"
               name="Found"
               checked={formData.Found}
               onChange={handleChange}
-              className={`mt-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.Found ? "border-red-500" : ""
-              }`}
+              className="mr-2"
             />
-            {errors.Found && (
-              <p className="text-red-500 text-sm mt-1">{errors.Found}</p>
-            )}
+            <label htmlFor="found" className="text-gray-700 font-medium">
+              Found
+            </label>
           </div>
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
-            >
-              Submit
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Submit
+          </button>
         </form>
+        {showModal && (
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+              <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+              </div>
+
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+              <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <svg className="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">Success</h3>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">{message}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="button"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
