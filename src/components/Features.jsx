@@ -112,7 +112,7 @@ const Features = () => {
                 </p>
               </div>
               <p class="mt-4 tex-black">
-              Lostify is as enjoyable to use as it is beneficial. We continuously refine our Users experience to make your experience the best it can be
+              SeekConnect is as enjoyable to use as it is beneficial. We continuously refine our Users experience to make your experience the best it can be
               </p>
             </div>
             <div class="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
@@ -126,7 +126,7 @@ const Features = () => {
                 </p>
               </div>
               <p class="mt-4 tex-black">
-              Lostify is as enjoyable to use as it is beneficial. We continuously refine our Users experience to make your experience the best it can be
+              SeekConnect is as enjoyable to use as it is beneficial. We continuously refine our Users experience to make your experience the best it can be
               </p>
             </div>
             <div class="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
