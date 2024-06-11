@@ -61,9 +61,9 @@ const FoundD = () => {
       setFoundDocuments(foundDocuments.map(doc => doc._id === editDocument._id ? { ...doc, ...Object.fromEntries(formData.entries()) } : doc));
       setEditDocument(null);
       setPhoto(null);
-      setModalMessage("The document has been updated."); 
+      setModalMessage("The document has been updated."); // Set modal message for update
     } catch (error) {
-      setModalMessage("There was an error updating the document."); 
+      setModalMessage("There was an error updating the document."); // Set modal message for error
     }
   };
 
