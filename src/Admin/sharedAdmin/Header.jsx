@@ -1,9 +1,5 @@
 import React, { Fragment } from "react";
-import {
-  HiOutlineBell,
-  HiOutlineChatAlt,
-  HiOutlineSearch,
-} from "react-icons/hi";
+import { HiOutlineBell } from "react-icons/hi";
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
@@ -15,20 +11,7 @@ function Header() {
 
   return (
     <div className="bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200">
-      <div className="relative">
-        <HiOutlineSearch
-          fontSize={20}
-          className="text-gray-400 absolute top-1/2 -translate-y-1/2 left-3"
-        />
-        <input
-          type="text"
-          placeholder="Search..."
-          className="text-sm focus:outline-none active:outline-none h-10 w-[24rem] border border-gray-300 rounded-sm pl-11 pr-4"
-        />
-      </div>
-      <div className="flex items-center gap-2 mr-2">
-        
-
+      <div className="flex ml-auto items-center gap-2 mr-2">
         <Popover className="relative">
           {({ open }) => (
             <>
@@ -80,13 +63,6 @@ function Header() {
             </Menu.Button>
           </div>
 
-          {user && user.role === "admin" && (
-            <div className="ml-2 text-gray-700">
-              <p>{user.name}</p>
-              <p>{user.email}</p>
-            </div>
-          )}
-
           <Transition
             as={Fragment}
             enter="transition ease-out duration-75"
@@ -97,33 +73,10 @@ function Header() {
             leaveTo="opacity-0 scale-95"
           >
             <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-48 rounded-sm shadow-md p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <Menu.Item>
-                {({ active }) => (
-                  <div
-                    className={classNames(
-                      active && "bg-gray-100",
-                      "text-gray-700 focus:bg-gray-200 cursor-pointer rounded-sm px-4 py-2"
-                    )}
-                    onClick={() => navigate("/profile")}
-                  >
-                    YOUR PROFILE
-                  </div>
-                )}
-              </Menu.Item>
-             
-              <Menu.Item>
-                {({ active }) => (
-                  <div
-                    className={classNames(
-                      active && "bg-gray-100",
-                      "text-gray-700 focus:bg-gray-200 cursor-pointer rounded-sm px-4 py-2"
-                    )}
-                    onClick={() => navigate("/")}
-                  >
-                    LOG OUT
-                  </div>
-                )}
-              </Menu.Item>
+              <div className="px-4 py-2 text-gray-700">
+                <p className="font-medium">{user ? user.name : "User Name"}</p>
+                <p className="text-sm">{user ? user.email : "user@example.com"}</p>
+              </div>
             </Menu.Items>
           </Transition>
         </Menu>

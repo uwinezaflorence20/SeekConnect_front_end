@@ -5,12 +5,9 @@ import { MdDelete } from "react-icons/md";
 
 const FoundMissingPeopleTable = () => {
   const [foundPeople, setFoundPeople] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [message, setMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
   const [editingPerson, setEditingPerson] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchFoundMissingPeople();
@@ -18,9 +15,8 @@ const FoundMissingPeopleTable = () => {
 
   const fetchFoundMissingPeople = async () => {
     try {
-      const response = await fetch('https://seekconnect-backend-1.onrender.com/foundMissingPeople');
-      const data = await response.json();
-      setFoundPeople(data.missedPeople);
+      const response = await axios.get('https://seekconnect-backend-1.onrender.com/foundMissingPeople');
+      setFoundPeople(response.data.missedPeople);
     } catch (error) {
       console.error('Error fetching found missing people:', error);
     }
@@ -28,16 +24,12 @@ const FoundMissingPeopleTable = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`https://seekconnect-backend-1.onrender.com/foundMissingPerson?id=${id}`);
-      setMessage("Found person has been deleted successfully!");
-      setIsSuccess(true);
-      setShowModal(true);
+      await axios.delete(`https://seekconnect-backend-1.onrender.com/foundMissingPerson?id=${id}`);
+      setModalMessage("Found person has been deleted successfully!");
       fetchFoundMissingPeople();
     } catch (error) {
       console.error("There was an error deleting the found person:", error);
-      setMessage("An error occurred while deleting the found person.");
-      setIsSuccess(false);
-      setShowModal(true);
+      setModalMessage("An error occurred while deleting the found person.");
     }
   };
 
@@ -51,7 +43,7 @@ const FoundMissingPeopleTable = () => {
     const formData = new FormData(event.target);
 
     try {
-      const response = await axios.patch(
+      await axios.patch(
         `https://seekconnect-backend-1.onrender.com/foundMissingPerson?id=${editingPerson._id}`,
         formData,
         {
@@ -60,32 +52,20 @@ const FoundMissingPeopleTable = () => {
           }
         }
       );
-      setMessage("Person updated successfully!");
-      setIsSuccess(true);
-      setShowModal(true);
+      setModalMessage("Person updated successfully!");
       fetchFoundMissingPeople();
       setEditingPerson(null);
       setShowUpdateForm(false);
     } catch (error) {
       console.error("There was an error updating the found person:", error);
-      setMessage("An error occurred while updating the found person.");
-      setIsSuccess(false);
-      setShowModal(true);
+      setModalMessage("An error occurred while updating the found person.");
     }
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
   };
 
   const closeUpdateForm = () => {
     setEditingPerson(null);
     setShowUpdateForm(false);
   };
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
 
   return (
     <div className="container mx-auto bg-white px-4 py-8">
@@ -145,21 +125,21 @@ const FoundMissingPeopleTable = () => {
         <div className="mt-8">
           <h3 className="text-xl font-bold mb-4">Update Found Person</h3>
           <form onSubmit={handleUpdateSubmit} className="bg-gray-100 p-4 rounded shadow-md">
-          <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Photo
-        </label>
-        <input
-          type="file"
-          name="file"
-          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-        />
-        {editingPerson.Photo && editingPerson.Photo.url ? (
-          <img src={editingPerson.Photo.url} alt="Photo" className="w-20 h-20 object-cover" />
-        ) : (
-          <span>No photo available</span>
-        )}
-      </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Photo
+              </label>
+              <input
+                type="file"
+                name="file"
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {editingPerson.Photo && editingPerson.Photo.url ? (
+                <img src={editingPerson.Photo.url} alt="Photo" className="w-20 h-20 object-cover" />
+              ) : (
+                <span>No photo available</span>
+              )}
+            </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Email
@@ -228,104 +208,14 @@ const FoundMissingPeopleTable = () => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Date
+                Comment
               </label>
-              <input
-                type="text"
-                name="foundDate"
-                defaultValue={editingPerson.FoundDate}
+              <textarea
+                name="Comment"
+                defaultValue={editingPerson.Comment}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Place - Country
-              </label>
-              <input
-                type="text"
-                name="foundPlaceCountry"
-                defaultValue={editingPerson.FoundPlace?.Country}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Place - Province
-              </label>
-              <input
-                type="text"
-                name="foundPlaceProvince"
-                defaultValue={editingPerson.FoundPlace?.Province}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Place - District
-              </label>
-              <input
-                type="text"
-                name="foundPlaceDistrict"
-                defaultValue={editingPerson.FoundPlace?.District}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Place - Sector
-              </label>
-              <input
-                type="text"
-                name="foundPlaceSector"
-                defaultValue={editingPerson.FoundPlace?.Sector}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Place - Cell
-              </label>
-              <input
-                type="text"
-                name="foundPlaceCell"
-                defaultValue={editingPerson.FoundPlace?.Cell}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Found Place - Village
-              </label>
-              <input
-                type="text"
-                name="foundPlaceVillage"
-                defaultValue={editingPerson.FoundPlace?.Village}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Comment
-                  </label>
-                  <textarea
-                    name="comment"
-                    defaultValue={editingPerson.Comment}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Returned to Owner
-                  </label>
-                  <input
-                    type="checkbox"
-                    name="returnedToOwner"
-                    defaultChecked={editingPerson.returnedToOwner}
-                    className="leading-tight"
-                  />
-                </div>
-              
-            
             <div className="flex items-center justify-between">
               <button
                 type="submit"
@@ -335,18 +225,17 @@ const FoundMissingPeopleTable = () => {
               </button>
               <button
                 type="button"
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 onClick={closeUpdateForm}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Cancel
               </button>
             </div>
           </form>
         </div>
-        
       )}
 
-{message && (
+      {modalMessage && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen">
             <div className="fixed inset-0 transition-opacity">
@@ -359,9 +248,8 @@ const FoundMissingPeopleTable = () => {
                     <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
                       Notification
                     </h3>
-                   
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">{message}</p>
+                      <p className="text-sm text-gray-500">{modalMessage}</p>
                     </div>
                   </div>
                 </div>
@@ -370,7 +258,7 @@ const FoundMissingPeopleTable = () => {
                 <button
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setMessage("")}
+                  onClick={() => setModalMessage("")}
                 >
                   Close
                 </button>

@@ -10,6 +10,8 @@ const ProductAdmin = ({ onClose }) => {
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState("");
 
   useEffect(() => {
     const fetchLostDocuments = async () => {
@@ -19,7 +21,6 @@ const ProductAdmin = ({ onClose }) => {
         );
         console.log("API response:", response.data);
 
-        // Assuming the response contains an array of lost documents
         setLostDocuments(response.data.documents);
         setLoading(false);
       } catch (error) {
@@ -35,6 +36,8 @@ const ProductAdmin = ({ onClose }) => {
     try {
       await axios.delete(`https://seekconnect-backend-1.onrender.com/lost?id=${id}`);
       setLostDocuments(lostDocuments.filter((doc) => doc._id !== id));
+      setDeleteMessage("Document successfully deleted!");
+      setShowDeleteModal(true);
     } catch (error) {
       console.error("Error deleting document:", error);
       setError("Error deleting document");
@@ -97,6 +100,11 @@ const ProductAdmin = ({ onClose }) => {
     setShowModal(false);
   };
 
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteMessage("");
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -112,7 +120,7 @@ const ProductAdmin = ({ onClose }) => {
         <p className="text-center">No lost documents found.</p>
       ) : (
         <table className="min-w-full bg-white mt-4">
-          <thead className="">
+          <thead>
             <tr>
               <th className="py-2">User Email</th>
               <th className="py-2">Document Type</th>
@@ -138,7 +146,7 @@ const ProductAdmin = ({ onClose }) => {
                   {`${doc.LostPlace.Country}, ${doc.LostPlace.Province}, ${doc.LostPlace.District}, ${doc.LostPlace.Sector}, ${doc.LostPlace.Cell}, ${doc.LostPlace.Village}`}
                 </td>
                 <td className="border px-4 py-2">{doc.Comment}</td>
-                <td className="border px-4 py-2 text-center">
+                <td className="border px-4 py-10 flex text-center">
                   <button
                     onClick={() => handleDelete(doc._id)}
                     className="text-red-600 hover:text-red-800 mr-2"
@@ -158,7 +166,7 @@ const ProductAdmin = ({ onClose }) => {
         </table>
       )}
       {showUpdateForm && selectedDocument && (
-        <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md fixed bottom-0 left-0 right-0 mb-4 mx-4 md:mx-auto md:max-w-lg">
+        <div className="mt-6 bg-gray-100 p-4 rounded-lg shadow-md">
           <h3 className="text-lg font-medium mb-4">Update Document</h3>
           <form onSubmit={handleUpdate}>
             <div className="mb-4">
@@ -273,17 +281,17 @@ const ProductAdmin = ({ onClose }) => {
             </div>
             <div className="flex justify-end">
               <button
-                type="button"
-                onClick={handleCloseForm}
-                className="mr-4 px-4 py-2 bg-gray-300 rounded-md"
-              >
-                Cancel
-              </button>
-              <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                className="px-4 py-2 mr-auto bg-blue-500 hover:bg-blue-700 text-white rounded-md"
               >
                 Update
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseForm}
+                className="mr-4 px-4 py-2 bg-red-500 hover:bg-red-700 rounded-md"
+              >
+                Cancel
               </button>
             </div>
           </form>
@@ -302,7 +310,19 @@ const ProductAdmin = ({ onClose }) => {
           </div>
         </div>
       )}
-    
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <p className="text-lg">{deleteMessage}</p>
+            <button
+              onClick={closeDeleteModal}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
