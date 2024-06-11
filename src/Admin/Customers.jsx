@@ -70,8 +70,8 @@ const Customers = () => {
   };
 
   const thStyle = {
-    backgroundColor: "#4CAF50",
-    color: "white",
+   
+    color: "black",
     padding: "10px",
     border: "1px solid #ddd",
     textAlign: "left",

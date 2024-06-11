@@ -52,7 +52,7 @@ const Lostitem = () => {
   }
 
   return (
-    <div className="mt-6">
+    <div className="m-6">
       <h3 className="text-2xl font-bold">Lost Documents:</h3>
       {lostDocuments.length === 0 ? (
         <p className="text-center">No lost documents found.</p>

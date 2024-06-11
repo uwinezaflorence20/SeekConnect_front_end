@@ -4,6 +4,7 @@ import { IoIosAdd } from "react-icons/io";
 import Post from './Post';
 import Lostitem from "../Admin/Lostitem";
 import LostPeople from "../Admin/LostPeople";
+import Header from "../Admin/sharedAdmin/Header";
 
 export default function Dashboard() {
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
@@ -28,7 +29,7 @@ export default function Dashboard() {
   return (
     <div className="p-4">
       
-       
+      <Header/>
 
         <div className="App">
          

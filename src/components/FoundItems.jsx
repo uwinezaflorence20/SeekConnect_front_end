@@ -6,6 +6,7 @@ import Lostitem from "../Admin/Lostitem";
 import Foundform from "./Foundform";
 import Gridperson from "./Gridperson";
 import Griditem from "./Griditem";
+import Header from "../Admin/sharedAdmin/Header";
 
 export default function FoundItems() {
   const [showNotificationSettings, setShowNotificationSettings] =
@@ -30,6 +31,7 @@ export default function FoundItems() {
 
   return (
     <div className=" w-full max-w-full p-4 border rounded shadow-lg  ">
+      <Header/>
       <div>
         <div>
           <div className="bg-[#8a9de9] flex h-20 w-full items-center justify-center text-white">

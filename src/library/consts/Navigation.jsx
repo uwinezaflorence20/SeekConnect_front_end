@@ -8,6 +8,9 @@ import {
   HiOutlineQuestionMarkCircle,
   HiOutlineCog,
 } from "react-icons/hi";
+import { IoIosPerson } from "react-icons/io";
+import { BsPersonFill } from "react-icons/bs";
+import { IoMdDocument } from "react-icons/io";
 
 export const DASHBOARD_SIDEBAR_LINKS = [
   {
@@ -20,19 +23,19 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     key: "product",
     label: "Lost Documents",
     path: "productadmin",
-    icon: <HiOutlineCube />,
+    icon: <IoMdDocument />,
   },
   {
     key: "transactions",
     label: "Lost Persons",
     path: "/transactions",
-    icon: <HiOutlineDocumentText />,
+    icon: <IoIosPerson />,
   },
   {
     key: "Found person",
     label: "Found Person",
     path: "/orders",
-    icon: <HiOutlineShoppingCart />,
+    icon: <BsPersonFill />,
   },
   {
     key: "transactions",
@@ -47,12 +50,6 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     icon: <HiOutlineUsers />,
   },
   
-  // {
-  //   key: "messages",
-  //   label: "Messages",
-  //   path: "/messages",
-  //   icon: <HiOutlineAnnotation />,
-  // },
   {
     key: "messages",
     label: "Messages",
@@ -62,11 +59,6 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 ];
 
 export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [
-  {
-    key: "settings",
-    label: "Profile",
-    path: "/settings",
-    icon: <HiOutlineCog />,
-  },
+ 
  
 ];

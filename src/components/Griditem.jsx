@@ -60,16 +60,12 @@ const Griditem = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
           {foundDocuments.map((document) => (
             <div key={document._id} className="border border-gray-200 p-4 rounded-lg shadow-md">
-             
-              
-              
-             
               {document.Photo && document.Photo.url ? (
                 <img src={document.Photo.url} alt="Document" className="h-32 w-auto mb-2" />
               ) : (
                 <span className="text-sm text-gray-600">No photo available</span>
               )}
-               <h3 className="text-lg font-bold mb-2">{document.DocumentType}</h3>
+              <h3 className="text-lg font-bold mb-2">{document.DocumentType}</h3>
               <p className="text-sm text-gray-600 mb-2">Name: {document.NameOnDocument}</p>
               <button
                 onClick={() => handleSeeMoreClick(document)}
@@ -107,11 +103,9 @@ const Griditem = () => {
                       {selectedDocument.DocumentType}
                     </h3>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-600 mb-2">Place of Issue: {document.PlaceOfIssueOnDocument}</p>
-                      <p className="text-sm text-gray-600 mb-2">Found Date: {document.FoundDate}</p>
-                      <p className="text-sm text-gray-500">Name on Document: {selectedDocument.NameOnDocument}</p>
-                      <p className="text-sm text-gray-500">Place of Issue: {selectedDocument.PlaceOfIssueOnDocument}</p>
-                      <p className="text-sm text-gray-500">Found Date: {selectedDocument.FoundDate}</p>
+                      <p className="text-sm text-gray-600 mb-2">Name: {selectedDocument.NameOnDocument}</p>
+                      <p className="text-sm text-gray-600 mb-2">Place of Issue: {selectedDocument.PlaceOfIssueOnDocument}</p>
+                      <p className="text-sm text-gray-600 mb-2">Found Date: {selectedDocument.FoundDate}</p>
                       <p className="text-sm text-gray-500">Returned to Owner: {selectedDocument.returnedToOwner ? "Yes" : "No"}</p>
                       {selectedDocument.Photo && selectedDocument.Photo.url && (
                         <img src={selectedDocument.Photo.url} alt="Document" className="mt-2 h-32 w-auto" />

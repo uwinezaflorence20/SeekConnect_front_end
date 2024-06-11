@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { DASHBOARD_SIDEBAR_BOTTOM_LINKS } from '../../library/consts/Navigation';
 
 const linkClasses =
-  "flex item-center  relate gap-2 font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base ";
+  "flex item-center  relate gap-2 font-light px-3 py-2 hover:bg-white hover:text-[#8a9de9] hover:no-underline rounded-sm text-base ";
 
 
  export default function SidebarAdmin() {
@@ -26,7 +26,7 @@ const linkClasses =
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}
-         <div className={classNames('text-red-500 cursor-pointer', linkClasses)}> 
+         <div className={classNames('text-white cursor-pointer', linkClasses)}> 
          <span className='text-xl'><HiOutlineLogout /></span>
           Logout
          </div>

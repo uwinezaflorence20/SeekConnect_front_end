@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Transactions = () => {
   const [missingPeople, setMissingPeople] = useState([]);
@@ -25,10 +24,8 @@ const Transactions = () => {
     Comment: "",
     Found: false
   });
-
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalSuccess, setModalSuccess] = useState(true);
 
   useEffect(() => {
     const fetchMissingPeople = async () => {
@@ -58,9 +55,13 @@ const Transactions = () => {
     try {
       await axios.delete(`https://seekconnect-backend-1.onrender.com/missingPerson?id=${id}`);
       setMissingPeople(missingPeople.filter(person => person._id !== id));
+      setModalMessage("The lost person has been successfully deleted.");
+      setModalSuccess(true);
     } catch (error) {
       console.error("Error deleting person:", error);
       setError("Error deleting person");
+      setModalMessage("Failed to delete the lost person.");
+      setModalSuccess(false);
     }
   };
 
@@ -87,18 +88,45 @@ const Transactions = () => {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("Email", editForm.Email);
+    formData.append("FirstName", editForm.FirstName);
+    formData.append("LastName", editForm.LastName);
+    formData.append("Race", editForm.Race);
+    formData.append("CountryOfOrigin", editForm.CountryOfOrigin);
+    formData.append("Age", editForm.Age);
+    formData.append("LostDate", editForm.LostDate);
+    formData.append("LostPlace.Country", editForm.LostPlace.Country);
+    formData.append("LostPlace.Province", editForm.LostPlace.Province);
+    formData.append("LostPlace.District", editForm.LostPlace.District);
+    formData.append("LostPlace.Sector", editForm.LostPlace.Sector);
+    formData.append("LostPlace.Cell", editForm.LostPlace.Cell);
+    formData.append("LostPlace.Village", editForm.LostPlace.Village);
+    formData.append("Comment", editForm.Comment);
+    formData.append("Found", editForm.Found);
+
     try {
-      const response = await axios.put(
-        `https://seekconnect-backend-1.onrender.com/missingPeople/${editingPerson._id}`,
-        editForm
+      const response = await axios.patch(
+        `https://seekconnect-backend-1.onrender.com/missingPerson?id=${editingPerson._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       );
+
       setMissingPeople(missingPeople.map((person) =>
-        person._id === editingPerson._id ? response.data.person : person
+        person._id === editingPerson._id ? response.data.updatedData : person
       ));
       setEditingPerson(null);
+      setModalMessage("The lost person has been successfully updated.");
+      setModalSuccess(true);
     } catch (error) {
       console.error("Error updating person:", error);
       setError("Error updating person");
+      setModalMessage("Failed to update the lost person.");
+      setModalSuccess(false);
     }
   };
 
@@ -106,16 +134,9 @@ const Transactions = () => {
     setEditingPerson(null);
   };
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const closeModal = () => {
+    setModalMessage("");
   };
-
-  // Calculate the indices of items to display for the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = missingPeople.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(missingPeople.length / itemsPerPage);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -126,8 +147,8 @@ const Transactions = () => {
   }
 
   return (
-    <div className="min-h-screen  flex flex-col  bg-gray-100">
-      <div className="max-w-7xl w-full  p-4 rounded-md bg-white shadow-md">
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <div className="max-w-7xl w-full p-4 rounded-md bg-white shadow-md">
         <h2 className="text-2xl font-bold text-center mb-4">
           List of Missing People
         </h2>
@@ -136,7 +157,7 @@ const Transactions = () => {
         ) : (
           <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {currentItems.map((person) => {
+              {missingPeople.map((person) => {
                 const lostPlace = person.LostPlace || {};
                 return (
                   <div key={person._id} className="bg-gray-100 p-4 rounded-lg shadow-md">
@@ -181,32 +202,14 @@ const Transactions = () => {
                 );
               })}
             </div>
-            <div className="flex justify-center items-center mt-8">
-              <button
-                className={`mx-1 px-3 py-1 rounded ${currentPage === 1 ? "bg-gray-300" : "bg-[#8a9de9] text-white"}`}
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                <FaChevronLeft />
-              </button>
-              <span className="mx-2 text-lg">
-                {currentPage} of {totalPages}
-              </span>
-              <button
-                className={`mx-1 px-3 py-1 rounded ${currentPage === totalPages ? "bg-gray-100" : "bg-[#8a9de9] text-white"}`}
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                <FaChevronRight />
-              </button>
-            </div>
           </div>
         )}
       </div>
       {editingPerson && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-          <div className="bg-white p-6 rounded-md shadow-md">
-            <form onSubmit={handleUpdateSubmit}>
+        <div className="max-w-7xl w-full p-4 rounded-md bg-white shadow-md mt-6">
+          <h3 className="text-lg font-bold mb-4">Update Missing Person</h3>
+          <form onSubmit={handleUpdateSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="mb-2">
                 <label className="block text-gray-700 font-medium">First Name</label>
                 <input
@@ -227,22 +230,175 @@ const Transactions = () => {
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
                 />
               </div>
-              <div className="mt-4 flex justify-end">
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Race</label>
+                <input
+                  type="text"
+                  name="Race"
+                  value={editForm.Race}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Country of Origin</label>
+                <input
+                  type="text"
+                  name="CountryOfOrigin"
+                  value={editForm.CountryOfOrigin}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Age</label>
+                <input
+                  type="number"
+                  name="Age"
+                  value={editForm.Age}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Date</label>
+                <input
+                  type="date"
+                  name="LostDate"
+                  value={editForm.LostDate}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Place Country</label>
+                <input
+                  type="text"
+                  name="LostPlace.Country"
+                  value={editForm.LostPlace.Country}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Place Province</label>
+                <input
+                  type="text"
+                  name="LostPlace.Province"
+                  value={editForm.LostPlace.Province}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Place District</label>
+                <input
+                  type="text"
+                  name="LostPlace.District"
+                  value={editForm.LostPlace.District}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Place Sector</label>
+                <input
+                  type="text"
+                  name="LostPlace.Sector"
+                  value={editForm.LostPlace.Sector}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Place Cell</label>
+                <input
+                  type="text"
+                  name="LostPlace.Cell"
+                  value={editForm.LostPlace.Cell}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Lost Place Village</label>
+                <input
+                  type="text"
+                  name="LostPlace.Village"
+                  value={editForm.LostPlace.Village}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Comment</label>
+                <textarea
+                  name="Comment"
+                  value={editForm.Comment}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 font-medium">Found</label>
+                <select
+                  name="Found"
+                  value={editForm.Found}
+                  onChange={handleUpdateChange}
+                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                >
+                  <option value={false}>No</option>
+                  <option value={true}>Yes</option>
+                </select>
+              </div>
+            </div>
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={handleCancelUpdate}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      {modalMessage && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="fixed inset-0 transition-opacity">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                      Notification
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{modalMessage}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
-                  onClick={handleCancelUpdate}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mr-2"
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${modalSuccess ? "bg-green-500" : "bg-red-500"} text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm`}
+                  onClick={closeModal}
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Update
+                  Close
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

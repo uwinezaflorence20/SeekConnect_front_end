@@ -17,7 +17,7 @@ const Videopart = () => {
         transition={{duration:1 , delay:0.5}} 
          class="mt-4 text-gray-600">
         From valuables like wallets and  to long-lost family members and dear old friends – life can sure feel 
-        empty until you’re reunited with what you miss. With Lostify, your overdue reunion may be just around the corner. 
+        empty until you’re reunited with what you miss. With SeekConnect, your overdue reunion may be just around the corner. 
       </motion.p>
         <motion.h2
         initial={{opacity:0,x:-100}}
