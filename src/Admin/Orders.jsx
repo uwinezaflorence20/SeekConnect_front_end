@@ -10,6 +10,7 @@ const FoundMissingPeopleTable = () => {
   const [editingPerson, setEditingPerson] = useState(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchFoundMissingPeople();
@@ -81,6 +82,10 @@ const FoundMissingPeopleTable = () => {
     setEditingPerson(null);
     setShowUpdateForm(false);
   };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <div className="container mx-auto bg-white px-4 py-8">
