@@ -352,20 +352,21 @@ const Transactions = () => {
                 </select>
               </div>
             </div>
-            <div className="mt-4 flex justify-end">
-              <button
-                type="button"
-                onClick={handleCancelUpdate}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 mr-2"
-              >
-                Cancel
-              </button>
+            <div className="mt-4  flex justify-end">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-blue-500 text-white mr-auto px-4 py-2 rounded hover:bg-blue-700"
               >
                 Update
               </button>
+              <button
+                type="button"
+                onClick={handleCancelUpdate}
+                className="bg-red-500  text-white  px-4 py-2 rounded hover:bg-red-700 mr-2"
+              >
+                Cancel
+              </button>
+              
             </div>
           </form>
         </div>
