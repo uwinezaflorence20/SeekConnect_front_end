@@ -122,7 +122,7 @@ const Foundperson = () => {
     <div className="min-h-screen mt-20 flex items-center justify-center bg-gray-100">
       <div className="max-w-lg w-full mb-40 p-6 rounded-md bg-white shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">
-          Add Missing Person Report
+          Add Found Person Report
         </h2>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="mb-4">
@@ -230,7 +230,7 @@ const Foundperson = () => {
               htmlFor="lostDate"
               className="block text-gray-700 font-medium"
             >
-              Date when the person was last seen
+              Date when the person was Found
             </label>
             <input
               type="date"
@@ -246,7 +246,7 @@ const Foundperson = () => {
               htmlFor="lostPlace.country"
               className="block text-gray-700 font-medium"
             >
-              Country where the person was last seen
+              Country where the person was Found
             </label>
             <input
               type="text"
@@ -262,7 +262,7 @@ const Foundperson = () => {
               htmlFor="lostPlace.province"
               className="block text-gray-700 font-medium"
             >
-              Province where the person was last seen
+              Province where the person was Found
             </label>
             <input
               type="text"
@@ -278,7 +278,7 @@ const Foundperson = () => {
               htmlFor="lostPlace.district"
               className="block text-gray-700 font-medium"
             >
-              District where the person was last seen
+              District where the person was Found
             </label>
             <input
               type="text"
@@ -294,7 +294,7 @@ const Foundperson = () => {
               htmlFor="lostPlace.sector"
               className="block text-gray-700 font-medium"
             >
-              Sector where the person was last seen
+              Sector where the person was Found
             </label>
             <input
               type="text"
@@ -310,7 +310,7 @@ const Foundperson = () => {
               htmlFor="lostPlace.cell"
               className="block text-gray-700 font-medium"
             >
-              Cell where the person was last seen
+              Cell where the person was Found
             </label>
             <input
               type="text"
@@ -326,7 +326,7 @@ const Foundperson = () => {
               htmlFor="lostPlace.village"
               className="block text-gray-700 font-medium"
             >
-              Village where the person was last seen
+              Village where the person was Found
             </label>
             <input
               type="text"

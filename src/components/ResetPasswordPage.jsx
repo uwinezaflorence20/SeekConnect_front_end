@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { Link, useNavigate } from "react-router-dom";
+import { RxDoubleArrowLeft } from "react-icons/rx";
 const ResetPasswordPage = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -7,7 +8,8 @@ const ResetPasswordPage = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
+  const [modalMessage, setModalMessage] = useState(""); // New state for modal message
+  const [modalSuccess, setModalSuccess] = useState(false); // New state for modal success
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,19 +46,21 @@ const ResetPasswordPage = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: formData.email,
-            newPassword: formData.newPassword,
+            Email: formData.email,
+            Password: formData.newPassword,
+            ConfirmPassword: formData.confirmPassword,
           }),
         });
+        const data = await response.json();
         if (response.ok) {
-          setSuccessMessage("Password reset successfully!");
+          setModalMessage(data.message);
+          setModalSuccess(true);
           setFormData({
             email: "",
             newPassword: "",
             confirmPassword: "",
           });
         } else {
-          const data = await response.json();
           setErrors(data.errors);
         }
       } catch (error) {
@@ -68,13 +72,47 @@ const ResetPasswordPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setModalMessage("");
+    setModalSuccess(false);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      {modalMessage && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="fixed inset-0 transition-opacity">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                      Notification
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{modalMessage}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${modalSuccess ? "bg-green-500" : "bg-red-500"} text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm`}
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="max-w-md w-full p-6 rounded-md bg-white shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">Reset Password</h2>
-        {successMessage && (
-          <p className="text-green-600 mb-4">{successMessage}</p>
-        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 mr-80 font-medium">
@@ -131,6 +169,12 @@ const ResetPasswordPage = () => {
                 {errors.confirmPassword}
               </p>
             )}
+          </div>
+          <div className="flex mt-4">
+            <RxDoubleArrowLeft className="ml-2 text-md text-blue-400 pt-1" />
+            <Link to={"/signin"} className="text-blue-400 ml-2">
+              back to SignIn
+            </Link>
           </div>
           <button
             type="submit"

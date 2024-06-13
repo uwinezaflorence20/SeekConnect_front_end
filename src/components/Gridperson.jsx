@@ -89,6 +89,12 @@ const Gridperson = () => {
                       {selectedPerson.FirstName} {selectedPerson.LastName}
                     </h3>
                     <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                        Firstname: {selectedPerson.FirstName}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Lastname: {selectedPerson.LastName}
+                      </p>
                       <p className="text-sm text-gray-500">
                         Email: {selectedPerson.Email}
                       </p>
