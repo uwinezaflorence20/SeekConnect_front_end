@@ -25,7 +25,6 @@ export default function Dashboard() {
 
   return (
     <div className="p-4">
-      <Header />
       <div className="App">
         <div>
           <div className="bg-[#8a9de9] w-full flex h-20 items-center justify-center text-white">
@@ -41,15 +40,15 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="shadow-md p-4 space-x-4">
+      {/* <div className="shadow-md p-4 space-x-4">
         <input
           type="text"
           placeholder="Search by name, category or location"
           className="flex justify-center items-center p-2 w-full"
         />
-      </div>
+      </div> */}
 
-      <div className="text-black mb-6">
+      {/* <div className="text-black mb-6">
         <div className="flex items-center space-x-4">
           <select
             name=""
@@ -63,7 +62,7 @@ export default function Dashboard() {
             <option value="Document">Document</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
       <Lostitem />
       <LostPeople />

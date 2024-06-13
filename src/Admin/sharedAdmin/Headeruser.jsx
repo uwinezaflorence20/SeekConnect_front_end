@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../components/UserContext";
 
-function Header() {
+function Headeruser() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [notifications, setNotifications] = useState([]);
@@ -100,7 +100,7 @@ function Header() {
                 <p className="font-medium">{user ? user.name : "User Name"}</p>
                 <p className="text-sm">{user ? user.email : "user@example.com"}</p>
               </div>
-              
+            
             </Menu.Items>
           </Transition>
         </Menu>
@@ -109,4 +109,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default Headeruser;

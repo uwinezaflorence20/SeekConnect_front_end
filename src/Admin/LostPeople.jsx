@@ -63,7 +63,7 @@ const LostPeople = () => {
           <div className="grid grid-cols-1  sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {missingPeople.map((person) => {
               return (
-                <div key={person._id} className="bg-white p-6  rounded-lg shadow-md">
+                <div key={person._id} className="bg-gray p-6  rounded-lg shadow-md">
                   <div className=" mb-4">
                     {person.Photo && person.Photo.url ? (
                       <img

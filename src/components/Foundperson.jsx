@@ -349,7 +349,7 @@ const Foundperson = () => {
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-gray-700 font-medium">
               Has the person been returned to their owner?
             </label>
@@ -361,7 +361,7 @@ const Foundperson = () => {
               onChange={handleChange}
               className="mt-1 p-2"
             />
-          </div>
+          </div> */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"

@@ -31,7 +31,6 @@ export default function FoundItems() {
 
   return (
     <div className=" w-full max-w-full p-4 border rounded shadow-lg  ">
-      <Header/>
       <div>
         <div>
           <div className="bg-[#8a9de9] flex h-20 w-full items-center justify-center text-white">
@@ -44,15 +43,15 @@ export default function FoundItems() {
         </div>
       </div>
 
-      <div className="shadow-md w-full p-4 space-x-4">
+      {/* <div className="shadow-md w-full p-4 space-x-4">
         <input
           type="text"
           placeholder="Search by name, category or location"
           className="flex justify-center items-center p-2 w-full"
         />
-      </div>
+      </div> */}
 
-      <div className="text-black w-full mb-6">
+      {/* <div className="text-black w-full mb-6">
         <div className="flex items-center  space-x-4">
           <select
             name=""
@@ -66,7 +65,7 @@ export default function FoundItems() {
             <option value="Document">Document</option>
           </select>
         </div>
-      </div>
+      </div> */}
       <Gridperson/>
       <Griditem/>
     </div>

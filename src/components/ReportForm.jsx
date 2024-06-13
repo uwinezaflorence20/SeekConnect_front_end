@@ -432,7 +432,7 @@ const ReportForm = () => {
               <p className="text-red-500 text-sm mt-1">{errors.Comment}</p>
             )}
           </div>
-          <div className="mb-4 flex items-center">
+          {/* <div className="mb-4 flex items-center">
             <input
               type="checkbox"
               id="found"
@@ -444,7 +444,7 @@ const ReportForm = () => {
             <label htmlFor="found" className="text-gray-700 font-medium">
               Found
             </label>
-          </div>
+          </div> */}
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

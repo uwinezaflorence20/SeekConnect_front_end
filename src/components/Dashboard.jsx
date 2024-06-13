@@ -5,16 +5,20 @@ import {
   HiOutlineSearch,
 } from "react-icons/hi";
 import Lostitem from '../Admin/Lostitem'
-import Header from'../Admin/sharedAdmin/Header'
-import FoundItems from './FoundItems';
-import Foundperson from './Foundperson';
+import Griditem from './Griditem';
+import Gridperson from './Gridperson';
+
 import Lostpeople from '../Admin/LostPeople';
+
 const Dashboard = () => {
   return (
     <div>
-      <Header/>
+      <Gridperson/>
+       <Griditem/>
         <Lostpeople/>
        <Lostitem/> 
+       
+       
      
      
     </div>

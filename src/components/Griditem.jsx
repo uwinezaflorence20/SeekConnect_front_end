@@ -52,7 +52,7 @@ const Griditem = () => {
   }
 
   return (
-    <div className="mt-6">
+    <div className="m-6">
       <h3 className="text-lg font-medium">Found Documents:</h3>
       {foundDocuments.length === 0 ? (
         <p className="text-center">No found documents found.</p>
@@ -107,9 +107,9 @@ const Griditem = () => {
                       <p className="text-sm text-gray-600 mb-2">Place of Issue: {selectedDocument.PlaceOfIssueOnDocument}</p>
                       <p className="text-sm text-gray-600 mb-2">Found Date: {selectedDocument.FoundDate}</p>
                       <p className="text-sm text-gray-500">Returned to Owner: {selectedDocument.returnedToOwner ? "Yes" : "No"}</p>
-                      {selectedDocument.Photo && selectedDocument.Photo.url && (
+                      {/* {selectedDocument.Photo && selectedDocument.Photo.url && (
                         <img src={selectedDocument.Photo.url} alt="Document" className="mt-2 h-32 w-auto" />
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>

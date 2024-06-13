@@ -3,6 +3,7 @@ import React from "react";
 import Videopart from "./Videopart";
 import {motion} from "framer-motion"
 import Missingperson from './Missingperson'
+import Gridperson from './Gridperson';
 
 const AboutPage = () => {
   return (
@@ -33,7 +34,7 @@ const AboutPage = () => {
           </p>
         </div>
       </div>
-      <Missingperson/>
+      <Gridperson/>
       <Videopart/>
       </motion.div>
     </div>
