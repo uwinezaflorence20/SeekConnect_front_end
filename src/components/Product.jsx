@@ -40,29 +40,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* <div className="shadow-md p-4 space-x-4">
-        <input
-          type="text"
-          placeholder="Search by name, category or location"
-          className="flex justify-center items-center p-2 w-full"
-        />
-      </div> */}
-
-      {/* <div className="text-black mb-6">
-        <div className="flex items-center space-x-4">
-          <select
-            name=""
-            id=""
-            className="text-black w-full p-2 bg-gray-100"
-            onChange={handleDropdownChange}
-            value={selectedOption}
-          >
-            <option value="">Filter by category</option>
-            <option value="Person">Person</option>
-            <option value="Document">Document</option>
-          </select>
-        </div>
-      </div> */}
+     
 
       <Lostitem />
       <LostPeople />

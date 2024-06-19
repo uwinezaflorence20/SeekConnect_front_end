@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import React from 'react'
-import { FcBullish } from "react-icons/fc";
+
+
 import { HiOutlineLogout } from 'react-icons/hi';
 import {DASHBOARD_SIDEBAR_LINKS} from  '../../library/consts/Navigation'
 import { Link, useLocation } from 'react-router-dom';
@@ -26,10 +26,10 @@ const linkClasses =
         {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} />
         ))}
-         <div className={classNames('text-white cursor-pointer', linkClasses)}> 
-         <span className='text-xl'><HiOutlineLogout /></span>
+         <Link to="/">   <div className={classNames('text-white cursor-pointer', linkClasses)}> 
+      <span className='text-xl'><HiOutlineLogout /></span>
           Logout
-         </div>
+         </div></Link>
         
       </div>
     </div>

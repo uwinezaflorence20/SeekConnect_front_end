@@ -53,7 +53,7 @@ const Griditem = () => {
 
   return (
     <div className="m-6">
-      <h3 className="text-lg font-medium">Found Documents:</h3>
+      <h3 className="text-2xl font-bold ">Found Documents:</h3>
       {foundDocuments.length === 0 ? (
         <p className="text-center">No found documents found.</p>
       ) : (

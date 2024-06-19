@@ -1,12 +1,11 @@
-import React from 'react';
+
 import { GoArrowRight } from "react-icons/go";
-import { FaRegCircleUser } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
-import { useUser } from '../UserContext';
+
+
 
 const Otherpart = () => {
-  const { user } = useUser();
-  const { name, email } = user;
+ 
+  
 
   return (
     <div>

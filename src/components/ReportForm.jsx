@@ -26,6 +26,8 @@ const ReportForm = () => {
   const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -88,6 +90,8 @@ const ReportForm = () => {
       return;
     }
 
+    setIsSubmitting(true);
+
     const data = new FormData();
     data.append("file", formData.file);
     data.append("Email", formData.Email);
@@ -134,6 +138,7 @@ const ReportForm = () => {
       });
       setErrors({});
       setMessage("Form submitted successfully!");
+      setIsSuccess(true);
       setShowModal(true);
     } catch (error) {
       console.error("There was an error submitting the form:", error);
@@ -148,7 +153,10 @@ const ReportForm = () => {
         console.error("Error setting up the request:", error.message);
       }
       setMessage("There was an error submitting the form. Please try again later.");
+      setIsSuccess(false);
       setShowModal(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -427,29 +435,28 @@ const ReportForm = () => {
               className={`mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.Comment ? "border-red-500" : ""
               }`}
-            />
+            ></textarea>
             {errors.Comment && (
               <p className="text-red-500 text-sm mt-1">{errors.Comment}</p>
             )}
           </div>
-          {/* <div className="mb-4 flex items-center">
-            <input
-              type="checkbox"
-              id="found"
-              name="Found"
-              checked={formData.Found}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            <label htmlFor="found" className="text-gray-700 font-medium">
-              Found
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium">
+              <input
+                type="checkbox"
+                name="Found"
+                checked={formData.Found}
+                onChange={handleChange}
+                className="mr-2 leading-tight"
+              />
+              <span className="text-sm">Found</span>
             </label>
-          </div> */}
+          </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
           >
-            Submit
+            {isSubmitting ? "Posting..." : "Submit"}
           </button>
         </form>
         {showModal && (
@@ -464,13 +471,13 @@ const ReportForm = () => {
               <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <svg className="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    <div className={`mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full ${isSuccess ? "bg-green-100" : "bg-red-100"} sm:mx-0 sm:h-10 sm:w-10`}>
+                      <svg className={`h-6 w-6 ${isSuccess ? "text-green-600" : "text-red-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d={isSuccess ? "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" : "M10 18a8 8 0 100-16 8 8 0 000 16zM8.293 10.293a1 1 0 011.414 0L10 10.586l0.293-0.293a1 1 0 111.414 1.414L10 13.414l-2-2a1 1 0 011.414-1.414z"} clipRule="evenodd" />
                       </svg>
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <h3 className="text-lg leading-6 font-medium text-gray-900">Success</h3>
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">{isSuccess ? "Success" : "Error"}</h3>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">{message}</p>
                       </div>
@@ -480,7 +487,7 @@ const ReportForm = () => {
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${isSuccess ? "bg-green-600 hover:bg-green-700 focus:ring-green-500" : "bg-red-600 hover:bg-red-700 focus:ring-red-500"} text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
                     onClick={closeModal}
                   >
                     Close

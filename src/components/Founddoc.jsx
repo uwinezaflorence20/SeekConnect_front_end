@@ -3,24 +3,25 @@ import axios from "axios";
 
 const FoundDocumentForm = () => {
   const [formData, setFormData] = useState({
-    Email: "gloria7wineza@gmail.com",
-    DocumentType: "Drivers License",
-    NameOnDocument: "uwineza gloria",
-    PlaceOfIssueOnDocument: "kigali",
+    Email: "",
+    DocumentType: "",
+    NameOnDocument: "",
+    PlaceOfIssueOnDocument: "",
     FoundDate: "2024-01-02",
-    "FoundPlace.Country": "Rwanda",
-    "FoundPlace.Province": "fgvb",
-    "FoundPlace.District": "vb",
-    "FoundPlace.Sector": "vbn",
-    "FoundPlace.Cell": "fcvgbh",
-    "FoundPlace.Village": "dcfvgb",
-    Comment: "fcvgbh",
+    "FoundPlace.Country": "",
+    "FoundPlace.Province": "",
+    "FoundPlace.District": "",
+    "FoundPlace.Sector": "",
+    "FoundPlace.Cell": "",
+    "FoundPlace.Village": "",
+    Comment: "",
     returnedToOwner: false,
     file: null,
   });
 
   const [message, setMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state variable
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -32,6 +33,7 @@ const FoundDocumentForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Set isSubmitting to true when the form is being submitted
     const data = new FormData();
     for (const key in formData) {
       data.append(key, formData[key]);
@@ -54,6 +56,8 @@ const FoundDocumentForm = () => {
       console.error("Error posting document:", error);
       setMessage("Failed to post document");
       setShowModal(true); // Show the modal on failure
+    } finally {
+      setIsSubmitting(false); // Reset isSubmitting once the submission is complete
     }
   };
 
@@ -67,7 +71,7 @@ const FoundDocumentForm = () => {
       <div className="max-w-lg w-full p-6 rounded-md bg-white shadow-md">
         <h2 className="text-2xl font-bold text-center mb-4">Post Found Document</h2>
         <form onSubmit={handleSubmit}>
-           <div className="mb-4">
+          <div className="mb-4">
             <label htmlFor="file" className="block text-gray-700 font-medium">
               Upload File
             </label>
@@ -247,25 +251,12 @@ const FoundDocumentForm = () => {
               rows="4"
             />
           </div>
-          {/* <div className="mb-4">
-            <label htmlFor="returnedToOwner" className="flex items-center text-gray-700 font-medium">
-              <input
-                type="checkbox"
-                id="returnedToOwner"
-                name="returnedToOwner"
-                checked={formData.returnedToOwner}
-                onChange={handleChange}
-                className="mr-2 focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-              />
-              Document Returned to Owner
-            </label>
-          </div> */}
-         
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            disabled={isSubmitting} // Disable the button while submitting
           >
-            Submit
+            {isSubmitting ? "Posting..." : "Submit"}
           </button>
         </form>
 
@@ -275,15 +266,19 @@ const FoundDocumentForm = () => {
               <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
               </div>
-
-              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                &#8203;
+              </span>
               <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
                       <svg className="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">

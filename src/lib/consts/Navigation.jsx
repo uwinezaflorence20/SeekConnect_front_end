@@ -1,10 +1,9 @@
 import {
-	HiOutlineQuestionMarkCircle,
-	HiOutlineCog
+	
 } from 'react-icons/hi'
 import { CiHome } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
-import { CiBookmark } from "react-icons/ci";
+
 import { IoLogOutOutline } from "react-icons/io5";
 
 export const DASHBOARD_SIDEBAR_LINKS = [

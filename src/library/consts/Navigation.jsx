@@ -1,12 +1,10 @@
 import {
   HiOutlineViewGrid,
-  HiOutlineCube,
-  HiOutlineShoppingCart,
+  
   HiOutlineUsers,
   HiOutlineDocumentText,
   HiOutlineAnnotation,
-  HiOutlineQuestionMarkCircle,
-  HiOutlineCog,
+
 } from "react-icons/hi";
 import { IoIosPerson } from "react-icons/io";
 import { BsPersonFill } from "react-icons/bs";

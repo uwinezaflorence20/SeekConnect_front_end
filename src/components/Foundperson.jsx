@@ -10,8 +10,8 @@ const Foundperson = () => {
     Race: "",
     CountryOfOrigin: "",
     Age: "",
-    LostDate: "",
-    LostPlace: {
+    FoundDate: "",
+    FoundPlace: {
       Country: "",
       Province: "",
       District: "",
@@ -23,6 +23,7 @@ const Foundperson = () => {
     returnedToOwner: false,
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
@@ -60,6 +61,7 @@ const Foundperson = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const data = new FormData();
     data.append("file", formData.file);
@@ -69,13 +71,13 @@ const Foundperson = () => {
     data.append("Race", formData.Race);
     data.append("CountryOfOrigin", formData.CountryOfOrigin);
     data.append("Age", formData.Age);
-    data.append("LostDate", formData.LostDate);
-    data.append("LostPlace.Country", formData.LostPlace.Country);
-    data.append("LostPlace.Province", formData.LostPlace.Province);
-    data.append("LostPlace.District", formData.LostPlace.District);
-    data.append("LostPlace.Sector", formData.LostPlace.Sector);
-    data.append("LostPlace.Cell", formData.LostPlace.Cell);
-    data.append("LostPlace.Village", formData.LostPlace.Village);
+    data.append("FoundDate", formData.FoundDate);
+    data.append("FoundPlace.Country", formData.FoundPlace.Country);
+    data.append("FoundPlace.Province", formData.FoundPlace.Province);
+    data.append("FoundPlace.District", formData.FoundPlace.District);
+    data.append("FoundPlace.Sector", formData.FoundPlace.Sector);
+    data.append("FoundPlace.Cell", formData.FoundPlace.Cell);
+    data.append("FoundPlace.Village", formData.FoundPlace.Village);
     data.append("Comment", formData.Comment);
     data.append("returnedToOwner", formData.returnedToOwner);
 
@@ -93,8 +95,8 @@ const Foundperson = () => {
         Race: "",
         CountryOfOrigin: "",
         Age: "",
-        LostDate: "",
-        LostPlace: {
+        FoundDate: "",
+        FoundPlace: {
           Country: "",
           Province: "",
           District: "",
@@ -109,7 +111,11 @@ const Foundperson = () => {
       setMessage("Form submitted successfully!");
       setShowModal(true);
     } catch (error) {
-      console.error("There was an error submitting the form:", error);
+      console.error("There was an error submitting the form:", error.response ? error.response.data : error.message);
+      setMessage("There was an error submitting the form. Please try again.");
+      setShowModal(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -227,112 +233,112 @@ const Foundperson = () => {
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostDate"
+              htmlFor="foundDate"
               className="block text-gray-700 font-medium"
             >
               Date when the person was Found
             </label>
             <input
               type="date"
-              id="lostDate"
-              name="LostDate"
-              value={formData.LostDate}
+              id="foundDate"
+              name="FoundDate"
+              value={formData.FoundDate}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostPlace.country"
+              htmlFor="foundPlace.country"
               className="block text-gray-700 font-medium"
             >
-              Country where the person was Found
+              Found Place Country
             </label>
             <input
               type="text"
-              id="lostPlace.country"
-              name="LostPlace.Country"
-              value={formData.LostPlace.Country}
+              id="foundPlace.country"
+              name="FoundPlace.Country"
+              value={formData.FoundPlace.Country}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostPlace.province"
+              htmlFor="foundPlace.province"
               className="block text-gray-700 font-medium"
             >
-              Province where the person was Found
+              Found Place Province
             </label>
             <input
               type="text"
-              id="lostPlace.province"
-              name="LostPlace.Province"
-              value={formData.LostPlace.Province}
+              id="foundPlace.province"
+              name="FoundPlace.Province"
+              value={formData.FoundPlace.Province}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostPlace.district"
+              htmlFor="foundPlace.district"
               className="block text-gray-700 font-medium"
             >
-              District where the person was Found
+              Found Place District
             </label>
             <input
               type="text"
-              id="lostPlace.district"
-              name="LostPlace.District"
-              value={formData.LostPlace.District}
+              id="foundPlace.district"
+              name="FoundPlace.District"
+              value={formData.FoundPlace.District}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostPlace.sector"
+              htmlFor="foundPlace.sector"
               className="block text-gray-700 font-medium"
             >
-              Sector where the person was Found
+              Found Place Sector
             </label>
             <input
               type="text"
-              id="lostPlace.sector"
-              name="LostPlace.Sector"
-              value={formData.LostPlace.Sector}
+              id="foundPlace.sector"
+              name="FoundPlace.Sector"
+              value={formData.FoundPlace.Sector}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostPlace.cell"
+              htmlFor="foundPlace.cell"
               className="block text-gray-700 font-medium"
             >
-              Cell where the person was Found
+              Found Place Cell
             </label>
             <input
               type="text"
-              id="lostPlace.cell"
-              name="LostPlace.Cell"
-              value={formData.LostPlace.Cell}
+              id="foundPlace.cell"
+              name="FoundPlace.Cell"
+              value={formData.FoundPlace.Cell}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
             <label
-              htmlFor="lostPlace.village"
+              htmlFor="foundPlace.village"
               className="block text-gray-700 font-medium"
             >
-              Village where the person was Found
+              Found Place Village
             </label>
             <input
               type="text"
-              id="lostPlace.village"
-              name="LostPlace.Village"
-              value={formData.LostPlace.Village}
+              id="foundPlace.village"
+              name="FoundPlace.Village"
+              value={formData.FoundPlace.Village}
               onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -349,41 +355,46 @@ const Foundperson = () => {
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
-          {/* <div className="mb-4">
+          <div className="mb-4">
             <label className="block text-gray-700 font-medium">
-              Has the person been returned to their owner?
+              <input
+                type="checkbox"
+                id="returnedToOwner"
+                name="returnedToOwner"
+                checked={formData.returnedToOwner}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Returned to Owner
             </label>
-            <input
-              type="checkbox"
-              id="returnedToOwner"
-              name="returnedToOwner"
-              checked={formData.returnedToOwner}
-              onChange={handleChange}
-              className="mt-1 p-2"
-            />
-          </div> */}
+          </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? "Posting..." : "Submit"}
           </button>
         </form>
-        {showModal && (
+        {isSubmitted && showModal && (
           <div className="fixed z-10 inset-0 overflow-y-auto">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
               <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
               </div>
-
-              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                &#8203;
+              </span>
               <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
                       <svg className="h-6 w-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -413,7 +424,3 @@ const Foundperson = () => {
 };
 
 export default Foundperson;
-
-
-
-
