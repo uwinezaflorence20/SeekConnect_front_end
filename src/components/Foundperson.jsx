@@ -355,7 +355,7 @@ const Foundperson = () => {
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-gray-700 font-medium">
               <input
                 type="checkbox"
@@ -367,7 +367,7 @@ const Foundperson = () => {
               />
               Returned to Owner
             </label>
-          </div>
+          </div> */}
           <button
             type="submit"
             className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"

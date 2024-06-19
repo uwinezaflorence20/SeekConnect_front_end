@@ -19,8 +19,6 @@ const ProductAdmin = ({ onClose }) => {
         const response = await axios.get(
           "https://seekconnect-backend-1.onrender.com/lost"
         );
-        console.log("API response:", response.data);
-
         setLostDocuments(response.data.documents);
         setLoading(false);
       } catch (error) {
@@ -51,8 +49,6 @@ const ProductAdmin = ({ onClose }) => {
         `https://seekconnect-backend-1.onrender.com/lost?id=${selectedDocument._id}`,
         selectedDocument
       );
-      console.log("Update response:", response.data);
-
       setLostDocuments(
         lostDocuments.map((doc) =>
           doc._id === selectedDocument._id ? response.data.document : doc
@@ -146,7 +142,7 @@ const ProductAdmin = ({ onClose }) => {
                   {`${doc.LostPlace.Country}, ${doc.LostPlace.Province}, ${doc.LostPlace.District}, ${doc.LostPlace.Sector}, ${doc.LostPlace.Cell}, ${doc.LostPlace.Village}`}
                 </td>
                 <td className="border px-4 py-2">{doc.Comment}</td>
-                <td className="border px-4 py-10 flex text-center">
+                <td className="border px-4 py-2 flex text-center">
                   <button
                     onClick={() => handleDelete(doc._id)}
                     className="text-red-600 hover:text-red-800 mr-2"
@@ -298,28 +294,78 @@ const ProductAdmin = ({ onClose }) => {
         </div>
       )}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <p className="text-lg">{modalMessage}</p>
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
-            >
-              Close
-            </button>
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className={`mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full ${modalMessage.includes("successfully") ? "bg-green-100" : "bg-red-100"} sm:mx-0 sm:h-10 sm:w-10`}>
+                    <svg className={`h-6 w-6 ${modalMessage.includes("successfully") ? "text-green-600" : "text-red-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d={modalMessage.includes("successfully") ? "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" : "M10 18a8 8 0 100-16 8 8 0 000 16zM8.293 10.293a1 1 0 011.414 0L10 10.586l0.293-0.293a1 1 0 111.414 1.414L10 13.414l-2-2a1 1 0 011.414-1.414z"} clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">{modalMessage.includes("successfully") ? "Success" : "Error"}</h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{modalMessage}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${modalMessage.includes("successfully") ? "bg-green-600 hover:bg-green-700 focus:ring-green-500" : "bg-red-600 hover:bg-red-700 focus:ring-red-500"} text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <p className="text-lg">{deleteMessage}</p>
-            <button
-              onClick={closeDeleteModal}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
-            >
-              Close
-            </button>
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className={`mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full ${deleteMessage.includes("successfully") ? "bg-green-100" : "bg-red-100"} sm:mx-0 sm:h-10 sm:w-10`}>
+                    <svg className={`h-6 w-6 ${deleteMessage.includes("successfully") ? "text-green-600" : "text-red-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d={deleteMessage.includes("successfully") ? "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" : "M10 18a8 8 0 100-16 8 8 0 000 16zM8.293 10.293a1 1 0 011.414 0L10 10.586l0.293-0.293a1 1 0 111.414 1.414L10 13.414l-2-2a1 1 0 011.414-1.414z"} clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">{deleteMessage.includes("successfully") ? "Success" : "Error"}</h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">{deleteMessage}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${deleteMessage.includes("successfully") ? "bg-green-600 hover:bg-green-700 focus:ring-green-500" : "bg-red-600 hover:bg-red-700 focus:ring-red-500"} text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
+                  onClick={closeDeleteModal}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

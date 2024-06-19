@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Post({ onSubmit }) {
+function Post() {
   const [formData, setFormData] = useState({
     Email: "",
     DocumentType: "",
@@ -21,6 +21,7 @@ function Post({ onSubmit }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -58,8 +59,8 @@ function Post({ onSubmit }) {
 
       if (response.ok) {
         const result = await response.json();
-        onSubmit(result.details);
         setShowModal(true);
+        setMessage("Document successfully posted!");
         setFormData({
           Email: "",
           DocumentType: "",
@@ -113,7 +114,7 @@ function Post({ onSubmit }) {
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <h3 className="text-lg leading-6 font-medium text-gray-900">Success</h3>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">Document successfully posted!</p>
+                      <p className="text-sm text-gray-500">{message}</p>
                     </div>
                   </div>
                 </div>
@@ -245,26 +246,35 @@ function Post({ onSubmit }) {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Comment</label>
-          <input
-            type="text"
+          <textarea
             name="Comment"
             value={formData.Comment}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
           />
         </div>
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Submitting...' : 'Submit'}
-        </button>
+        {/* <div className="mb-4">
+          <label className="block text-gray-700">Found</label>
+          <input
+            type="checkbox"
+            name="Found"
+            checked={formData.Found}
+            onChange={(e) => setFormData({ ...formData, Found: e.target.checked })}
+            className="mr-2 leading-tight"
+          />
+          <span className="text-sm">Check if the document has been found</span>
+        </div> */}
+        <div>
+          <button
+            type="submit"
+            className={`w-full py-2 px-4 rounded text-white ${isSubmitting ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-700"}`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </button>
+        </div>
+        {error && <div className="mt-4 text-red-500">{error}</div>}
       </form>
-
-      {/* Error Display */}
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
